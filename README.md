@@ -2,4 +2,4 @@
 
 ## Desc
 
-- Git LFS Support needed!
+- Git LFS Support needed! (install before clone https://git-lfs.github.com/)
