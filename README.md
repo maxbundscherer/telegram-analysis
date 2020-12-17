@@ -10,7 +10,7 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 
 ## Overview
 
-- Processed Jupyter Notebook [included](./notebooks/Telegram.ipynb)
+- Processed Jupyter Notebook [included](./notebooks/Telegram.ipynb) (you can see it through the GitHub preview)
 
 ## Let's get started
 
