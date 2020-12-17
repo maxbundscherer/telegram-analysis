@@ -10,13 +10,13 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 
 **I still have things to do... / Work in progress**
 
-## Overview
-
-Processed Jupyter Notebook [included](./notebooks/Telegram.ipynb) (you can see it through the GitHub preview)
-
 ![](./docs/wordCloudExample.png)
 
-## Let's get started
+## Overview
+
+- Processed Jupyter Notebook [included](./notebooks/Telegram.ipynb) (you can see it through the GitHub preview)
+
+### Let's get started
 
 1. Please [install](https://github.com/git-lfs/git-lfs/wiki/Installation) Git Large File Support (Git [LFS](https://git-lfs.github.com/)) **before** ``git clone``
 2. Clone repo
