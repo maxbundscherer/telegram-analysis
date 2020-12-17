@@ -8,6 +8,8 @@ Data-Science project telegram chats.
 
 Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 
+**I still have things to do... / Work in progress**
+
 ## Overview
 
 - Processed Jupyter Notebook [included](./notebooks/Telegram.ipynb) (you can see it through the GitHub preview)
