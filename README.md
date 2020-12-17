@@ -1,6 +1,6 @@
 # Telegram Analysis
 
-Data-Science project telegram chats.
+Data-Science project telegram channels.
 
 ``data science - telegram - jupyter``
 
