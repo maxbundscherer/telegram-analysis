@@ -2,7 +2,7 @@
 
 Data-Science project telegram channels.
 
-``data science - telegram - jupyter``
+``data science - telegram - jupyter - text-mining - text-classification``
 
 [![shields.io](http://img.shields.io/badge/license-Apache2-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
