@@ -18,8 +18,6 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 
 ### Let's get started
 
-1. Please [install](https://github.com/git-lfs/git-lfs/wiki/Installation) Git Large File Support (Git [LFS](https://git-lfs.github.com/)) **before** ``git clone``
-2. Clone repo
-3. Add downloaded telegram-data in ``./notebooks/data/`` (you can download telegram conversations from official telegram-computer-client -> Export Channel to json)
-4. Wire downloaded telegram-data in ``./notebooks/inputFiles.xlsx``
-5. Run Jupyter Notebook (Docker recommend ``docker run --rm -p 8888:8888 --name web -v <LOCAL_REPO_PATH>:/home/jovyan/work jupyter/datascience-notebook``)
+1. Add downloaded telegram-data in ``./notebooks/data/`` (you can download telegram conversations from official telegram-computer-client -> Export Channel to json)
+2. Wire downloaded telegram-data in ``./notebooks/inputFiles.xlsx``
+3. Run Jupyter Notebook (Docker recommend ``docker run --rm -p 8888:8888 --name web -v <LOCAL_REPO_PATH>:/home/jovyan/work jupyter/datascience-notebook``)
