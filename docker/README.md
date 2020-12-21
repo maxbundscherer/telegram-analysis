@@ -1,4 +1,4 @@
-# Run customer docker
+# Run custom docker
 
 ## Let's get started
 
@@ -7,7 +7,7 @@
 
 ## Modified Docker Image
 
-See [orginal readme](./ORG_README.md). Installed (apt-get in Dockerfile):
+See [original readme](./ORG_README.md). Installed (apt-get in Dockerfile):
 
 - graphviz
 - libgraphviz-dev
