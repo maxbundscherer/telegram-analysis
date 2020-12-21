@@ -21,4 +21,4 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 
 1. Add downloaded telegram-data in ``./notebooks/data/`` (you can download telegram conversations from official telegram-computer-client -> Export Channel to json)
 2. Wire downloaded telegram-data in ``./notebooks/inputFiles.csv`` ([go to file](./notebooks/inputFiles.csv))
-3. Run Jupyter Notebook (Docker recommend ``docker run --rm -p 8888:8888 --name web -v <LOCAL_REPO_PATH>:/home/jovyan/work jupyter/datascience-notebook``)
+3. Run in [custom-docker](./docker/)
