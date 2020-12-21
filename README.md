@@ -15,6 +15,7 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 ## Overview
 
 - Processed Jupyter Notebook [included](./notebooks/Telegram.ipynb) (you can see it through the GitHub preview)
+- Processed Graphs [included](./notebooks/output/)
 
 ### Let's get started
 
