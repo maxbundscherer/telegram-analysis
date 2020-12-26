@@ -10,7 +10,15 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 
 **I still have things to do... / Work in progress**
 
-![](./docs/wordCloudExample.png)
+## Excerpt
+
+### WordCloud Attila Hildmann
+
+![](./notebooks/output/wordcloud-pc-hildmann.png)
+
+### Social Graph
+
+![](./notebooks/output/social-graph.png)
 
 ## Overview
 
