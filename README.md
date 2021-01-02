@@ -16,9 +16,13 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 
 ![](./notebooks/output/wordcloud-pc-hildmann.png)
 
-### Social Graph
+### Social Graph (Forwarded From)
 
 ![](./notebooks/output/social-graph.png)
+
+### Social Graph (Hashtags)
+
+![](./notebooks/output/social-hashtag-graph.png)
 
 ## Overview
 
