@@ -12,17 +12,13 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 
 ## Excerpt
 
-### WordCloud Attila Hildmann
+### WordCloud Global
 
-![](./notebooks/output/wordcloud-pc-hildmann.png)
+![](./notebooks/output/wordcloud-global.png)
 
 ### Social Graph (Forwarded From)
 
 ![](./notebooks/output/social-graph.png)
-
-### Social Graph (Hashtags)
-
-![](./notebooks/output/social-hashtag-graph.png)
 
 ## Overview
 
