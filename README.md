@@ -12,13 +12,21 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 
 ## Excerpt
 
+### Time
+
+![](./notebooks/output/time-plot.png)
+
 ### Social Graph (Forwarded From)
 
 ![](./notebooks/output/social-graph-forwarded-from.png)
 
-### Social Graph (Hashtags
+### Social Graph (Hashtags)
 
 ![](./notebooks/output/social-graph-hashtag.png)
+
+### Social Graph (Hosts)
+
+![](./notebooks/output/social-graph-host.png)
 
 ### Meta-Overview
 
