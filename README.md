@@ -24,6 +24,10 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 
 ![](./notebooks/output/social-graph-hashtag.png)
 
+### Social Graph (Hosts)
+
+![](./notebooks/output/social-graph-hashtag.png)
+
 ### Meta-Overview
 
 ![](./notebooks/output/meta-overview.png)
