@@ -12,17 +12,25 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 
 ## Excerpt
 
-### WordCloud Attila Hildmann
-
-![](./notebooks/output/wordcloud-pc-hildmann.png)
-
 ### Social Graph (Forwarded From)
 
-![](./notebooks/output/social-graph.png)
+![](./notebooks/output/social-graph-forwarded-from.png)
 
-### Social Graph (Hashtags)
+### Social Graph (Hashtags
 
-![](./notebooks/output/social-hashtag-graph.png)
+![](./notebooks/output/social-graph-hashtag.png)
+
+### Meta-Overview
+
+![](./notebooks/output/meta-overview.png)
+
+### Meta Text Length
+
+![](./notebooks/output/meta-text-length-hist.png)
+
+### WordCloud Global
+
+![](./notebooks/output/wordcloud-global.png)
 
 ## Overview
 
