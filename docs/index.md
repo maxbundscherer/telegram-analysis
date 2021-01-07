@@ -1,34 +1,34 @@
 
 ## Excerpt
 
+### Meta-Overview
+
+![https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/meta-overview.png)](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/meta-overview.png)
+
 ### Time
 
-![](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/time-plot.png)
+![https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/time-plot.png](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/time-plot.png)
 
 ### Social Graph (Forwarded From)
 
-![](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-forwarded-from.png)
+![https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-forwarded-from.png](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-forwarded-from.png)
 
 ### Social Graph (Hashtags)
 
-![](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-hashtag.png)
+![https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-hashtag.png)](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-hashtag.png)
 
 ### Social Graph (Hosts)
 
 
-![](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-host.png)
-
-### Meta-Overview
-
-![](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/meta-overview.png)
+![https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-host.png](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-host.png)
 
 ### Meta Text Length
 
-![](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/meta-text-length-hist.png)
+![https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/meta-text-length-hist.png](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/meta-text-length-hist.png)
 
 ### WordCloud Global
 
-![](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/wordcloud-global.png)
+![https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/wordcloud-global.png](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/wordcloud-global.png)
 
 ### Auto WordCloud
 
