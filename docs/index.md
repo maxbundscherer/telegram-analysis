@@ -1,5 +1,4 @@
-
-# Excerpt Telegram Analyse
+# Excerpt Telegram Analysis
 
 ``data science - telegram - jupyter - text-mining - text-classification``
 
