@@ -38,12 +38,6 @@ Go to [GitHub-Repository and Let's get started](https://github.com/maxbundschere
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-host.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-host.png)
 
 ## Word Clouds
-
-### WordCloud Global
-
-[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/wordcloud-global.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/wordcloud-global.png)
-
-### Auto WordCloud (Eva Hermann)
 <!-- Slider -->
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
@@ -74,6 +68,43 @@ Go to [GitHub-Repository and Let's get started](https://github.com/maxbundschere
     
     </script>
 
+### WordCloud Global
+
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/wordcloud-global.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/wordcloud-global.png)
+
+### Auto WordCloud (Oliver Janich)
+<!-- Sliders -->
+<div id="slider-oliver-janich"></div>
+<script>
+$.ajax({
+          type: "GET",  
+          url: "https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/cache/auto-wordcloud-oliver-janich.csv",
+          dataType: "text",       
+          success: function(response)  
+          {
+            data = $.csv.toArrays(response);
+            generateSlider(data, "slider-oliver-janich");
+          }   
+        });
+</script>
+
+### Auto WordCloud (Attila Hildmann)
+<!-- Sliders -->
+<div id="slider-attila-hildmann"></div>
+<script>
+$.ajax({
+          type: "GET",  
+          url: "https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/cache/auto-wordcloud-attila-hildmann.csv",
+          dataType: "text",       
+          success: function(response)  
+          {
+            data = $.csv.toArrays(response);
+            generateSlider(data, "slider-attila-hildmann");
+          }   
+        });
+</script>
+
+### Auto WordCloud (Eva Herman)
 <!-- Sliders -->
 <div id="slider-eva-herman"></div>
 <script>
@@ -85,6 +116,22 @@ $.ajax({
           {
             data = $.csv.toArrays(response);
             generateSlider(data, "slider-eva-herman");
+          }   
+        });
+</script>
+
+### Auto WordCloud (Xavier Naidoo)
+<!-- Sliders -->
+<div id="slider-xavier-naidoo"></div>
+<script>
+$.ajax({
+          type: "GET",  
+          url: "https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/cache/auto-wordcloud-xavier-naidoo.csv",
+          dataType: "text",       
+          success: function(response)  
+          {
+            data = $.csv.toArrays(response);
+            generateSlider(data, "slider-xavier-naidoo");
           }   
         });
 </script>
