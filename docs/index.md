@@ -7,7 +7,7 @@
 
 Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 
-Go to [Repo and Let's get started](https://github.com/maxbundscherer/)
+Go to [GitHub-Repository and Let's get started](https://github.com/maxbundscherer/telegram-analysis)
 
 ## Meta
 
@@ -53,18 +53,24 @@ Go to [Repo and Let's get started](https://github.com/maxbundscherer/)
 <div class="your-class">
 
     <div>
+    <br />
     <label>2018-09-30 to 2020-11-30</label>
     <img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/autoWordCloud/Oliver%20Janich%20ffentlich-2018-09-30%2000%3A00%3A00-2020-11-30%2000%3A00%3A00.png">
+    <br />
     </div>
 
     <div>
+    <br />
     <label>2018-09-30 to 2020-12-31</label>
     <img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/autoWordCloud/Oliver%20Janich%20ffentlich-2018-09-30%2000%3A00%3A00-2020-12-31%2000%3A00%3A00.png">
+    <br />
     </div>
 
     <div>
+    <br />
     <label>2018-09-30 to 2021-01-31</label>
     <img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/autoWordCloud/Oliver%20Janich%20ffentlich-2018-09-30%2000%3A00%3A00-2021-01-31%2000%3A00%3A00.png">
+    <br />
     </div>
 
 </div>

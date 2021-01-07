@@ -10,37 +10,11 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 
 **I still have things to do... / Work in progress**
 
-## Excerpt
+## First of all: Project website
 
-### Time
+Go to [Project website](https://maxbundscherer.github.io/telegram-analysis/)
 
-![](./notebooks/output/time-plot.png)
-
-### Social Graph (Forwarded From)
-
-![](./notebooks/output/social-graph-forwarded-from.png)
-
-### Social Graph (Hashtags)
-
-![](./notebooks/output/social-graph-hashtag.png)
-
-### Social Graph (Hosts)
-
-![](./notebooks/output/social-graph-host.png)
-
-### Meta-Overview
-
-![](./notebooks/output/meta-overview.png)
-
-### Meta Text Length
-
-![](./notebooks/output/meta-text-length-hist.png)
-
-### WordCloud Global
-
-![](./notebooks/output/wordcloud-global.png)
-
-## Overview
+## In this repo
 
 - Processed Jupyter Notebook [included](./notebooks/Telegram.ipynb) (you can see it through the GitHub preview)
 - Processed Graphs [included](./notebooks/output/)
