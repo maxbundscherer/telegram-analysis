@@ -38,9 +38,22 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
 
 <div class="your-class">
-    <div><img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/autoWordCloud/Oliver%20Janich%20ffentlich-2018-09-30%2000%3A00%3A00-2020-11-30%2000%3A00%3A00.png"></div>
-    <div><img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/autoWordCloud/Oliver%20Janich%20ffentlich-2018-09-30%2000%3A00%3A00-2020-12-31%2000%3A00%3A00.png"></div>
-    <div><img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/autoWordCloud/Oliver%20Janich%20ffentlich-2018-09-30%2000%3A00%3A00-2021-01-31%2000%3A00%3A00.png"></div>
+
+    <div>
+    <label>2018-09-30 to 2020-11-30</label>
+    <img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/autoWordCloud/Oliver%20Janich%20ffentlich-2018-09-30%2000%3A00%3A00-2020-11-30%2000%3A00%3A00.png">
+    </div>
+
+    <div>
+    <label>2018-09-30 to 2020-12-31</label>
+    <img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/autoWordCloud/Oliver%20Janich%20ffentlich-2018-09-30%2000%3A00%3A00-2020-12-31%2000%3A00%3A00.png">
+    </div>
+
+    <div>
+    <label>2018-09-30 to 2021-01-31</label>
+    <img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/autoWordCloud/Oliver%20Janich%20ffentlich-2018-09-30%2000%3A00%3A00-2021-01-31%2000%3A00%3A00.png">
+    </div>
+
 </div>
 
 <script type="text/javascript">
