@@ -63,7 +63,10 @@ Go to [GitHub-Repository and Let's get started](https://github.com/maxbundschere
     
         }
         $("#" + selectorLabel).html(retContent)
-        $('#' + selectorLabel).slick();
+        $('#' + selectorLabel).slick({
+          autoplay: true,
+          autoplaySpeed: 1000,
+        });
     }
     
     </script>
