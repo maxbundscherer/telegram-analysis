@@ -7,7 +7,7 @@
 
 Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 
-``GitHub-Repo`` and ``Let's get started``: https://github.com/maxbundscherer/telegram-analysis
+Go to [Repo and Let's get started](https://github.com/maxbundscherer/)
 
 ## Meta
 
@@ -22,7 +22,6 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 ### Meta Text Length
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/meta-text-length-hist.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/meta-text-length-hist.png)
-
 
 ## Graphs
 
