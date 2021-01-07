@@ -43,40 +43,48 @@ Go to [GitHub-Repository and Let's get started](https://github.com/maxbundschere
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/wordcloud-global.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/wordcloud-global.png)
 
-### Auto WordCloud (Oliver Janich)
-
+### Auto WordCloud (Eva Hermann)
+<!-- Slider -->
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
 <script type="text/javascript" src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
 
-<div class="your-class">
+<!-- CSV -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/0.71/jquery.csv-0.71.min.js"></script>
 
-    <div>
-    <br />
-    <label>2018-09-30 to 2020-11-30</label>
-    <img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/autoWordCloud/Oliver%20Janich%20ffentlich-2018-09-30%2000%3A00%3A00-2020-11-30%2000%3A00%3A00.png">
-    <br />
-    </div>
+<!-- Slider Gen -->
+<script>
+        
+    function generateSlider (data, selectorLabel) {
+        retContent = ""
+        for (var i = 0; i < data.length; i++) {
+            filePath =  data[i][0];
+            fileLabel = data[i][1];
+            
+            prefixPath = "https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/"
+            filePath = prefixPath + encodeURI(filePath)
+    
+            retContent = retContent + " <div><br /><label>" + fileLabel + "</label><img src='" + filePath + "'><br /></div>"
+    
+        }
+        $("#" + selectorLabel).html(retContent)
+        $('#' + selectorLabel).slick();
+    }
+    
+    </script>
 
-    <div>
-    <br />
-    <label>2018-09-30 to 2020-12-31</label>
-    <img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/autoWordCloud/Oliver%20Janich%20ffentlich-2018-09-30%2000%3A00%3A00-2020-12-31%2000%3A00%3A00.png">
-    <br />
-    </div>
-
-    <div>
-    <br />
-    <label>2018-09-30 to 2021-01-31</label>
-    <img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/autoWordCloud/Oliver%20Janich%20ffentlich-2018-09-30%2000%3A00%3A00-2021-01-31%2000%3A00%3A00.png">
-    <br />
-    </div>
-
-</div>
-
-<script type="text/javascript">
-    $(document).ready(function(){
-        $('.your-class').slick();
-    });
+<!-- Sliders -->
+<div id="slider-eva-herman"></div>
+<script>
+$.ajax({
+          type: "GET",  
+          url: "https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/cache/auto-wordcloud-eva-herman.csv",
+          dataType: "text",       
+          success: function(response)  
+          {
+            data = $.csv.toArrays(response);
+            generateSlider(data, "slider-eva-herman");
+          }   
+        });
 </script>
