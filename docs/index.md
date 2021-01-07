@@ -68,10 +68,6 @@ Go to [GitHub-Repository and Let's get started](https://github.com/maxbundschere
     
     </script>
 
-### WordCloud Global
-
-[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/wordcloud-global.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/wordcloud-global.png)
-
 ### Auto WordCloud (Oliver Janich)
 <!-- Sliders -->
 <div id="slider-oliver-janich"></div>
