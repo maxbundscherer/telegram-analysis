@@ -4,7 +4,7 @@ Data-Science project telegram channels.
 
 ``data science - telegram - jupyter - text-mining - text-classification``
 
-[![shields.io](http://img.shields.io/badge/license-Apache2-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.txt)
+[![shields.io](https://img.shields.io/badge/license-Apache2-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 
