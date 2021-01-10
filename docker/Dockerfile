@@ -29,10 +29,6 @@ RUN apt-get update && \
     gfortran \
     gcc && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
-# Install
-RUN echo "-- Install now --"
-RUN apt-get update
-RUN apt-get install -y graphviz libgraphviz-dev pkg-config
 
 # Julia dependencies
 # install Julia packages in /opt/julia instead of $HOME
@@ -78,6 +74,14 @@ RUN conda install --quiet --yes \
     'r-rsqlite=2.2*' \
     'r-shiny=1.5*' \
     'r-tidyverse=1.3*' \
+    'graphviz' \
+    'pkgconfig' \
+    'pydot' \
+    'demjson' \
+    'nltk' \
+    'gensim' \
+    'pyldavis' \
+    'wordcloud' \
     'rpy2=3.3*' && \
     conda clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
