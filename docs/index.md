@@ -36,6 +36,13 @@ Go to [GitHub-Repository and Let's get started](https://github.com/maxbundschere
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet0-host.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet0-host.png)
 
+## Latent Dirichlet Allocation
+
+- [Oliver Janich](https://maxbundscherer.github.io/telegram-analysis/topics/oliver-janich-report.html)
+- [Attila Hildmann](https://maxbundscherer.github.io/telegram-analysis/topics/attila-hildmann-report.html)
+- [Eva Herman](https://maxbundscherer.github.io/telegram-analysis/topics/eva-herman-report.html)
+- [Xavier Naidoo](https://maxbundscherer.github.io/telegram-analysis/topics/xavier-naidoo-report.html)
+
 ## Word Tracer
 
 ### Oliver Janich
