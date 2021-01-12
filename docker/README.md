@@ -12,5 +12,10 @@ Hint: Set local repo path above (without / at end) e.g. "~/Desktop/repo"
 See [original readme](./ORG_README.md). Installed (apt-get in Dockerfile):
 
 - graphviz
-- libgraphviz-dev
-- pkg-config
+- pkgconfig
+- pydot
+- demjson
+- nltk
+- gensim
+- pyldavis
+- wordcloud
