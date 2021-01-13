@@ -6,7 +6,10 @@
 
 Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 
-Go to [GitHub-Repository and Let's get started](https://github.com/maxbundscherer/telegram-analysis)
+- Go to [GitHub-Repository and Let's get started](https://github.com/maxbundscherer/telegram-analysis)
+- Go to [complete jupyter-notebook](https://github.com/maxbundscherer/telegram-analysis/blob/master/notebooks/Telegram.ipynb)
+
+{:toc}
 
 ## Meta
 
@@ -22,7 +25,7 @@ Go to [GitHub-Repository and Let's get started](https://github.com/maxbundschere
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/meta-overview-dataSet2.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/meta-overview-dataSet2.png)
 
-### DataSet 0 - Number of messages
+### DataSet0 - Number of messages
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/time-plot-dataSet0.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/time-plot-dataSet0.png)
 
