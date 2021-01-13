@@ -26,7 +26,6 @@ Go to [GitHub-Repository and Let's get started](https://github.com/maxbundschere
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/time-plot-dataSet1a.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/time-plot-dataSet1a.png)
 
-
 ### Meta Text Length (Global)
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/meta-text-length-hist.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/meta-text-length-hist.png)
@@ -51,26 +50,30 @@ Go to [GitHub-Repository and Let's get started](https://github.com/maxbundschere
 
 ## Latent Dirichlet Allocation
 
-- [Oliver Janich](https://maxbundscherer.github.io/telegram-analysis/topics/oliver-janich-report.html)
-- [Attila Hildmann](https://maxbundscherer.github.io/telegram-analysis/topics/attila-hildmann-report.html)
-- [Eva Herman](https://maxbundscherer.github.io/telegram-analysis/topics/eva-herman-report.html)
-- [Xavier Naidoo](https://maxbundscherer.github.io/telegram-analysis/topics/xavier-naidoo-report.html)
+- [Channel Oliver Janich](https://maxbundscherer.github.io/telegram-analysis/topics/oliver-janich-report.html)
+- [Channel Attila Hildmann](https://maxbundscherer.github.io/telegram-analysis/topics/attila-hildmann-report.html)
+- [Channel Eva Herman](https://maxbundscherer.github.io/telegram-analysis/topics/eva-herman-report.html)
+- [Channel Xavier Naidoo](https://maxbundscherer.github.io/telegram-analysis/topics/xavier-naidoo-report.html)
+
+- [Group FREIHEITS-CHAT](https://maxbundscherer.github.io/telegram-analysis/topics/group-freiheitsChat-report.html)
+- [Group FREIHEITSCHAT - BLITZ](https://maxbundscherer.github.io/telegram-analysis/topics/group-freiheitsChatBlitz-report.html)
+- [Group Livestreaming für Deutschland, Österreich ...](https://maxbundscherer.github.io/telegram-analysis/topics/group-liveFuerDeOsSc-report.html)
 
 ## Word Tracer
 
-### Oliver Janich
+### Channel Oliver Janich
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/word-tracer-oliver-janich.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/word-tracer-oliver-janich.png)
 
-### Attila Hildmann
+### Channel Attila Hildmann
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/word-tracer-attila-hildmann.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/word-tracer-attila-hildmann.png)
 
-### Eva Herman
+### Channel Eva Herman
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/word-tracer-eva-herman.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/word-tracer-eva-herman.png)
 
-### Xavier Naidoo
+### Channel Xavier Naidoo
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/word-tracer-xavier-naidoo.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/word-tracer-xavier-naidoo.png)
 
@@ -108,7 +111,7 @@ Go to [GitHub-Repository and Let's get started](https://github.com/maxbundschere
     
     </script>
 
-### Auto WordCloud (Oliver Janich)
+### Auto WordCloud (Oliver Janich Channel)
 <!-- Sliders -->
 <div id="slider-oliver-janich"></div>
 <script>
@@ -124,7 +127,7 @@ $.ajax({
         });
 </script>
 
-### Auto WordCloud (Attila Hildmann)
+### Auto WordCloud (Attila Hildmann Channel)
 <!-- Sliders -->
 <div id="slider-attila-hildmann"></div>
 <script>
@@ -140,7 +143,7 @@ $.ajax({
         });
 </script>
 
-### Auto WordCloud (Eva Herman)
+### Auto WordCloud (Eva Herman Channel)
 <!-- Sliders -->
 <div id="slider-eva-herman"></div>
 <script>
@@ -156,7 +159,7 @@ $.ajax({
         });
 </script>
 
-### Auto WordCloud (Xavier Naidoo)
+### Auto WordCloud (Xavier Naidoo Channel)
 <!-- Sliders -->
 <div id="slider-xavier-naidoo"></div>
 <script>
