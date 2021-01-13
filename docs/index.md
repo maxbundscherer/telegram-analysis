@@ -9,7 +9,9 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 - Go to [GitHub-Repository and Let's get started](https://github.com/maxbundscherer/telegram-analysis)
 - Go to [complete jupyter-notebook](https://github.com/maxbundscherer/telegram-analysis/blob/master/notebooks/Telegram.ipynb)
 
-{:toc}
+{% include toc.html html=content %}
+
+{{ {% include toc.html html=content %} }}
 
 ## Meta
 
