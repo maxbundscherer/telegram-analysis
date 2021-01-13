@@ -10,51 +10,63 @@ Go to [GitHub-Repository and Let's get started](https://github.com/maxbundschere
 
 ## Meta
 
-### Overview (DataSet 0)
+### DataSet0 - Overview
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/meta-overview-dataSet0.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/meta-overview-dataSet0.png)
 
-### Overview (DataSet 1a)
+### DataSet1a - Overview
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/meta-overview-dataSet1a.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/meta-overview-dataSet1a.png)
 
-### Overview (DataSet 2)
+### DataSet2 - Overview
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/meta-overview-dataSet2.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/meta-overview-dataSet2.png)
 
-### Time (Number of messages) (DataSet 0)
+### DataSet 0 - Number of messages
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/time-plot-dataSet0.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/time-plot-dataSet0.png)
 
-### Time (Number of messages) (DataSet 1a)
+### DataSet1a - Number of messages
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/time-plot-dataSet1a.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/time-plot-dataSet1a.png)
 
-### Time (Number of messages) (DataSet 2)
+### DataSet2 - Number of messages
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/time-plot-dataSet2.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/time-plot-dataSet2.png)
 
-### Meta Text Length (Global)
+### Global - Text Length
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/meta-text-length-hist.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/meta-text-length-hist.png)
 
 ## Graphs
 
-### Forwarded From (DataSet 0)
+### DataSet0 - Forwarded From
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet0-forwarded-from.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet0-forwarded-from.png)
 
-### Hashtags (DataSet 0)
+### DataSet2 - Forwarded From
+
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet2-forwarded-from.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet2-forwarded-from.png)
+
+### DataSet0 - Hashtags
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet0-hashtag.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet0-hashtag.png)
 
-### Hosts (DataSet 0)
+### DataSet0 - Hosts
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet0-host.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet0-host.png)
 
-### Emojis (DataSet 0)
+### DataSet2 - Hosts
+
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet2-host.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet2-host.png)
+
+### DataSet0 - Emojis
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet0-emoji.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet0-emoji.png)
+
+### DataSet2 - Emojis
+
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet2-emoji.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet2-emoji.png)
 
 ## Latent Dirichlet Allocation
 
@@ -69,19 +81,19 @@ Go to [GitHub-Repository and Let's get started](https://github.com/maxbundschere
 
 ## Word Tracer
 
-### Channel Oliver Janich
+### Channel Oliver Janich (DataSet0)
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/word-tracer-oliver-janich.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/word-tracer-oliver-janich.png)
 
-### Channel Attila Hildmann
+### Channel Attila Hildmann (DataSet0)
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/word-tracer-attila-hildmann.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/word-tracer-attila-hildmann.png)
 
-### Channel Eva Herman
+### Channel Eva Herman (DataSet0)
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/word-tracer-eva-herman.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/word-tracer-eva-herman.png)
 
-### Channel Xavier Naidoo
+### Channel Xavier Naidoo (DataSet0)
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/word-tracer-xavier-naidoo.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/word-tracer-xavier-naidoo.png)
 
@@ -119,7 +131,7 @@ Go to [GitHub-Repository and Let's get started](https://github.com/maxbundschere
     
     </script>
 
-### Auto WordCloud (Oliver Janich Channel)
+### Auto WordCloud (Oliver Janich Channel) (DataSet0)
 <!-- Sliders -->
 <div id="slider-oliver-janich"></div>
 <script>
@@ -135,7 +147,7 @@ $.ajax({
         });
 </script>
 
-### Auto WordCloud (Attila Hildmann Channel)
+### Auto WordCloud (Attila Hildmann Channel) (DataSet0)
 <!-- Sliders -->
 <div id="slider-attila-hildmann"></div>
 <script>
@@ -151,7 +163,7 @@ $.ajax({
         });
 </script>
 
-### Auto WordCloud (Eva Herman Channel)
+### Auto WordCloud (Eva Herman Channel) (DataSet0)
 <!-- Sliders -->
 <div id="slider-eva-herman"></div>
 <script>
@@ -167,7 +179,7 @@ $.ajax({
         });
 </script>
 
-### Auto WordCloud (Xavier Naidoo Channel)
+### Auto WordCloud (Xavier Naidoo Channel) (DataSet0)
 <!-- Sliders -->
 <div id="slider-xavier-naidoo"></div>
 <script>
