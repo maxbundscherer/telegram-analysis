@@ -11,8 +11,6 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 
 {% include toc.html html=content %}
 
-{{ {% include toc.html html=content %} }}
-
 ## Meta
 
 ### DataSet0 - Overview
