@@ -2,7 +2,7 @@
 #pip install papermill
 
 # Exec docker
-docker exec -it tbd /bin/bash
+#docker exec -it tbd /bin/bash
 
 # Run notebook
 papermill Telegram.ipynb Telegram-out.ipynb
