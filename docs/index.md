@@ -16,27 +16,31 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 
 ## Meta
 
-### DataSet0 - Overview
+### Overview
+
+**DataSet0**
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/meta-overview-dataSet0.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/meta-overview-dataSet0.png)
 
-### DataSet1a - Overview
+**DataSet1a**
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/meta-overview-dataSet1a.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/meta-overview-dataSet1a.png)
 
-### DataSet2 - Overview
+**DataSet2**
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/meta-overview-dataSet2.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/meta-overview-dataSet2.png)
 
-### DataSet0 - Number of messages
+### Number of messages
+
+**DataSet0**
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/time-plot-dataSet0.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/time-plot-dataSet0.png)
 
-### DataSet1a - Number of messages
+**DataSet1a**
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/time-plot-dataSet1a.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/time-plot-dataSet1a.png)
 
-### DataSet2 - Number of messages
+**DataSet2**
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/time-plot-dataSet2.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/time-plot-dataSet2.png)
 
@@ -46,31 +50,39 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 
 ## Graphs
 
-### DataSet0 - Forwarded From
+### Forwarded From
+
+**DataSet0**
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet0-forwarded-from.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet0-forwarded-from.png)
 
-### DataSet2 - Forwarded From
+**DataSet2**
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet2-forwarded-from.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet2-forwarded-from.png)
 
-### DataSet0 - Hashtags
+### Hashtags
+
+**DataSet0**
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet0-hashtag.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet0-hashtag.png)
 
-### DataSet0 - Hosts
+### Hosts
+
+**DataSet0**
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet0-host.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet0-host.png)
 
-### DataSet2 - Hosts
+**DataSet2**
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet2-host.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet2-host.png)
 
-### DataSet0 - Emojis
+### Emojis
+
+**DataSet0**
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet0-emoji.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet0-emoji.png)
 
-### DataSet2 - Emojis
+**DataSet2**
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet2-emoji.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet2-emoji.png)
 
@@ -103,7 +115,7 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/word-tracer-xavier-naidoo.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/word-tracer-xavier-naidoo.png)
 
-## Word Clouds
+## Auto Word Clouds
 <!-- Slider -->
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
@@ -137,7 +149,7 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
     
     </script>
 
-### Auto WordCloud (Oliver Janich Channel) (DataSet0)
+### WordCloud Oliver Janich (Channel - DataSet0)
 <!-- Sliders -->
 <div id="slider-oliver-janich"></div>
 <script>
@@ -153,7 +165,7 @@ $.ajax({
         });
 </script>
 
-### Auto WordCloud (Attila Hildmann Channel) (DataSet0)
+### WordCloud Attila Hildmann (Channel - DataSet0)
 <!-- Sliders -->
 <div id="slider-attila-hildmann"></div>
 <script>
@@ -169,7 +181,7 @@ $.ajax({
         });
 </script>
 
-### Auto WordCloud (Eva Herman Channel) (DataSet0)
+### WordCloud Eva Herman (Channel - DataSet0)
 <!-- Sliders -->
 <div id="slider-eva-herman"></div>
 <script>
@@ -185,7 +197,7 @@ $.ajax({
         });
 </script>
 
-### Auto WordCloud (Xavier Naidoo Channel) (DataSet0)
+### WordCloud Xavier Naidoo (Channel - DataSet0)
 <!-- Sliders -->
 <div id="slider-xavier-naidoo"></div>
 <script>
