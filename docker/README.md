@@ -19,3 +19,4 @@ See [original readme](./ORG_README.md). Installed (apt-get in Dockerfile):
 - gensim
 - pyldavis
 - wordcloud
+- papermill
