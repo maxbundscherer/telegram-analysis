@@ -16,8 +16,10 @@ Go to [Project website](https://maxbundscherer.github.io/telegram-analysis/)
 
 ## In this repo
 
-- Processed Jupyter Notebook [included](./notebooks/Telegram.ipynb) (you can see it through the GitHub preview)
+- Raw Jupyter Notebook [included](./notebooks/Telegram.ipynb) (you can see it through the GitHub preview)
+- Processed Jupyter Notebook [included](./notebooks/Telegram-out.ipynb) (you can see it through the GitHub preview)
 - Processed Graphs [included](./notebooks/output/)
+- Run scripts [included](.notebooks/)
 
 ### Let's get started
 
