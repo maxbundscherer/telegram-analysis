@@ -5,4 +5,8 @@
 #docker exec -it tbd /bin/bash
 
 # Run notebook
-papermill Telegram.ipynb Telegram-out.ipynb
+#papermill Telegram.ipynb Telegram-out.ipynb
+
+echo "Run notebook now"
+
+docker exec custom-ds-docker /bin/sh -c "papermill work/notebooks/Telegram.ipynb work/notebooks/Telegram-out.ipynb"
