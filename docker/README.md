@@ -21,3 +21,4 @@ See [original readme](./ORG_README.md). Installed (apt-get in Dockerfile):
 - pyldavis
 - wordcloud
 - papermill
+- lxml

@@ -7,7 +7,8 @@
 Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 
 - Go to [GitHub-Repository and Let's get started](https://github.com/maxbundscherer/telegram-analysis)
-- Go to [processed jupyter-notebook](https://github.com/maxbundscherer/telegram-analysis/blob/master/notebooks/Telegram-out.ipynb)
+- Go to [raw jupyter-notebook (file)](https://github.com/maxbundscherer/telegram-analysis/blob/master/notebooks/Telegram.ipynb)
+- Go to [processed jupyter-notebook (preview)](https://nbviewer.jupyter.org/github/maxbundscherer/telegram-analysis/blob/master/notebooks/Telegram-out.ipynb)
 
 ## Table of contents
 
