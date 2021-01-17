@@ -83,6 +83,7 @@ RUN conda install --quiet --yes \
     'pyldavis' \
     'wordcloud' \
     'papermill' \
+    'lxml' \
     'rpy2=3.3*' && \
     conda clean --all -f -y && \
     fix-permissions "${CONDA_DIR}" && \
