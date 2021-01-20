@@ -22,3 +22,5 @@ See [original readme](./ORG_README.md). Installed (apt-get in Dockerfile):
 - wordcloud
 - papermill
 - lxml
+- pytorch
+- transformers
