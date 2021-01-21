@@ -1,4 +1,5 @@
 rm Telegram-out.ipynb
+rm log.txt
 
 cd output
 rm -rf *
