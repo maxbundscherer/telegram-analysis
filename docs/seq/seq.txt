@@ -1,0 +1,64 @@
+title Abstract processing telegram analysis
+
+participant Jupyter
+database HuggingFace/NLP
+database Internet
+entity Plot-Output
+entity Print-Output
+entity File-Output
+
+note over Jupyter: **Load Data and Environment\nand Configuration**
+
+note over Jupyter: **Process data**
+
+note over Jupyter: **ProcData (Cached)**\n- procChatFilePath\n- procChatType\n- procIsJsonFormatted
+
+note over Jupyter: **TextData (Cached)**\n- procTDText\n- procTDURLs\n- procTDHashtags\n- procTDBolds\n- procTDItalics\n- procTDUnderlines\n- procTDEmails\n- procTDCleanText\n- procTDEmojis\n- procTDEmojisDesc\n- procTDCleanText\n- procTDSafeText\n- procTDSafeLowercaseText\n- procTDTextLength
+
+note over Jupyter: **Eval (Cached)**\n- procEvalIsValidText\n- procEvalContainsPhoto\n- procEvalContainsFile\n- procEvalIsEdited\n- procEvalIsForwarded\n- procEvalContainsUrl\n- procEvalContainsHashtag\n- procEvalContainsBoldItem\n- procEvalContainsItalicItem\n- procEvalContainsUnderlineItem\n- procEvalContainsEmailItem\n- procEvalContainsEmojiItem
+
+Jupyter->HuggingFace/NLP: Pipeline-Data
+
+note over Jupyter: **Piplelines (Cached)**\n- procPipeline-ner-xlm-roberta\n- procPipeline-ner-bert\n- procPipeline-sen-bert
+
+note over HuggingFace/NLP: **Process Pipelines**\n(ner-xlm-roberta, ner-bert, sen-bert)
+
+Jupyter<-HuggingFace/NLP: Pipeline-Results
+
+note over Jupyter: **Process Meta Queries**\n- qryChatId\n- qryChatName\n- qryChatType\n- qryNumberOfMessages\n- qryNumberOfFormattedTextMessages\n- qryNumberOfValidTextMessages\n- qryNumberOfPhotos\n- qryNumberOfFiles\n- qryNumberOfEditedMessages\n- qryNumberOfForwardedMessages\n- qryNumberOfMessagesWithUrl\n- qryNumberOfMessagesWithHashtag\n- qryNumberOfMessagesWithBold\n- qryNumberOfMessagesWithItalic\n- qryNumberOfMessagesWithUnderline\n- qryNumberOfMessagesWithEmail\n- qryNumberOfMessagesWithEmoji
+
+note over Plot-Output: **Plot Meta Queries**\n(dataSet0, dataSet1a, dataSet2)
+
+note over Plot-Output: **Plot Text Length**\n(global)
+
+note over Print-Output: **Check IDs and Labels**\n(global)
+
+Jupyter->Internet: Requests
+
+note over Jupyter: **Extract Social Graph Data**\n- hostList (resolved/returned) \n- urlList (resolved)\n- refList (resolved/returned)\n- forwardedFromList (returned)\n- actorList\n- memberList\n- fromList (returned)\n- savedFromList\n- hashtagList (returned)\n- emojiList (returned)\n- ytList (resolved)
+
+note over Internet: **Resolve**\n(urls, youtube)
+
+Internet->Jupyter: Responses
+
+note over Print-Output: **Print Social Graph Data**\n(dataSet0, dataSet1a, dataSet2)
+
+note over Print-Output: **Check Top Influencer**\n(dataSet0)
+
+note over Plot-Output: **Plot Social Graphs**\n- Test-Graph (Kamda Kawai Layout)\n- Test-Graph (Spring Layout)\n- Test-Graph (Graphviz Layout)\n- Real-Graph (forwardedFrom dataSet0)\n- Real-Graph (forwardedFrom dataSet2)\n- Real-Graph (hashtag dataSet0)\n- Real-Graph (host dataSet0)\n- Real-Graph (host dataSet2)\n- Real-Graph (emoji dataSet0)\n- Real-Graph (emoji dataSet2)\n- Real-Graph (from dataSet1a)
+
+note over Plot-Output: **Plot by time**\n(dataSet0, dataSet1, dataSet1a, dataSet2)
+
+note over Plot-Output: **Wordcloud**\n(dataSet0, dataSet2)
+
+note over File-Output: **Auto wordcloud (batch)**\n(dataSet0)
+
+note over Print-Output: **N Grams**\n(dataSet0, dataSet2)
+
+note over Print-Output: **Eval pipelines**\n(tbd)
+
+note over Print-Output: **Sample text-gen with gen-gpt2**\n(tbd)
+
+note over File-Output: **Latent Dirichlet Allocation (LDA)**\n(dataSet0, dataSet1a, n=5)
+
+note over Plot-Output: **Word Tracer**\n(dataSet0)

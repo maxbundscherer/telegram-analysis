@@ -15,6 +15,10 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 * TOC
 {:toc}
 
+## Sequence diagram jupyter notebook
+
+![](./seq/seq.svg)
+
 ## Meta
 
 ### Overview
