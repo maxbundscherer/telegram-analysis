@@ -101,13 +101,68 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 
 ## Latent Dirichlet Allocation
 
-- [Channel Oliver Janich (5 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/oliver-janich-t-5-report.html)
-- [Channel Attila Hildmann (5 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/attila-hildmann-t-5-report.html)
-- [Channel Eva Herman (5 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/eva-herman-t-5-report.html)
-- [Channel Xavier Naidoo (5 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/xavier-naidoo-t-5-report.html)
-- [Group FREIHEITS-CHAT (5 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/group-freiheitsChat-t-5-report.html)
-- [Group FREIHEITSCHAT - BLITZ (5 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/group-freiheitsChatBlitz-t-5-report.html)
-- [Group Livestreaming für Deutschland, Österreich ... (5 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/group-liveFuerDeOsSc-t-5-report.html)
+**Oliver Janich**
+
+- [Channel Oliver Janich (2 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/oliver-janich-t-2-report.html)
+- [Channel Oliver Janich (4 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/oliver-janich-t-4-report.html)
+- [Channel Oliver Janich (8 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/oliver-janich-t-8-report.html)
+- [Channel Oliver Janich (16 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/oliver-janich-t-16-report.html)
+- [Channel Oliver Janich (32 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/oliver-janich-t-32-report.html)
+- [Channel Oliver Janich (64 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/oliver-janich-t-64-report.html)
+
+**Attila Hildmann**
+
+- [Channel Attila Hildmann (2 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/attila-hildmann-t-2-report.html)
+- [Channel Attila Hildmann (4 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/attila-hildmann-t-4-report.html)
+- [Channel Attila Hildmann (8 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/attila-hildmann-t-8-report.html)
+- [Channel Attila Hildmann (16 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/attila-hildmann-t-16-report.html)
+- [Channel Attila Hildmann (32 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/attila-hildmann-t-32-report.html)
+- [Channel Attila Hildmann (64 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/attila-hildmann-t-64-report.html)
+
+**Eva Herman**
+
+- [Channel Eva Herman (2 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/eva-herman-t-2-report.html)
+- [Channel Eva Herman (4 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/eva-herman-t-4-report.html)
+- [Channel Eva Herman (8 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/eva-herman-t-8-report.html)
+- [Channel Eva Herman (16 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/eva-herman-t-16-report.html)
+- [Channel Eva Herman (32 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/eva-herman-t-32-report.html)
+- [Channel Eva Herman (64 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/eva-herman-t-64-report.html)
+
+**Xavier Naidoo**
+
+- [Channel Xavier Naidoo (2 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/xavier-naidoo-t-2-report.html)
+- [Channel Xavier Naidoo (4 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/xavier-naidoo-t-4-report.html)
+- [Channel Xavier Naidoo (8 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/xavier-naidoo-t-8-report.html)
+- [Channel Xavier Naidoo (16 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/xavier-naidoo-t-16-report.html)
+- [Channel Xavier Naidoo (32 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/xavier-naidoo-t-32-report.html)
+- [Channel Xavier Naidoo (64 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/xavier-naidoo-t-64-report.html)
+
+**FREIHEITS-CHAT**
+
+- [Group FREIHEITS-CHAT (2 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/group-freiheitsChat-t-2-report.html)
+- [Group FREIHEITS-CHAT (4 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/group-freiheitsChat-t-4-report.html)
+- [Group FREIHEITS-CHAT (8 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/group-freiheitsChat-t-8-report.html)
+- [Group FREIHEITS-CHAT (16 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/group-freiheitsChat-t-16-report.html)
+- [Group FREIHEITS-CHAT (32 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/group-freiheitsChat-t-32-report.html)
+- [Group FREIHEITS-CHAT (64 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/group-freiheitsChat-t-64-report.html)
+
+**FREIHEITSCHATZ - BLITZ**
+
+- [Group FREIHEITSCHAT - BLITZ (2 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/group-freiheitsChatBlitz-t-2-report.html)
+- [Group FREIHEITSCHAT - BLITZ (4 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/group-freiheitsChatBlitz-t-4-report.html)
+- [Group FREIHEITSCHAT - BLITZ (8 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/group-freiheitsChatBlitz-t-8-report.html)
+- [Group FREIHEITSCHAT - BLITZ (16 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/group-freiheitsChatBlitz-t-16-report.html)
+- [Group FREIHEITSCHAT - BLITZ (32 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/group-freiheitsChatBlitz-t-32-report.html)
+- [Group FREIHEITSCHAT - BLITZ (64 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/group-freiheitsChatBlitz-t-64-report.html)
+
+**Livestreaming für Deutschland, Österreich ...**
+
+- [Group Livestreaming für Deutschland, Österreich ... (2 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/group-liveFuerDeOsSc-t-2-report.html)
+- [Group Livestreaming für Deutschland, Österreich ... (4 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/group-liveFuerDeOsSc-t-4-report.html)
+- [Group Livestreaming für Deutschland, Österreich ... (8 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/group-liveFuerDeOsSc-t-8-report.html)
+- [Group Livestreaming für Deutschland, Österreich ... (16 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/group-liveFuerDeOsSc-t-16-report.html)
+- [Group Livestreaming für Deutschland, Österreich ... (32 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/group-liveFuerDeOsSc-t-32-report.html)
+- [Group Livestreaming für Deutschland, Österreich ... (64 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/group-liveFuerDeOsSc-t-64-report.html)
 
 ## Word Tracer
 
