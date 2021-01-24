@@ -136,7 +136,6 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 - [Group FREIHEITS-CHAT (8 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/group-freiheitsChat-t-8-report.html)
 - [Group FREIHEITS-CHAT (16 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/group-freiheitsChat-t-16-report.html)
 - [Group FREIHEITS-CHAT (32 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/group-freiheitsChat-t-32-report.html)
-- [Group FREIHEITS-CHAT (64 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/group-freiheitsChat-t-64-report.html)
 
 **FREIHEITSCHATZ - BLITZ**
 
@@ -145,7 +144,6 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 - [Group FREIHEITSCHAT - BLITZ (8 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/group-freiheitsChatBlitz-t-8-report.html)
 - [Group FREIHEITSCHAT - BLITZ (16 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/group-freiheitsChatBlitz-t-16-report.html)
 - [Group FREIHEITSCHAT - BLITZ (32 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/group-freiheitsChatBlitz-t-32-report.html)
-- [Group FREIHEITSCHAT - BLITZ (64 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/group-freiheitsChatBlitz-t-64-report.html)
 
 **Livestreaming für Deutschland, Österreich ...**
 
@@ -154,7 +152,6 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 - [Group Livestreaming für Deutschland, Österreich ... (8 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/group-liveFuerDeOsSc-t-8-report.html)
 - [Group Livestreaming für Deutschland, Österreich ... (16 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/group-liveFuerDeOsSc-t-16-report.html)
 - [Group Livestreaming für Deutschland, Österreich ... (32 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/group-liveFuerDeOsSc-t-32-report.html)
-- [Group Livestreaming für Deutschland, Österreich ... (64 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/group-liveFuerDeOsSc-t-64-report.html)
 
 ## Word Tracer
 
