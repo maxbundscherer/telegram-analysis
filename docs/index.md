@@ -107,8 +107,6 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 - [Channel Oliver Janich (4 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/oliver-janich-t-4-report.html)
 - [Channel Oliver Janich (8 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/oliver-janich-t-8-report.html)
 - [Channel Oliver Janich (16 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/oliver-janich-t-16-report.html)
-- [Channel Oliver Janich (32 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/oliver-janich-t-32-report.html)
-- [Channel Oliver Janich (64 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/oliver-janich-t-64-report.html)
 
 **Attila Hildmann**
 
@@ -116,8 +114,6 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 - [Channel Attila Hildmann (4 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/attila-hildmann-t-4-report.html)
 - [Channel Attila Hildmann (8 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/attila-hildmann-t-8-report.html)
 - [Channel Attila Hildmann (16 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/attila-hildmann-t-16-report.html)
-- [Channel Attila Hildmann (32 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/attila-hildmann-t-32-report.html)
-- [Channel Attila Hildmann (64 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/attila-hildmann-t-64-report.html)
 
 **Eva Herman**
 
@@ -125,8 +121,6 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 - [Channel Eva Herman (4 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/eva-herman-t-4-report.html)
 - [Channel Eva Herman (8 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/eva-herman-t-8-report.html)
 - [Channel Eva Herman (16 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/eva-herman-t-16-report.html)
-- [Channel Eva Herman (32 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/eva-herman-t-32-report.html)
-- [Channel Eva Herman (64 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/eva-herman-t-64-report.html)
 
 **Xavier Naidoo**
 
@@ -134,8 +128,6 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 - [Channel Xavier Naidoo (4 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/xavier-naidoo-t-4-report.html)
 - [Channel Xavier Naidoo (8 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/xavier-naidoo-t-8-report.html)
 - [Channel Xavier Naidoo (16 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/xavier-naidoo-t-16-report.html)
-- [Channel Xavier Naidoo (32 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/xavier-naidoo-t-32-report.html)
-- [Channel Xavier Naidoo (64 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/xavier-naidoo-t-64-report.html)
 
 **FREIHEITS-CHAT**
 
