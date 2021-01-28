@@ -171,6 +171,24 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/word-tracer-xavier-naidoo.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/word-tracer-xavier-naidoo.png)
 
+## Freq Nouns
+
+### Channel Oliver Janich (DataSet0)
+
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/freq-nouns-oliver-janich.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/freq-nouns-oliver-janich.png)
+
+### Channel Attila Hildmann (DataSet0)
+
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/freq-nouns-attila-hildmann.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/freq-nouns-attila-hildmann.png)
+
+### Channel Eva Herman (DataSet0)
+
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/freq-nouns-eva-herman.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/freq-nouns-eva-herman.png)
+
+### Channel Xavier Naidoo (DataSet0)
+
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/freq-nouns-xavier-naidoo.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/freq-nouns-xavier-naidoo.png)
+
 ## Evaluation SEN-Pipeline (Bert)
 
 **DataSet0**

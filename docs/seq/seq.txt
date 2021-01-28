@@ -25,6 +25,10 @@ note over HuggingFace/NLP: **Process Pipelines**\n(ner-xlm-roberta, ner-bert, se
 
 Jupyter<-HuggingFace/NLP: Pipeline-Results
 
+note over Print-Output: **Basic stuff - Test text**\n(test tokenization, lemmatization, pos)
+
+note over Plot-Output: **Basic stuff - Test text**\n(freq nouns)
+
 note over Jupyter: **Process Meta Queries**\n- qryChatId\n- qryChatName\n- qryChatType\n- qryNumberOfMessages\n- qryNumberOfFormattedTextMessages\n- qryNumberOfValidTextMessages\n- qryNumberOfPhotos\n- qryNumberOfFiles\n- qryNumberOfEditedMessages\n- qryNumberOfForwardedMessages\n- qryNumberOfMessagesWithUrl\n- qryNumberOfMessagesWithHashtag\n- qryNumberOfMessagesWithBold\n- qryNumberOfMessagesWithItalic\n- qryNumberOfMessagesWithUnderline\n- qryNumberOfMessagesWithEmail\n- qryNumberOfMessagesWithEmoji
 
 note over Plot-Output: **Plot Meta Queries**\n(dataSet0, dataSet1a, dataSet2)
@@ -53,12 +57,16 @@ note over Plot-Output: **Wordcloud**\n(dataSet0, dataSet2)
 
 note over File-Output: **Auto wordcloud (batch)**\n(dataSet0)
 
+note over Plot-Output: **Freq nouns**\n(dataSet0)
+
 note over Print-Output: **N Grams**\n(dataSet0, dataSet2)
 
-note over Print-Output: **Eval pipelines**\n(tbd)
+note over Print-Output: **Eval pipelines**\n(ner-xlm-roberta and ner-berton dataSet0)
 
-note over Print-Output: **Sample text-gen with gen-gpt2**\n(tbd)
+note over Plot-Output: **Eval pipelines**\n(sen-bert on dataSet0)
 
-note over File-Output: **Latent Dirichlet Allocation (LDA)**\n(dataSet0, dataSet1a, n=5)
+note over Print-Output: **Text pipelines**\n(text-gern-gtpt2 and text-gern-gtpt2-faust\non test text)
+
+note over File-Output: **Latent Dirichlet Allocation (LDA)**\n(dataSet0, dataSet1a)
 
 note over Plot-Output: **Word Tracer**\n(dataSet0)
