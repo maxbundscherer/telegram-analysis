@@ -189,6 +189,12 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/freq-nouns-xavier-naidoo.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/freq-nouns-xavier-naidoo.png)
 
+## Evaluation SEN
+
+**DataSet0**
+
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/eval-pipeline-sen-textblob-dataSet0.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/eval-pipeline-sen-textblob-dataSet0.png)
+
 ## Evaluation SEN-Pipeline (Bert)
 
 **DataSet0**
