@@ -1,3 +1,9 @@
+TODO and class
+MERGE SEQ AND CLASS
+------------------------------------
+------------------------------------
+------------------------------------
+
 title Abstract processing telegram analysis
 
 participant Jupyter
@@ -9,7 +15,7 @@ entity File-Output
 
 note over Jupyter: **Load Data and Environment\nand Configuration**
 
-note over Jupyter: **Process data**
+note over Jupyter: **(Pre-) Process data**
 
 note over Jupyter: **ProcData (Cached)**\n- procChatFilePath\n- procChatType\n- procIsJsonFormatted
 
@@ -19,7 +25,7 @@ note over Jupyter: **Eval (Cached)**\n- procEvalIsValidText\n- procEvalContainsP
 
 Jupyter->HuggingFace/NLP: Pipeline-Data
 
-note over Jupyter: **Piplelines (Cached)**\n- procPipeline-ner-xlm-roberta\n- procPipeline-ner-bert\n- procPipeline-sen-bert
+note over Jupyter: **Piplelines (Cached)**\n- procPipeline-ner-xlm-roberta\n- procPipeline-ner-bert\n- procPipeline-sen-bert\n- procPipeline-sentiment
 
 note over HuggingFace/NLP: **Process Pipelines**\n(ner-xlm-roberta, ner-bert, sen-bert)
 
@@ -41,11 +47,11 @@ Jupyter->Internet: Requests
 
 note over Jupyter: **Extract Social Graph Data**\n- hostList (resolved/returned) \n- urlList (resolved)\n- refList (resolved/returned)\n- forwardedFromList (returned)\n- actorList\n- memberList\n- fromList (returned)\n- savedFromList\n- hashtagList (returned)\n- emojiList (returned)\n- ytList (resolved)
 
-note over Internet: **Resolve**\n(urls, youtube)
+note over Internet: **Resolve (Cached)**\n(urls, youtube)
 
 Internet->Jupyter: Responses
 
-note over Print-Output: **Print Social Graph Data**\n(dataSet0, dataSet1a, dataSet2)
+note over Print-Output: **Print Social Graph Data**\n(dataSet0)
 
 note over Print-Output: **Check Top Influencer**\n(dataSet0)
 
@@ -57,15 +63,19 @@ note over Plot-Output: **Wordcloud**\n(dataSet0, dataSet2)
 
 note over File-Output: **Auto wordcloud (batch)**\n(dataSet0)
 
-note over Plot-Output: **Freq nouns**\n(dataSet0)
-
 note over Print-Output: **N Grams**\n(dataSet0, dataSet2)
 
-note over Print-Output: **Eval pipelines**\n(ner-xlm-roberta and ner-berton dataSet0)
+note over Plot-Output: **Freq nouns**\n(dataSet0)
 
-note over Plot-Output: **Eval pipelines**\n(sen-bert on dataSet0)
+note over Print-Output: **Eval pipelines**\n(ner-xlm-roberta and ner-bert on dataSet0)
 
-note over Print-Output: **Text pipelines**\n(text-gern-gtpt2 and text-gern-gtpt2-faust\non test text)
+note over Plot-Output: **Eval pipelines**\n(sen-bert and sentiment on dataSet0)
+
+note over Print-Output: **Test sen pipelines**\n(textblob and bert-sen\n on test text)
+
+note over Print-Output: **Test ner pipelines**\n(ner-xlm-roberta and ner-bert\n on test text)
+
+note over Print-Output: **Test text gen pipelines**\n(text-gen-gpt2 and text-gen-gpt2-faust\n on test text)
 
 note over File-Output: **Latent Dirichlet Allocation (LDA)**\n(dataSet0, dataSet1a)
 
