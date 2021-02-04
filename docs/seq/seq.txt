@@ -7,6 +7,8 @@ entity Plot-Output
 entity Print-Output
 entity File-Output
 
+note over Jupyter: **Run notebook**
+
 note over Jupyter: **Load Data and Environment\nand Configuration**
 
 note over Jupyter: **(Pre-) Process data**
@@ -74,3 +76,5 @@ note over Print-Output: **Test text gen pipelines**\n(text-gen-gpt2 and text-gen
 note over File-Output: **Latent Dirichlet Allocation (LDA)**\n(dataSet0, dataSet1a)
 
 note over Plot-Output: **Word Tracer**\n(dataSet0)
+
+note over Jupyter: **Run notebook (classifier)**
