@@ -221,7 +221,7 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 
 **Multinomial NB**
 
-[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-multinomialn.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-multinomialn.png)
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-multinomialnb.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-multinomialnb.png)
 
 **Random Forest**
 
