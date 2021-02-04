@@ -16,4 +16,4 @@ docker exec custom-ds-docker /bin/sh -c "papermill work/notebooks/Telegram.ipynb
 echo "Copy Stuff now"
 cp output/pyLDAvis/*.html ../docs/topics
 
-echo "\n[Finished]" > log.txt
+echo "\n[Finished]" >> log.txt
