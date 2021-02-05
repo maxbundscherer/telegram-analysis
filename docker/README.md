@@ -24,3 +24,7 @@ See [original readme](./ORG_README.md). Installed (apt-get in Dockerfile):
 - lxml
 - pytorch
 - transformers
+
+## Temporary bug fix
+
+Papermill: ``conda update papermill``
