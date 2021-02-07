@@ -16,9 +16,9 @@ Go to [Project website](https://maxbundscherer.github.io/telegram-analysis/)
 
 ## In this repo
 
-- Raw Jupyter Notebook included: [file](./notebooks/Telegram.ipynb) or [preview](https://nbviewer.jupyter.org/github/maxbundscherer/telegram-analysis/blob/master/notebooks/Telegram.ipynb)
-- Processed Jupyter Notebook included: [file](./notebooks/Telegram-out.ipynb) or [preview](https://nbviewer.jupyter.org/github/maxbundscherer/telegram-analysis/blob/master/notebooks/Telegram-out.ipynb)
-- Processed Classifier Notebook included: [file](./notebooks/Classifier.ipynb) or [preview](https://nbviewer.jupyter.org/github/maxbundscherer/telegram-analysis/blob/master/notebooks/Classifier.ipynb)
+- Raw Jupyter Notebook included: [file](./notebooks/Telegram.ipynb) or [browser preview](https://nbviewer.jupyter.org/github/maxbundscherer/telegram-analysis/blob/master/notebooks/Telegram.ipynb)
+- Processed Jupyter Notebook included: [file](./notebooks/Telegram-out.ipynb) or [browser preview](https://nbviewer.jupyter.org/github/maxbundscherer/telegram-analysis/blob/master/notebooks/Telegram-out.ipynb)
+- Processed Classifier Notebook included: [file](./notebooks/Classifier.ipynb) or [browser preview](https://nbviewer.jupyter.org/github/maxbundscherer/telegram-analysis/blob/master/notebooks/Classifier.ipynb)
 - Processed Graphs [included](./notebooks/output/)
 - Run scripts [included](./notebooks/)
 

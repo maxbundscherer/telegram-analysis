@@ -7,8 +7,8 @@
 Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 
 - Go to [GitHub-Repository and Let's get started](https://github.com/maxbundscherer/telegram-analysis)
-- Go to [processed jupyter-notebook (preview)](https://nbviewer.jupyter.org/github/maxbundscherer/telegram-analysis/blob/master/notebooks/Telegram-out.ipynb)
-- Go to [processed classifier-notebook (preview)](https://nbviewer.jupyter.org/github/maxbundscherer/telegram-analysis/blob/master/notebooks/Classifier.ipynb)
+- Go to [processed jupyter-notebook (browser preview)](https://nbviewer.jupyter.org/github/maxbundscherer/telegram-analysis/blob/master/notebooks/Telegram-out.ipynb)
+- Go to [processed classifier-notebook (browser preview)](https://nbviewer.jupyter.org/github/maxbundscherer/telegram-analysis/blob/master/notebooks/Classifier.ipynb)
 
 ## Table of contents
 
