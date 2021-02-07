@@ -99,6 +99,10 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet1a-from.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet1a-from.png)
 
+**DataSet2 (Groups)**
+
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-groups-dataSet2-from.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-groups-dataSet2-from.png)
+
 ## Latent Dirichlet Allocation
 
 **Oliver Janich**
