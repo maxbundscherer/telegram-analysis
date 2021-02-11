@@ -7,8 +7,8 @@
 Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 
 - Go to [GitHub-Repository and Let's get started](https://github.com/maxbundscherer/telegram-analysis)
-- Go to [processed jupyter-notebook (preview)](https://nbviewer.jupyter.org/github/maxbundscherer/telegram-analysis/blob/master/notebooks/Telegram-out.ipynb)
-- Go to [processed classifier-notebook (preview)](https://nbviewer.jupyter.org/github/maxbundscherer/telegram-analysis/blob/master/notebooks/Classifier.ipynb)
+- Go to [processed jupyter-notebook (browser preview)](https://nbviewer.jupyter.org/github/maxbundscherer/telegram-analysis/blob/master/notebooks/Telegram-out.ipynb)
+- Go to [processed classifier-notebook (browser preview)](https://nbviewer.jupyter.org/github/maxbundscherer/telegram-analysis/blob/master/notebooks/Classifier.ipynb)
 
 ## Table of contents
 
@@ -98,6 +98,10 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 **DataSet1a**
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet1a-from.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet1a-from.png)
+
+**DataSet2 (Groups)**
+
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-groups-dataSet2-from.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-groups-dataSet2-from.png)
 
 ## Latent Dirichlet Allocation
 
@@ -194,6 +198,12 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 **DataSet0**
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/eval-pipeline-sen-textblob-dataSet0.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/eval-pipeline-sen-textblob-dataSet0.png)
+
+## Evaluation Subjectivity
+
+**DataSet0**
+
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/eval-pipeline-subjectivity-dataSet0.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/eval-pipeline-subjectivity-dataSet0.png)
 
 ## Evaluation SEN-Pipeline (Bert)
 
