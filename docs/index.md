@@ -215,31 +215,31 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 
 **Decision Tree**
 
-[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-decisiontree.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-decisiontree.png)
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-decisiontree.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-decisiontree.svg)
 
 **Linear SVC**
 
-[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-linearsvc.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-linearsvc.png)
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-linearsvc.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-linearsvc.svg)
 
 **Logistic Regression**
 
-[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-logisticregression.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-logisticregression.png)
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-logisticregression.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-logisticregression.svg)
 
 **MLP**
 
-[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-mlp.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-mlp.png)
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-mlp.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-mlp.svg)
 
 **Multinomial NB**
 
-[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-multinomialnb.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-multinomialnb.png)
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-multinomialnb.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-multinomialnb.svg)
 
 **Random Forest**
 
-[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-randomforest.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-randomforest.png)
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-randomforest.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-randomforest.svg)
 
 **Dummy**
 
-[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-dummy.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-dummy.png)
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-dummy.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-dummy.svg)
 
 ## Auto Word Clouds
 <!-- Slider -->
