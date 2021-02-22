@@ -25,35 +25,35 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 
 **DataSet0**
 
-[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/meta-overview-dataSet0.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/meta-overview-dataSet0.png)
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/meta-overview-dataSet0.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/meta-overview-dataSet0.svg)
 
 **DataSet1a**
 
-[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/meta-overview-dataSet1a.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/meta-overview-dataSet1a.png)
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/meta-overview-dataSet1a.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/meta-overview-dataSet1a.svg)
 
 **DataSet2**
 
-[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/meta-overview-dataSet2.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/meta-overview-dataSet2.png)
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/meta-overview-dataSet2.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/meta-overview-dataSet2.svg)
 
 ### Number of messages
 
 **DataSet0**
 
-[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/time-plot-dataSet0.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/time-plot-dataSet0.png)
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/time-plot-dataSet0.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/time-plot-dataSet0.svg)
 
 **DataSet1a**
 
-[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/time-plot-dataSet1a.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/time-plot-dataSet1a.png)
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/time-plot-dataSet1a.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/time-plot-dataSet1a.svg)
 
 **DataSet2**
 
-[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/time-plot-dataSet2.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/time-plot-dataSet2.png)
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/time-plot-dataSet2.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/time-plot-dataSet2.svg)
 
 ### Text Length
 
 **Global**
 
-[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/meta-text-length-hist.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/meta-text-length-hist.png)
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/meta-text-length-hist.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/meta-text-length-hist.svg)
 
 ## Graphs
 
@@ -61,47 +61,47 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 
 **DataSet0**
 
-[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet0-forwarded-from.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet0-forwarded-from.png)
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet0-forwarded-from.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet0-forwarded-from.svg)
 
 **DataSet2**
 
-[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet2-forwarded-from.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet2-forwarded-from.png)
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet2-forwarded-from.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet2-forwarded-from.svg)
 
 ### Hashtags
 
 **DataSet0**
 
-[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet0-hashtag.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet0-hashtag.png)
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet0-hashtag.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet0-hashtag.svg)
 
 ### Hosts
 
 **DataSet0**
 
-[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet0-host.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet0-host.png)
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet0-host.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet0-host.svg)
 
 **DataSet2**
 
-[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet2-host.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet2-host.png)
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet2-host.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet2-host.svg)
 
 ### Emojis
 
 **DataSet0**
 
-[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet0-emoji.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet0-emoji.png)
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet0-emoji.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet0-emoji.svg)
 
 **DataSet2**
 
-[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet2-emoji.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet2-emoji.png)
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet2-emoji.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet2-emoji.svg)
 
 ### From
 
 **DataSet1a**
 
-[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet1a-from.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet1a-from.png)
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet1a-from.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-dataSet1a-from.svg)
 
 **DataSet2 (Groups)**
 
-[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-groups-dataSet2-from.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-groups-dataSet2-from.png)
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-groups-dataSet2-from.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/social-graph-groups-dataSet2-from.svg)
 
 ## Latent Dirichlet Allocation
 
@@ -161,85 +161,85 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 
 ### Channel Oliver Janich (DataSet0)
 
-[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/word-tracer-oliver-janich.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/word-tracer-oliver-janich.png)
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/word-tracer-oliver-janich.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/word-tracer-oliver-janich.svg)
 
 ### Channel Attila Hildmann (DataSet0)
 
-[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/word-tracer-attila-hildmann.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/word-tracer-attila-hildmann.png)
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/word-tracer-attila-hildmann.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/word-tracer-attila-hildmann.svg)
 
 ### Channel Eva Herman (DataSet0)
 
-[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/word-tracer-eva-herman.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/word-tracer-eva-herman.png)
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/word-tracer-eva-herman.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/word-tracer-eva-herman.svg)
 
 ### Channel Xavier Naidoo (DataSet0)
 
-[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/word-tracer-xavier-naidoo.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/word-tracer-xavier-naidoo.png)
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/word-tracer-xavier-naidoo.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/word-tracer-xavier-naidoo.svg)
 
 ## Freq Nouns
 
 ### Channel Oliver Janich (DataSet0)
 
-[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/freq-nouns-oliver-janich.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/freq-nouns-oliver-janich.png)
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/freq-nouns-oliver-janich.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/freq-nouns-oliver-janich.svg)
 
 ### Channel Attila Hildmann (DataSet0)
 
-[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/freq-nouns-attila-hildmann.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/freq-nouns-attila-hildmann.png)
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/freq-nouns-attila-hildmann.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/freq-nouns-attila-hildmann.svg)
 
 ### Channel Eva Herman (DataSet0)
 
-[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/freq-nouns-eva-herman.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/freq-nouns-eva-herman.png)
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/freq-nouns-eva-herman.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/freq-nouns-eva-herman.svg)
 
 ### Channel Xavier Naidoo (DataSet0)
 
-[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/freq-nouns-xavier-naidoo.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/freq-nouns-xavier-naidoo.png)
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/freq-nouns-xavier-naidoo.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/freq-nouns-xavier-naidoo.svg)
 
 ## Evaluation SEN
 
 **DataSet0**
 
-[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/eval-pipeline-sen-textblob-dataSet0.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/eval-pipeline-sen-textblob-dataSet0.png)
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/eval-pipeline-sen-textblob-dataSet0.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/eval-pipeline-sen-textblob-dataSet0.svg)
 
 ## Evaluation Subjectivity
 
 **DataSet0**
 
-[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/eval-pipeline-subjectivity-dataSet0.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/eval-pipeline-subjectivity-dataSet0.png)
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/eval-pipeline-subjectivity-dataSet0.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/eval-pipeline-subjectivity-dataSet0.svg)
 
 ## Evaluation SEN-Pipeline (Bert)
 
 **DataSet0**
 
-[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/eval-pipeline-sen-dataSet0.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/eval-pipeline-sen-dataSet0.png)
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/eval-pipeline-sen-dataSet0.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/eval-pipeline-sen-dataSet0.svg)
 
 ## Public channels classifiers
 
 **Decision Tree**
 
-[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-decisiontree.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-decisiontree.png)
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-decisiontree.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-decisiontree.svg)
 
 **Linear SVC**
 
-[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-linearsvc.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-linearsvc.png)
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-linearsvc.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-linearsvc.svg)
 
 **Logistic Regression**
 
-[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-logisticregression.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-logisticregression.png)
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-logisticregression.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-logisticregression.svg)
 
 **MLP**
 
-[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-mlp.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-mlp.png)
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-mlp.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-mlp.svg)
 
 **Multinomial NB**
 
-[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-multinomialnb.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-multinomialnb.png)
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-multinomialnb.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-multinomialnb.svg)
 
 **Random Forest**
 
-[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-randomforest.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-randomforest.png)
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-randomforest.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-randomforest.svg)
 
 **Dummy**
 
-[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-dummy.png">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-dummy.png)
+[<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-dummy.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-dummy.svg)
 
 ## Auto Word Clouds
 <!-- Slider -->
