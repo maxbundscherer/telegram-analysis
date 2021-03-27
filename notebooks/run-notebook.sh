@@ -5,7 +5,7 @@
 #docker exec -it tbd /bin/bash
 
 # Run notebook
-#papermill Telegram.ipynb Telegram-out.ipynb
+#papermill Classifier.ipynb Classifier-out.ipynb
 
 echo "Run notebook now"
 
