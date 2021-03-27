@@ -11,7 +11,7 @@ echo "Run notebook now"
 
 touch log.txt
 echo "" > log.txt
-docker exec custom-ds-docker /bin/sh -c "papermill work/notebooks/Telegram.ipynb work/notebooks/Telegram-out.ipynb" > log.txt
+docker exec custom-ds-docker /bin/sh -c "papermill work/notebooks/Classifier.ipynb work/notebooks/Classifier-out.ipynb" > log.txt
 
 echo "Copy Stuff now"
 cp output/pyLDAvis/*.html ../docs/topics
