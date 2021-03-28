@@ -1,0 +1,5122 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Telegram Mining\n",
+    "\n",
+    "**Master-Thesis: Social Media & Text Mining am Beispiel von Telegram**\n",
+    "\n",
+    "Informatik Master\n",
+    "\n",
+    "Maximilian Bundscherer"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Arbeitsumgebung initialisieren"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Jupyter Notebook Parameter\n",
+    "\n",
+    "Siehe Beschreibung in ``Thesis.pdf``"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "C_LOCAL                 = False\n",
+    "\n",
+    "C_SHORT_RUN             = False\n",
+    "C_NUMBER_SAMPLES        = 500\n",
+    "\n",
+    "C_RESOLVE_NEW_URLS      = False\n",
+    "\n",
+    "\"\"\"\n",
+    "Ava:    [\"dataSet0\", \"dataSet1\", \"dataSet1a\", \"dataSet2\"]\n",
+    "Htdocs: [\"dataSet0\", \"dataSet1a\", \"dataSet2\"]\n",
+    "Req:    [\"dataSet0\"]\n",
+    "\"\"\"\n",
+    "C_LOAD_DATASETS         = [\"dataSet0\", \"dataSet1\", \"dataSet1a\", \"dataSet2\"]\n",
+    "\n",
+    "C_LOAD_TRANSFORMERS         = True\n",
+    "C_TRANSFORMERS_DATASETS     = [\"dataSet0\"]\n",
+    "\n",
+    "C_TIME_PLOT_FREQ        = \"6M\"\n",
+    "\n",
+    "\"\"\"\n",
+    "Please set only one value!\n",
+    "e.g.\n",
+    "# - long-run-server-28-01.pkl   (Long run, with hf, with htdocs-datasets, updated with sen-pipe-2)\n",
+    "# - long-run-server-07-02.pkl   (Long run, with hf, with all datasets, updated with sen-pipe-2)\n",
+    "# - local-run-28-01.pkl         (Short run, with hf, with htdocs-datasets, updated with sen-pipe-2)\n",
+    "# - test.pkl                    (Test file)\n",
+    "\"\"\"\n",
+    "C_USE_CACHE_FILE        = \"final-run-24-03.pkl\"\n",
+    "C_NEW_CACHE_FILE        = \"\""
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Arbeitsumgebung vorbereiten"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Bibliotheken und Abhängigkeiten laden"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### Abhängigkeiten vom Docker-Image und IO-Libs und weitere"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Import default libs\n",
+    "import pandas as pd\n",
+    "import numpy as np\n",
+    "import seaborn as sns\n",
+    "import matplotlib.pyplot as plt\n",
+    "import time\n",
+    "import re\n",
+    "import os\n",
+    "import sys\n",
+    "import demjson\n",
+    "import requests\n",
+    "import networkx as nx\n",
+    "import warnings\n",
+    "from pprint import pprint\n",
+    "from urllib.parse import urlparse\n",
+    "from collections import Counter\n",
+    "from pathlib import Path\n",
+    "from lxml.html import fromstring"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### Weitere Abhängigkeiten installieren"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "!{sys.executable} -m pip install demoji\n",
+    "!{sys.executable} -m pip install HanTa\n",
+    "!{sys.executable} -m pip install textblob-de"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### Weitere Abhängigkeiten importieren"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "scrolled": true
+   },
+   "outputs": [],
+   "source": [
+    "import demoji\n",
+    "\n",
+    "import gensim\n",
+    "import gensim.corpora as corpora\n",
+    "from gensim.utils import simple_preprocess\n",
+    "\n",
+    "#import pyLDAvis.gensim\n",
+    "import pickle \n",
+    "import pyLDAvis\n",
+    "import pyLDAvis.gensim_models\n",
+    "\n",
+    "import nltk\n",
+    "from nltk.util import ngrams\n",
+    "\n",
+    "from wordcloud import WordCloud\n",
+    "\n",
+    "import torch\n",
+    "\n",
+    "from transformers import AutoTokenizer, AutoModelForTokenClassification, pipeline\n",
+    "\n",
+    "from HanTa import HanoverTagger as ht\n",
+    "\n",
+    "from textblob_de import TextBlobDE as TextBlob"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Init hanoverTagger (https://github.com/wartaal/HanTa/blob/master/Demo.ipynb)\n",
+    "hanoverTagger = ht.HanoverTagger('morphmodel_ger.pgz')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "# DeprecationWarnings ausblenden\n",
+    "warnings.filterwarnings(\"ignore\", category=DeprecationWarning)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Stoppuhr bereitstellen"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "dictGloStopwatches = dict()\n",
+    "\n",
+    "# Start timer (for reporting)\n",
+    "def gloStartStopwatch(key):\n",
+    "    print(\"[Stopwatch started >>\" + str(key) + \"<<]\")\n",
+    "    dictGloStopwatches[key] = time.time()\n",
+    "\n",
+    "# Stop timer (for reporting)\n",
+    "def gloStopStopwatch(key):\n",
+    "    endTime     = time.time()\n",
+    "    startTime   = dictGloStopwatches[key]\n",
+    "    print(\"[Stopwatch stopped >>\" + str(key) + \"<< (\" + '{:5.3f}s'.format(endTime-startTime) + \")]\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "tags": []
+   },
+   "source": [
+    "#### Modelle und Datenbanken bereitstellen"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### Transfomers"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "dictPipelines = {}\n",
+    "\n",
+    "def loadPipelines():\n",
+    "\n",
+    "    if(C_LOAD_TRANSFORMERS == False):\n",
+    "        print(\"Skip loading pipelines\")\n",
+    "        return list()\n",
+    "\n",
+    "    gloStartStopwatch(\"Load Pipelines\")\n",
+    "    \n",
+    "    gloStartStopwatch(\"Load ner-xlm-Roberta\")\n",
+    "    dictPipelines[\"ner-xlm-roberta\"] = pipeline(\n",
+    "        'ner', \n",
+    "        model='xlm-roberta-large-finetuned-conll03-german',\n",
+    "        tokenizer='xlm-roberta-large-finetuned-conll03-german'\n",
+    "    )\n",
+    "    gloStopStopwatch(\"Load ner-xlm-Roberta\")\n",
+    "\n",
+    "    gloStartStopwatch(\"Load ner-Bert\")\n",
+    "    dictPipelines[\"ner-bert\"] = pipeline(\n",
+    "        'ner', \n",
+    "        model='fhswf/bert_de_ner',\n",
+    "        tokenizer='fhswf/bert_de_ner'\n",
+    "    )\n",
+    "    gloStopStopwatch(\"Load ner-Bert\")\n",
+    "\n",
+    "    gloStartStopwatch(\"Load sen-Bert\")\n",
+    "    dictPipelines[\"sen-bert\"] = pipeline(\n",
+    "        'sentiment-analysis', \n",
+    "        model='nlptown/bert-base-multilingual-uncased-sentiment',\n",
+    "        tokenizer='nlptown/bert-base-multilingual-uncased-sentiment'\n",
+    "    )\n",
+    "    gloStopStopwatch(\"Load sen-Bert\")\n",
+    "\n",
+    "    gloStartStopwatch(\"Load text-gen-gpt2\")\n",
+    "    dictPipelines[\"text-gen-gpt2\"] = pipeline(\n",
+    "        'text-generation', \n",
+    "        model='dbmdz/german-gpt2',\n",
+    "        tokenizer='dbmdz/german-gpt2'\n",
+    "    )\n",
+    "    gloStopStopwatch(\"Load text-gen-gpt2\")\n",
+    "\n",
+    "    gloStartStopwatch(\"Load text-gen-gpt2-faust\")\n",
+    "    dictPipelines[\"text-gen-gpt2-faust\"] = pipeline(\n",
+    "        'text-generation', \n",
+    "        model='dbmdz/german-gpt2-faust',\n",
+    "        tokenizer='dbmdz/german-gpt2-faust'\n",
+    "    )\n",
+    "    gloStopStopwatch(\"Load text-gen-gpt2-faust\")\n",
+    "\n",
+    "    gloStopStopwatch(\"Load Pipelines\")\n",
+    "\n",
+    "    return dictPipelines.keys()\n",
+    "\n",
+    "pipelineKeys = loadPipelines()\n",
+    "print()\n",
+    "print(str(pipelineKeys))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### NLTK"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "nltk.download(\"stopwords\")\n",
+    "nltk.download('punkt')\n",
+    "nltk.download('averaged_perceptron_tagger')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### Bereitstellen von Stop Words Datenbanken"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def gloGetStopWordsList(filterList):\n",
+    "\n",
+    "    stopwWorldsList = []\n",
+    "\n",
+    "    deWordsList = nltk.corpus.stopwords.words('german')\n",
+    "\n",
+    "    enWordsList = nltk.corpus.stopwords.words('english')\n",
+    "\n",
+    "    aStopwords = []\n",
+    "    with open(dir_var + \"additionalStopwords.txt\") as file:\n",
+    "        for line in file: \n",
+    "            line = line.strip()\n",
+    "            if(line != \"\"):\n",
+    "                aStopwords.append(line)\n",
+    "\n",
+    "    for s in filterList:\n",
+    "        s = gloReplaceGermanChars(s)\n",
+    "        stopwWorldsList.append(s)\n",
+    "\n",
+    "    for s in deWordsList:\n",
+    "        s = gloReplaceGermanChars(s)\n",
+    "        stopwWorldsList.append(s)\n",
+    "\n",
+    "    for s in enWordsList:\n",
+    "        stopwWorldsList.append(s)\n",
+    "\n",
+    "    for s in aStopwords:\n",
+    "        s = gloReplaceGermanChars(s)\n",
+    "        stopwWorldsList.append(s)\n",
+    "\n",
+    "    return stopwWorldsList"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### Demoji"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "demoji.download_codes()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Konfigurationen auf Umgebung anwenden"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### Umgebungs Einstellungen anwenden"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Set tokenizer parallelism \n",
+    "os.environ[\"TOKENIZERS_PARALLELISM\"] = \"false\"\n",
+    "\n",
+    "# matplotlib output\n",
+    "%matplotlib inline\n",
+    "\n",
+    "# Show all columns (pandas hides columns by default)\n",
+    "pd.set_option('display.max_columns', None)\n",
+    "\n",
+    "# Set plot style\n",
+    "plt.style.use('ggplot')\n",
+    "\n",
+    "font = {'size'   : 13}\n",
+    "\n",
+    "plt.rc('font', **font)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### Arbeitsverzeichnis definieren"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Set env vars\n",
+    "if(C_LOCAL == True):\n",
+    "    dir_var = \"./work/notebooks/\"\n",
+    "else:\n",
+    "    dir_var = \"./\"\n",
+    "\n",
+    "dir_var_output = dir_var + \"output/\"\n",
+    "\n",
+    "dir_var_cache= dir_var + \"cache/\"\n",
+    "\n",
+    "dir_var_pandas_cache = dir_var + \"cache/pandas/\"\n",
+    "\n",
+    "# Debug output\n",
+    "! echo \"- Workdir -\"\n",
+    "! ls -al $dir_var\n",
+    "\n",
+    "! echo\n",
+    "! echo \"- Outputdir -\"\n",
+    "! ls -al $dir_var_output\n",
+    "\n",
+    "! echo\n",
+    "! echo \"- Cachedir -\"\n",
+    "! ls -al $dir_var_cache\n",
+    "\n",
+    "! echo\n",
+    "! echo \"- Pandas -\"\n",
+    "! ls -al $dir_var_pandas_cache"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### Cache für dynamisches Auflösen initalisieren"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Cache-IO Funktionen\n",
+    "\n",
+    "- toFile\n",
+    "- fromFile\n",
+    "- initFile"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Dict File Cache\n",
+    "dictFileCache = {}\n",
+    "\n",
+    "# Write dict to file (CSV)\n",
+    "def gloWriteDictToFile(filename, targetDict):\n",
+    "    dictFileCache = {} #Clear cache\n",
+    "    d = pd.DataFrame.from_dict(targetDict, orient=\"index\")\n",
+    "    d.to_csv(dir_var_cache + filename, header=False)\n",
+    "\n",
+    "# Read dict from file (CSV)\n",
+    "def gloReadDictFromFile(filename):\n",
+    "    # Cache?\n",
+    "    if(filename in dictFileCache):\n",
+    "        return dictFileCache[filename]\n",
+    "\n",
+    "    d = pd.read_csv(dir_var_cache + filename, header=None, index_col=0, squeeze=True)\n",
+    "    retDict = d.to_dict()\n",
+    "\n",
+    "    dictFileCache[filename] = retDict #Add to cache\n",
+    "\n",
+    "    return retDict\n",
+    "\n",
+    "# Init csv file if not exists\n",
+    "def gloInitFileDict(filename):\n",
+    "    f = Path(dir_var_cache + filename)\n",
+    "    if(f.exists() == False):\n",
+    "        print(\"Init cache file >>\" + filename + \"<<\")\n",
+    "        f.touch()\n",
+    "        gloWriteDictToFile(filename, {\"initKey\": \"initValue\"})\n",
+    "    else:\n",
+    "        print(\"Cache already exists >>\" + filename + \"<<\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Cache Funktionen\n",
+    "\n",
+    "- checkIsCached\n",
+    "- addToCache\n",
+    "- getFromCache"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Check if is already cached\n",
+    "def gloCheckIsAlreadyCached(filename, targetKey):\n",
+    "    targetDict = gloReadDictFromFile(filename)\n",
+    "    if(targetKey in targetDict.keys()):\n",
+    "        return True\n",
+    "    else:\n",
+    "        return False\n",
+    "\n",
+    "# Add key to cache\n",
+    "def gloAddToCache(filename, targetKey, targetValue):\n",
+    "    targetDict = gloReadDictFromFile(filename)\n",
+    "    targetDict[targetKey] = targetValue\n",
+    "    gloWriteDictToFile(filename, targetDict)\n",
+    "\n",
+    "# Get key from cache\n",
+    "def gloGetCached(filename, targetKey):\n",
+    "    targetDict = gloReadDictFromFile(filename)\n",
+    "    return targetDict[targetKey]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Cache-IO init"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "gloInitFileDict(\"resolved-urls.csv\")\n",
+    "gloInitFileDict(\"resolved-youtube.csv\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Chats laden und aufbereiten"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Aufbereitungsfunktionen für die deutsche Sprache"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Deutsch-spezifische Buchstaben aus einem String ersetzten"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def gloReplaceGermanChars(inputText):\n",
+    "\n",
+    "    inputText = inputText.replace(\"ö\", \"oe\")\n",
+    "    inputText = inputText.replace(\"ü\", \"ue\")\n",
+    "    inputText = inputText.replace(\"ä\", \"ae\")\n",
+    "\n",
+    "    inputText = inputText.replace(\"Ö\", \"Oe\")\n",
+    "    inputText = inputText.replace(\"Ü\", \"Ue\")\n",
+    "    inputText = inputText.replace(\"Ä\", \"Ae\")\n",
+    "\n",
+    "    inputText = inputText.replace(\"ß\", \"ss\")\n",
+    "    \n",
+    "    return inputText\n",
+    "\n",
+    "gloReplaceGermanChars(\"ö ä ü Ö Ä Ü\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Tokenization über NLTK\n",
+    "\n",
+    "NLTK German Token"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def getTokenFromText(inputText):\n",
+    "    return nltk.word_tokenize(inputText, language=\"german\")\n",
+    "\n",
+    "list(getTokenFromText(\"Hallo Leser! Das ist ein Test.\"))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Lemmatization & POS-Tagging über HanTa\n",
+    "\n",
+    "POS Versuch mit NLTK Englisch\n",
+    "\n",
+    "1. NLTK German Token\n",
+    "2. Englische Sprache (NLTK)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "sampleText = \"Sie lesen gerade einen kurzen Beispielsatz!\"\n",
+    "sampleText"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "nltk.pos_tag(getTokenFromText(sampleText))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "HanTa"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def getLemmaAndTaggingFromText(inputText):\n",
+    "    return hanoverTagger.tag_sent(getTokenFromText(inputText))\n",
+    "\n",
+    "getLemmaAndTaggingFromText(sampleText)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Stufe 1: Chats laden"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### CSV Einlesen"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "scrolled": true
+   },
+   "outputs": [],
+   "source": [
+    "def readDataFrameFromCSV(filePath):\n",
+    "    return pd.read_csv(dir_var + filePath, sep=\";\")\n",
+    "\n",
+    "dfInputFiles = readDataFrameFromCSV(\"inputFiles.csv\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Filtern und ausgeben"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def filterBaseData(df):\n",
+    "    dfFilter = pd.DataFrame()\n",
+    "\n",
+    "    for dS in C_LOAD_DATASETS:\n",
+    "        dfFilter = dfFilter.append(df[df.inputLabel == dS])\n",
+    "        \n",
+    "    return dfFilter\n",
+    "\n",
+    "dfInputFiles = filterBaseData(dfInputFiles)\n",
+    "\n",
+    "dfInputFiles"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Stufe 2: Chats aufbereiten"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Convert to DataFrame Meta (Chat Meta)\n",
+    "def convertToDataFrameMeta(filePath):\n",
+    "    dF = pd.read_json(dir_var + \"data/\" + filePath + \"/result.json\", encoding='utf-8')\n",
+    "    return dF\n",
+    "\n",
+    "dictMeta          = {}   \n",
+    "\n",
+    "# Add Key = filePath / Value = DataFrame (Chat Meta)\n",
+    "for fP in dfInputFiles.inputPath:\n",
+    "    dictMeta[fP] = convertToDataFrameMeta(fP)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "list(dictMeta.keys())"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "list(dictMeta[\"DS-05-01-2021/ChatExport_2021-01-05-hildmann\"].keys())"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Stufe 3: Nachrichten aufbereiten"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Stufe 3a: Nachrichten parsen"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### Nachrichten parsen"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Convert to DataFrame Messages (Chat Messages)\n",
+    "def convertToDataFrameMessages(filePath):\n",
+    "    dF = pd.json_normalize(dictMeta[filePath].messages)\n",
+    "    return dF"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### Auf Stichprobe reduzieren (optional)\n",
+    "\n",
+    "Siehe Beschreibung in ``Thesis.pdf``"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### Nachrichten Attribute kennenlernen"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "convertToDataFrameMessages(\"DS-05-01-2021/ChatExport_2021-01-05-hildmann\").columns"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### Chat Attribute zuweisen\n",
+    "\n",
+    "Siehe Beschreibung in ``Thesis.pdf``"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### Formatierte Nachrichten erkennen\n",
+    "\n",
+    "Siehe Beschreibung in ``Thesis.pdf``"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def gloCheckIsTextJsonFormatted(text, singleMode):\n",
+    "    textString = str(text)\n",
+    "    if      (singleMode == False and textString.startswith(\"[\") == True and textString.endswith(\"]\") == True):\n",
+    "        return True\n",
+    "    elif    (singleMode == True and textString.startswith(\"{\") == True and textString.endswith(\"}\") == True):\n",
+    "        return True\n",
+    "    else:\n",
+    "        return False"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Stufe 3b: Text und Meta Informationen extrahieren"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### Text und Meta Informationen extrahieren"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "\"\"\"\n",
+    "Extract text data (see cell above key)\n",
+    "See cell above (key)\n",
+    "\n",
+    "param   ftIsJsonFormatted Boolean (is text json formatted?)\n",
+    "param   text                String  (text from message) \n",
+    "\n",
+    "return\n",
+    "a   procText            Plain Text\n",
+    "b   processedURLs       Array of URLs in Text\n",
+    "c   processedHashtags   Array of Hashtags in Text #TODO: RM\n",
+    "d   processedBolds      Array of Bold Items in Text\n",
+    "e   processedItalics    Array of Italic Items in Text\n",
+    "f   processedUnderlines Array of Underlined Items in Text\n",
+    "g   processedEmails     Array of E-Mails in Text\n",
+    "\"\"\"\n",
+    "def extractTextData(ftIsJsonFormatted, text):\n",
+    "    \n",
+    "    processedURLs       = list()\n",
+    "    processedHashtags   = list()\n",
+    "    processedBolds      = list()\n",
+    "    processedItalics    = list()\n",
+    "    processedUnderlines = list()\n",
+    "    processedEmails     = list()\n",
+    "    \n",
+    "    if(ftIsJsonFormatted != True):\n",
+    "        #Is not JSON formatted (return normal text)\n",
+    "        return (text, processedURLs, processedHashtags, processedBolds, processedItalics, processedUnderlines, processedEmails)\n",
+    "    else:\n",
+    "        #Is is JSON formatted (try to parse)\n",
+    "        try:\n",
+    "            returnList = []\n",
+    "            jsonList = demjson.decode(str(text), encoding='utf8')\n",
+    "\n",
+    "            # Do for each item in list\n",
+    "            for lItem in jsonList:\n",
+    "\n",
+    "                messageString = str(lItem)\n",
+    "\n",
+    "                isJsonSubString = gloCheckIsTextJsonFormatted(messageString, singleMode = True)\n",
+    "\n",
+    "                if(isJsonSubString):\n",
+    "                    # Is Json Sub String\n",
+    "                    subJsonString = demjson.decode(str(messageString), encoding='utf8')\n",
+    "                    subJsonType = subJsonString[\"type\"]\n",
+    "\n",
+    "                    if(subJsonType == \"bold\"):\n",
+    "                        #text included\n",
+    "                        processedBolds.append(subJsonString[\"text\"])\n",
+    "                        returnList.append(subJsonString[\"text\"])\n",
+    "                        \n",
+    "                    elif(subJsonType == \"italic\"):\n",
+    "                        #text included\n",
+    "                        processedItalics.append(subJsonString[\"text\"])\n",
+    "                        returnList.append(subJsonString[\"text\"])\n",
+    "                        \n",
+    "                    elif(subJsonType == \"underline\"):\n",
+    "                        #text included\n",
+    "                        processedUnderlines.append(subJsonString[\"text\"])\n",
+    "                        returnList.append(subJsonString[\"text\"])\n",
+    "                    \n",
+    "                    elif(subJsonType == \"email\"):\n",
+    "                        #text included\n",
+    "                        processedEmails.append(subJsonString[\"text\"])\n",
+    "                        \n",
+    "                    elif(subJsonType == \"text_link\"):\n",
+    "                        #text and href included\n",
+    "                        processedURLs.append(subJsonString[\"href\"])\n",
+    "                        #returnList.append(subJsonString[\"text\"])\n",
+    "                        \n",
+    "                    elif(subJsonType == \"link\"):\n",
+    "                        #text included\n",
+    "                        processedURLs.append(subJsonString[\"text\"])\n",
+    "                        \n",
+    "                    elif(subJsonType == \"hashtag\"):\n",
+    "                        #text included\n",
+    "                        #processedHashtags.append(subJsonString[\"text\"]) # TODO: Refactor: Dont add hashtags here!\n",
+    "                        returnList.append(subJsonString[\"text\"])\n",
+    "                        \n",
+    "                    elif(subJsonType == \"mention\"):\n",
+    "                        #text included\n",
+    "                        returnList.append(subJsonString[\"text\"])\n",
+    "                        \n",
+    "                    elif(subJsonType == \"mention_name\"):\n",
+    "                        #text and user_id included\n",
+    "                        returnList.append(subJsonString[\"text\"])\n",
+    "                        \n",
+    "                    elif(subJsonType == \"bot_command\"):\n",
+    "                        #text included\n",
+    "                        returnList = returnList \n",
+    "                        \n",
+    "                    elif(subJsonType == \"code\"):\n",
+    "                        #text included\n",
+    "                        returnList = returnList\n",
+    "                        \n",
+    "                    elif(subJsonType == \"phone\"):\n",
+    "                        #text included\n",
+    "                        returnList = returnList\n",
+    "                        \n",
+    "                    elif(subJsonType == \"strikethrough\"):\n",
+    "                        #text included\n",
+    "                        returnList.append(subJsonString[\"text\"])\n",
+    "                        \n",
+    "                    elif(subJsonType == \"pre\"):\n",
+    "                        #text and language included\n",
+    "                        returnList.append(subJsonString[\"text\"])\n",
+    "                        \n",
+    "                    elif(subJsonType == \"bank_card\"):\n",
+    "                        #text included\n",
+    "                        returnList = returnList\n",
+    "                        \n",
+    "                    else:\n",
+    "                        print(\"- Error: Unkown json type >>\" + str(subJsonType) + \"<< (ignore) >>\" + str(text) + \"<<\")\n",
+    "\n",
+    "                else:\n",
+    "                    # Is no json formatted sub string (append text)\n",
+    "                    returnList.append(messageString)\n",
+    "\n",
+    "            return (''.join(returnList), processedURLs, processedHashtags, processedBolds, processedItalics, processedUnderlines, processedEmails)\n",
+    "        \n",
+    "        except:\n",
+    "            # Parser error (set inputText to returnText)\n",
+    "            print(\"- Warn: Json parser error (set inputText to returnText) >>\" + str(text) + \"<<\")\n",
+    "            return (text, processedURLs, processedHashtags, processedBolds, processedItalics, processedUnderlines, processedEmails)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### Text und Meta Informationen nachbearbeiten"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Urls\n",
+    "\n",
+    "Siehe Beschreibung in ``Thesis.pdf``"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def getUrlRegex():\n",
+    "    return \"((?:https?://)?(?:(?:www\\.)?(?:[\\da-z\\.-]+)\\.(?:[a-z]{2,6})|(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|(?:(?:[0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|(?:[0-9a-fA-F]{1,4}:){1,7}:|(?:[0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|(?:[0-9a-fA-F]{1,4}:){1,5}(?::[0-9a-fA-F]{1,4}){1,2}|(?:[0-9a-fA-F]{1,4}:){1,4}(?::[0-9a-fA-F]{1,4}){1,3}|(?:[0-9a-fA-F]{1,4}:){1,3}(?::[0-9a-fA-F]{1,4}){1,4}|(?:[0-9a-fA-F]{1,4}:){1,2}(?::[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:(?:(?::[0-9a-fA-F]{1,4}){1,6})|:(?:(?::[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(?::[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(?:ffff(?::0{1,4}){0,1}:){0,1}(?:(?:25[0-5]|(?:2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}(?:25[0-5]|(?:2[0-4]|1{0,1}[0-9]){0,1}[0-9])|(?:[0-9a-fA-F]{1,4}:){1,4}:(?:(?:25[0-5]|(?:2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}(?:25[0-5]|(?:2[0-4]|1{0,1}[0-9]){0,1}[0-9])))(?::[0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])?(?:/[\\w\\.-]*)*/?)\"\n",
+    "\n",
+    "def urlExtractUrls(inputText):\n",
+    "    return re.findall(getUrlRegex(), str(inputText))\n",
+    "\n",
+    "def urlRemoveUrls(inputText):\n",
+    "    return re.sub(getUrlRegex(), \" \", str(inputText))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Hashtags\n",
+    "\n",
+    "Siehe Beschreibung in ``Thesis.pdf``"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def getHashtagRegex():\n",
+    "    return \"#(\\w+)\"\n",
+    "\n",
+    "def hashTagExtractHashTags(inputText):\n",
+    "\n",
+    "    inputText = str(inputText)\n",
+    "\n",
+    "    inputText = re.sub('\\n', ' ', inputText) # Replace \\n\n",
+    "    inputText = demoji.replace(inputText, \" \") # Rm emoji\n",
+    "    inputText = gloReplaceGermanChars(inputText) # Replace german chars\n",
+    "\n",
+    "    return re.findall(getHashtagRegex(), inputText)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "\"\"\"\n",
+    "Get params from extractedTextData\n",
+    "See cell below (key)\n",
+    "\"\"\"\n",
+    "def getExtractedTextDataParam(key, extractedTextData):\n",
+    "\n",
+    "    a,b,c,d,e,f,g = extractedTextData\n",
+    "\n",
+    "    if(key == 0):\n",
+    "\n",
+    "        return urlRemoveUrls(a)\n",
+    "\n",
+    "    elif(key == 1):\n",
+    "\n",
+    "        before = b\n",
+    "        extracted = urlExtractUrls(a)\n",
+    "\n",
+    "        after = before\n",
+    "        after.extend(extracted)\n",
+    "\n",
+    "        return after\n",
+    "\n",
+    "    elif(key == 2):\n",
+    "\n",
+    "        return hashTagExtractHashTags(a)\n",
+    "\n",
+    "    else:\n",
+    "        switcher = {\n",
+    "            3: d,\n",
+    "            4: e,\n",
+    "            5: f,\n",
+    "            6: g\n",
+    "        }\n",
+    "        return switcher.get(key)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### Text bereinigen und weitere Attribute berechnen\n",
+    "\n",
+    "Siehe Beschreibung in ``Thesis.pdf``"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Stufe 3c: Query Features"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Siehe Beschreibung in ``Thesis.pdf``"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def evalIsValidText(ftTdTextLength):\n",
+    "    if(ftTdTextLength > 3):\n",
+    "        return True\n",
+    "    else:\n",
+    "        return False"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def evalContainsSomething(att):\n",
+    "    if(str(att) == \"nan\"):\n",
+    "        return False\n",
+    "    else:\n",
+    "        return True"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def evalNonEmptyList(att):\n",
+    "    if(str(att) == \"[]\"):\n",
+    "        return False\n",
+    "    else:\n",
+    "        return True"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Stufe 3d: Fortgeschrittene Text Mining Modelle"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### Transformers\n",
+    "\n",
+    "Siehe Beschreibung in ``Thesis.pdf``"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# returns dict (empty dict if disabled, dict with not entries if error)\n",
+    "listUnknownTypes = list()\n",
+    "def processNerPipeline(inputText, pipelineKey, configMinScore):\n",
+    "    if(pipelineKey in pipelineKeys):\n",
+    "\n",
+    "        listPer     = list()\n",
+    "        listMisc    = list()\n",
+    "        listOrg     = list()\n",
+    "        listLoc     = list()\n",
+    "\n",
+    "        try:\n",
+    "\n",
+    "            data = dictPipelines[pipelineKey](inputText)\n",
+    "\n",
+    "            for d in data:\n",
+    "\n",
+    "                jsonData = demjson.decode(str(d), encoding='utf8')\n",
+    "                            \n",
+    "                if(jsonData[\"score\"] >= configMinScore):\n",
+    "                    # Is Valid\n",
+    "                    if      (jsonData[\"entity\"] == \"I-PER\" or jsonData[\"entity\"] == \"B-PER\"):\n",
+    "                        listPer.append(jsonData[\"word\"])\n",
+    "                    elif    (jsonData[\"entity\"] == \"I-MISC\" or jsonData[\"entity\"] == \"B-MISC\"):\n",
+    "                        listMisc.append(jsonData[\"word\"])\n",
+    "                    elif    (jsonData[\"entity\"] == \"I-ORG\" or jsonData[\"entity\"] == \"B-ORG\"):\n",
+    "                        listOrg.append(jsonData[\"word\"])\n",
+    "                    elif    (jsonData[\"entity\"] == \"I-LOC\" or jsonData[\"entity\"] == \"B-LOC\"):\n",
+    "                        listLoc.append(jsonData[\"word\"])\n",
+    "                    else:\n",
+    "                        uT = str(jsonData[\"entity\"])\n",
+    "                        if(uT not in listUnknownTypes):\n",
+    "                            print(\"- Warn - Got unknown type >>\" + uT + \"<<\")\n",
+    "                            listUnknownTypes.append(uT)\n",
+    "\n",
+    "        except:\n",
+    "            pass\n",
+    "            #print(\"Error in processNerPipeline (ignore) >>\" + str(inputText) + \"<<\")\n",
+    "        \n",
+    "\n",
+    "        return {\n",
+    "            \"per\": listPer,\n",
+    "            \"misc\": listMisc,\n",
+    "            \"org\": listOrg,\n",
+    "            \"loc\": listLoc\n",
+    "        }\n",
+    "\n",
+    "    else:\n",
+    "        return dict()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# returns\n",
+    "# 1 - 5 (1 = bad / 5 = good)\n",
+    "# -1 disabled or error\n",
+    "def processSenPipeline(inputText, pipelineKey, configMinScore):\n",
+    "    if(pipelineKey in pipelineKeys):\n",
+    "\n",
+    "        sen = -1\n",
+    "\n",
+    "        try:\n",
+    "\n",
+    "            data = dictPipelines[pipelineKey](inputText)\n",
+    "            \n",
+    "            for d in data:\n",
+    "\n",
+    "\n",
+    "                jsonData = demjson.decode(str(d), encoding='utf-8')\n",
+    "\n",
+    "                if(jsonData[\"score\"]) > configMinScore:\n",
+    "                    # Is Valid\n",
+    "                    labelData = str(jsonData[\"label\"])\n",
+    "\n",
+    "                    if(\"stars\" in labelData):\n",
+    "                        labelData = re.sub(\" stars\", \"\", labelData)\n",
+    "                    else:\n",
+    "                        labelData = re.sub(\" star\", \"\", labelData)\n",
+    "                    \n",
+    "                    sen = int(labelData)\n",
+    "\n",
+    "        except:\n",
+    "            pass\n",
+    "            #print(\"Error in processSenPipeline (ignore) >>\" + str(inputText) + \"<<\")\n",
+    "\n",
+    "        return sen\n",
+    "\n",
+    "    else:\n",
+    "        return -1"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### TextBlob\n",
+    "\n",
+    "Siehe Beschreibung in ``Thesis.pdf``"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# returns\n",
+    "# dict (polarity, subjectivity) or none (fail or disabled)\n",
+    "def processSentimentAnalysisPython(inputText):\n",
+    "\n",
+    "    try:\n",
+    "        t = TextBlob(inputText)\n",
+    "        return {\n",
+    "            \"polarity\": t.polarity,\n",
+    "            \"subjectivity\": t.subjectivity\n",
+    "        }\n",
+    "    except:\n",
+    "        return None"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Aus dem Cache laden oder Cache erzeugen\n",
+    "\n",
+    "Siehe Beschreibung in ``Thesis.pdf``"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# return dictMessages and dfAllDataMessages\n",
+    "def initProcessData():\n",
+    "\n",
+    "    dictMessages      = {}\n",
+    "    dfAllDataMessages = pd.DataFrame()\n",
+    "\n",
+    "    gloStartStopwatch(\"Extract Text Data\")\n",
+    "\n",
+    "    # Add Key = filePath / Value = DataFrame (Chat Message)\n",
+    "    for fP in dfInputFiles.inputPath:\n",
+    "\n",
+    "        gloStartStopwatch(\"TD-Extract \" + fP)\n",
+    "        \n",
+    "        ##############################\n",
+    "        ########## Stufe 3a ##########\n",
+    "        ##############################\n",
+    "        \n",
+    "        # Nachrichten parsen\n",
+    "        dfMessages                          = convertToDataFrameMessages(fP)\n",
+    "        tmpMeta                             = convertToDataFrameMeta(fP)\n",
+    "\n",
+    "        # Auf Stichprobe reduzieren (optional)\n",
+    "        if(C_SHORT_RUN):\n",
+    "            print(\"Short run active!\")\n",
+    "            dfMessages = dfMessages.head(C_NUMBER_SAMPLES)\n",
+    "            \n",
+    "        # Nachrichten Attribute kennenlernen\n",
+    "        # siehe oben\n",
+    "\n",
+    "        # Chat Attribute zuweisen (filePath, chatType)\n",
+    "        dfMessages[\"ftFilePath\"]      = fP\n",
+    "        dfMessages[\"ftChatType\"]      = tmpMeta.type.iloc[0]\n",
+    "        \n",
+    "        # Formatierte Nachrichten erkennen (isJsonFormatted)\n",
+    "        dfMessages[\"ftIsJsonFormatted\"]   = dfMessages[\"text\"].apply(gloCheckIsTextJsonFormatted, singleMode = False)        \n",
+    "        \n",
+    "        ##############################\n",
+    "        ########## Stufe 3b ##########\n",
+    "        ##############################\n",
+    "        \n",
+    "        # Text und Meta Informationen extrahieren\n",
+    "        dfMessages[\"tmpExtractedTD\"]        = dfMessages.apply(lambda x: extractTextData(x.ftIsJsonFormatted, x.text), axis=1)\n",
+    "\n",
+    "        # Text und Meta Informationen nachbearbeiten\n",
+    "        dfMessages[\"ftTdText\"]            = dfMessages.apply(lambda x: getExtractedTextDataParam(0, x.tmpExtractedTD), axis=1)        \n",
+    "        \n",
+    "        dfMessages[\"ftTdUrls\"]            = dfMessages.apply(lambda x: getExtractedTextDataParam(1, x.tmpExtractedTD), axis=1)        \n",
+    "        dfMessages[\"ftTdHashtags\"]        = dfMessages.apply(lambda x: getExtractedTextDataParam(2, x.tmpExtractedTD), axis=1)\n",
+    "        dfMessages[\"ftTdBolds\"]           = dfMessages.apply(lambda x: getExtractedTextDataParam(3, x.tmpExtractedTD), axis=1)\n",
+    "        dfMessages[\"ftTdItalics\"]         = dfMessages.apply(lambda x: getExtractedTextDataParam(4, x.tmpExtractedTD), axis=1)\n",
+    "        dfMessages[\"ftTdUnderlines\"]      = dfMessages.apply(lambda x: getExtractedTextDataParam(5, x.tmpExtractedTD), axis=1)        \n",
+    "        dfMessages[\"ftTdEmails\"]          = dfMessages.apply(lambda x: getExtractedTextDataParam(6, x.tmpExtractedTD), axis=1)        \n",
+    "\n",
+    "        # Text bereinigen und weitere Attribute zuweisen\n",
+    "        dfMessages['ftTdCleanText']           = dfMessages['ftTdText'].map(lambda x: re.sub('\\n', ' ', x)) # Replace \\n\n",
+    "        \n",
+    "        dfMessages['ftTdEmojis']              = dfMessages['ftTdCleanText'].map(lambda x: demoji.findall_list(x, desc = False)) # Filter out emoji\n",
+    "        dfMessages['ftTdEmojisDesc']          = dfMessages['ftTdCleanText'].map(lambda x: demoji.findall_list(x, desc = True)) # Filter out emoji with desc\n",
+    "        \n",
+    "        dfMessages['ftTdCleanText']           = dfMessages['ftTdCleanText'].map(lambda x: demoji.replace(x, \" \")) # Rm emoji\n",
+    "        dfMessages['ftTdCleanText']           = dfMessages['ftTdCleanText'].map(lambda x: gloReplaceGermanChars(x)) # Replace german chars\n",
+    "        \n",
+    "        dfMessages['ftTdSafeText']            = dfMessages['ftTdCleanText'].map(lambda x: re.sub(r'[^a-zA-Z0-9\\s]', ' ', x)) # Filter out . ! ? ... (get only safe chars)\n",
+    "        dfMessages['ftTdSafeLowerText']       = dfMessages['ftTdSafeText'].map(lambda x: x.lower()) # To lower\n",
+    "        \n",
+    "        dfMessages[\"ftTdTextLength\"]          = dfMessages[\"ftTdCleanText\"].str.len()\n",
+    "\n",
+    "        ##############################\n",
+    "        ########## Stufe 3c ##########\n",
+    "        ##############################\n",
+    "        \n",
+    "        # Hilfsspalten einfügen (optional)\n",
+    "        if \"photo\" not in dfMessages:\n",
+    "            dfMessages[\"photo\"] = np.nan\n",
+    "\n",
+    "        if \"file\" not in dfMessages:\n",
+    "            dfMessages[\"file\"] = np.nan\n",
+    "\n",
+    "        if \"edited\" not in dfMessages:\n",
+    "            dfMessages[\"edited\"] = np.nan\n",
+    "\n",
+    "        if \"forwarded_from\" not in dfMessages:\n",
+    "            dfMessages[\"forwarded_from\"] = np.nan\n",
+    "\n",
+    "        # Query Attribute zuweisen\n",
+    "        dfMessages[\"ftQrIsValidText\"]               = dfMessages.ftTdTextLength.apply(evalIsValidText)\n",
+    "        dfMessages[\"ftQrIsEdited\"]                  = dfMessages.edited.apply(evalContainsSomething)       \n",
+    "        dfMessages[\"ftQrIsForwarded\"]               = dfMessages.forwarded_from.apply(evalContainsSomething)\n",
+    "        \n",
+    "        dfMessages[\"ftQrCoPhotos\"]                  = dfMessages.photo.apply(evalContainsSomething)        \n",
+    "        dfMessages[\"ftQrCoFiles\"]                   = dfMessages.file.apply(evalContainsSomething)\n",
+    "        dfMessages[\"ftQrCoUrls\"]                    = dfMessages.ftTdUrls.apply(evalNonEmptyList)\n",
+    "        dfMessages[\"ftQrCoHashtags\"]                = dfMessages.ftTdHashtags.apply(evalNonEmptyList)\n",
+    "        dfMessages[\"ftQrCoBolds\"]                   = dfMessages.ftTdBolds.apply(evalNonEmptyList)\n",
+    "        dfMessages[\"ftQrCoItalics\"]                 = dfMessages.ftTdItalics.apply(evalNonEmptyList)\n",
+    "        dfMessages[\"ftQrCoUnderlines\"]              = dfMessages.ftTdUnderlines.apply(evalNonEmptyList)\n",
+    "        dfMessages[\"ftQrCoEmails\"]                  = dfMessages.ftTdEmails.apply(evalNonEmptyList)\n",
+    "        dfMessages['ftQrCoEmojis']                  = dfMessages.ftTdEmojis.apply(evalNonEmptyList)\n",
+    "\n",
+    "        ##############################\n",
+    "        ########## Stufe 3d ##########\n",
+    "        ##############################\n",
+    "        \n",
+    "        # Transformers anwenden\n",
+    "        if dfInputFiles[dfInputFiles.inputPath == fP].iloc[0].inputLabel in C_TRANSFORMERS_DATASETS:\n",
+    "            \n",
+    "            # NER Transformers\n",
+    "            \n",
+    "            # - ner-xlm-roberta\n",
+    "            gloStartStopwatch(\"Process pipeline ner-xlm-roberta\")\n",
+    "            dfMessages['ftTrNerRoberta']    = dfMessages['ftTdCleanText'].map(lambda x: processNerPipeline(x, \"ner-xlm-roberta\", configMinScore=0))\n",
+    "            gloStopStopwatch(\"Process pipeline ner-xlm-roberta\")\n",
+    "\n",
+    "            # - ner-bert\n",
+    "            gloStartStopwatch(\"Process pipeline ner-bert\")\n",
+    "            dfMessages['ftTrNerBert']           = dfMessages['ftTdCleanText'].map(lambda x: processNerPipeline(x, \"ner-bert\", configMinScore=0))\n",
+    "            gloStopStopwatch(\"Process pipeline ner-bert\")\n",
+    "\n",
+    "            # SEN Transformers\n",
+    "            \n",
+    "            # - sen-bert\n",
+    "            gloStartStopwatch(\"Process pipeline sen-bert\")\n",
+    "            dfMessages['ftTrSenBert']           = dfMessages['ftTdCleanText'].map(lambda x: processSenPipeline(x, \"sen-bert\", configMinScore=0))\n",
+    "            gloStopStopwatch(\"Process pipeline sen-bert\")\n",
+    "\n",
+    "        # TextBlob anwenden\n",
+    "        gloStartStopwatch(\"Process textblob\")\n",
+    "        dfMessages['ftSenTb']           = dfMessages['ftTdCleanText'].map(lambda x: processSentimentAnalysisPython(x))\n",
+    "        gloStopStopwatch(\"Process textblob\")\n",
+    "        \n",
+    "        ##############################\n",
+    "        ## (Mapping dictMessages) ####\n",
+    "        ##############################\n",
+    "        \n",
+    "        dictMessages[fP] = dfMessages\n",
+    "        gloStopStopwatch(\"TD-Extract \" + fP)\n",
+    "\n",
+    "    gloStopStopwatch(\"Extract Text Data\")\n",
+    "\n",
+    "    ###############################\n",
+    "    # (Mapping dfAllDataMessages) #\n",
+    "    ###############################\n",
+    "    \n",
+    "    # All Messages to DataFrame\n",
+    "    gloStartStopwatch(\"Generate global DataFrame\")\n",
+    "    for fP in dfInputFiles.inputPath:\n",
+    "        dfMessages        = dictMessages[fP].copy()\n",
+    "        dfAllDataMessages = dfAllDataMessages.append(dfMessages)\n",
+    "    gloStopStopwatch(\"Generate global DataFrame\")\n",
+    "\n",
+    "    return (dictMessages, dfAllDataMessages)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Return dictMessages and dfAllDataMessages\n",
+    "def initCacheData(dfAllDataMessages):\n",
+    "    dictMessages = {}\n",
+    "    for fP in dfInputFiles.inputPath:\n",
+    "        dictMessages[fP] = dfAllDataMessages[dfAllDataMessages.ftFilePath == fP]\n",
+    "    return (dictMessages, dfAllDataMessages)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Globale Stoppuhr starten"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "gloStartStopwatch(\"Global notebook\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "if(C_USE_CACHE_FILE == \"\"):\n",
+    "    print(\"Should not use cache (build new cache)\")\n",
+    "    dictMessages, dfAllDataMessages = initProcessData()\n",
+    "    if(C_NEW_CACHE_FILE != \"\"):\n",
+    "        print(\"Write cache to file >>\" + str(C_NEW_CACHE_FILE) + \"<<\")\n",
+    "        dfAllDataMessages.to_pickle(dir_var_pandas_cache + C_NEW_CACHE_FILE)\n",
+    "else:\n",
+    "    print(\"Should use cache (load cache)\")\n",
+    "    dictMessages, dfAllDataMessages = initCacheData(pd.read_pickle(dir_var_pandas_cache + C_USE_CACHE_FILE))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Social Media Mining"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Chats"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Einführung: Welche Chat Arten?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "dfInputFiles.inputType.value_counts()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Eindeutiger Chat Bezeichner"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Rm unsafe chars\n",
+    "def gloConvertToSafeString(text):\n",
+    "    text = demoji.replace(text, \"\")\n",
+    "    text = gloReplaceGermanChars(text)\n",
+    "    text = re.sub(r'[^a-zA-Z0-9\\s]', '', text)\n",
+    "    return text\n",
+    "\n",
+    "# Generate unique chat name\n",
+    "def gloConvertToSafeChatName(chatName):\n",
+    "    chatName = gloConvertToSafeString(chatName)\n",
+    "    return chatName[:30]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Abfragen zu Attributen definieren"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def queryChatId(filePath):\n",
+    "    dfMeta = dictMeta[filePath].copy()\n",
+    "    return str(dfMeta[\"id\"].iloc[0])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def queryChatName(filePath):\n",
+    "    dfMeta      = dictMeta[filePath].copy()\n",
+    "    chatName    = str(dfMeta[\"name\"].iloc[0])\n",
+    "    chatName    = gloConvertToSafeChatName(chatName)\n",
+    "    return chatName"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def queryChatType(filePath):\n",
+    "    dfMeta = dictMeta[filePath].copy()\n",
+    "    return str(dfMeta[\"type\"].iloc[0])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def queryNumberOfMessages(filePath):\n",
+    "    dfMessages = dictMessages[filePath].copy()\n",
+    "    return len(dfMessages.index)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def queryNumberOfMessagesByAttEqTrue(filePath, attKey):\n",
+    "    dfMessages = dictMessages[filePath].copy()\n",
+    "    dfMessages = dfMessages[dfMessages[attKey] == True]\n",
+    "    return len(dfMessages.index)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Abfragen ausführen (dfQueryMeta)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "dfQueryMeta = pd.DataFrame(dfInputFiles.inputPath)\n",
+    "\n",
+    "dfQueryMeta[\"qryChatId\"]                        = dfQueryMeta.inputPath.apply(queryChatId)\n",
+    "dfQueryMeta[\"qryChatName\"]                      = dfQueryMeta.inputPath.apply(queryChatName)\n",
+    "dfQueryMeta[\"qryChatType\"]                      = dfQueryMeta.inputPath.apply(queryChatType)\n",
+    "dfQueryMeta[\"qryNumberOfMessages\"]              = dfQueryMeta.inputPath.apply(queryNumberOfMessages)\n",
+    "\n",
+    "dfQueryMeta[\"qryNumberOfFormattedTextMessages\"] = dfQueryMeta.apply(lambda x: queryNumberOfMessagesByAttEqTrue(x.inputPath, \"ftIsJsonFormatted\"), axis=1)\n",
+    "\n",
+    "dfQueryMeta[\"qryNumberOfValidTextMessages\"]     = dfQueryMeta.apply(lambda x: queryNumberOfMessagesByAttEqTrue(x.inputPath, \"ftQrIsValidText\"), axis=1)\n",
+    "\n",
+    "dfQueryMeta[\"qryNumberOfPhotos\"]                = dfQueryMeta.apply(lambda x: queryNumberOfMessagesByAttEqTrue(x.inputPath, \"ftQrCoPhotos\"), axis=1)\n",
+    "dfQueryMeta[\"qryNumberOfFiles\"]                 = dfQueryMeta.apply(lambda x: queryNumberOfMessagesByAttEqTrue(x.inputPath, \"ftQrCoFiles\"), axis=1)\n",
+    "dfQueryMeta[\"qryNumberOfEditedMessages\"]        = dfQueryMeta.apply(lambda x: queryNumberOfMessagesByAttEqTrue(x.inputPath, \"ftQrIsEdited\"), axis=1)\n",
+    "dfQueryMeta[\"qryNumberOfForwardedMessages\"]     = dfQueryMeta.apply(lambda x: queryNumberOfMessagesByAttEqTrue(x.inputPath, \"ftQrIsForwarded\"), axis=1)\n",
+    "\n",
+    "dfQueryMeta[\"qryNumberOfMessagesWithUrl\"]           = dfQueryMeta.apply(lambda x: queryNumberOfMessagesByAttEqTrue(x.inputPath, \"ftQrCoUrls\"), axis=1)\n",
+    "dfQueryMeta[\"qryNumberOfMessagesWithHashtag\"]       = dfQueryMeta.apply(lambda x: queryNumberOfMessagesByAttEqTrue(x.inputPath, \"ftQrCoHashtags\"), axis=1)\n",
+    "dfQueryMeta[\"qryNumberOfMessagesWithBold\"]          = dfQueryMeta.apply(lambda x: queryNumberOfMessagesByAttEqTrue(x.inputPath, \"ftQrCoBolds\"), axis=1)\n",
+    "dfQueryMeta[\"qryNumberOfMessagesWithItalic\"]        = dfQueryMeta.apply(lambda x: queryNumberOfMessagesByAttEqTrue(x.inputPath, \"ftQrCoItalics\"), axis=1)\n",
+    "dfQueryMeta[\"qryNumberOfMessagesWithUnderline\"]     = dfQueryMeta.apply(lambda x: queryNumberOfMessagesByAttEqTrue(x.inputPath, \"ftQrCoUnderlines\"), axis=1)\n",
+    "dfQueryMeta[\"qryNumberOfMessagesWithEmail\"]         = dfQueryMeta.apply(lambda x: queryNumberOfMessagesByAttEqTrue(x.inputPath, \"ftQrCoEmails\"), axis=1)\n",
+    "dfQueryMeta[\"qryNumberOfMessagesWithEmoji\"]         = dfQueryMeta.apply(lambda x: queryNumberOfMessagesByAttEqTrue(x.inputPath, \"ftQrCoEmojis\"), axis=1)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Wie könnte man diese Attribute darstellen?"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### Über Tabelle"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "dfQueryMeta.sort_values(by=\"qryNumberOfMessages\", ascending=False)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### Über Plot"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Auto label query plot\n",
+    "def autolabelAx(rects, ax):\n",
+    "    \"\"\"\n",
+    "    Attach a text label above each bar in *rects*, displaying its height.\n",
+    "    Copied from https://matplotlib.org/3.1.1/gallery/lines_bars_and_markers/barchart.html (22.12.2020)\n",
+    "    \"\"\"\n",
+    "    for rect in rects:\n",
+    "        height = rect.get_height()\n",
+    "        ax.annotate('{}'.format(height),\n",
+    "                    xy=(rect.get_x() + rect.get_width() / 2, height),\n",
+    "                    xytext=(0, 3),  # 3 points vertical offset\n",
+    "                    textcoords=\"offset points\",\n",
+    "                    ha='center', va='bottom')\n",
+    "        \n",
+    "# param inputDescFilter set \"\" == no filter\n",
+    "# param outputFilename set \"\" = no output\n",
+    "def queryMetaPlotter(inputDescFilter, configPlotWidth, configPlotHeight, configBarWidth, outputFilename):\n",
+    "    # Init data\n",
+    "    dataLabels                          = list()\n",
+    "    dataNumberOfMesssages               = list()\n",
+    "    dataNumberOfFormattedTextMessages   = list()\n",
+    "    dataNumberOfValidTextMessages       = list()\n",
+    "    dataNumberOfEditedMessages          = list()\n",
+    "    dataNumberOfForwardedMessages       = list()\n",
+    "    dataNumberOfPhotos                  = list()\n",
+    "    dataNumberOfFiles                   = list()\n",
+    "    dataNumberOfMessagesWUrl            = list()\n",
+    "    dataNumberOfMessagesWHashtag        = list()\n",
+    "    dataNumberOfMessagesWBold           = list()\n",
+    "    dataNumberOfMessagesWItalic         = list()\n",
+    "    dataNumberOfMessagesWUnderline      = list()\n",
+    "    dataNumberOfMessagesWEmail          = list()\n",
+    "    dataNumberOfMessagesWEmoji          = list()\n",
+    "\n",
+    "    # Iterate over Meta DataFrame\n",
+    "    for index, row in dfQueryMeta.sort_values(by=\"qryNumberOfMessages\", ascending=False).iterrows():\n",
+    "\n",
+    "        # Get attributes (check filter)\n",
+    "        if(inputDescFilter == \"\" or dfInputFiles[dfInputFiles.inputPath == row.inputPath].inputLabel.iloc[0] == inputDescFilter):\n",
+    "            dataLabels                          .append(row.qryChatName)\n",
+    "            dataNumberOfMesssages               .append(row.qryNumberOfMessages)\n",
+    "            dataNumberOfFormattedTextMessages   .append(row.qryNumberOfFormattedTextMessages)\n",
+    "            dataNumberOfValidTextMessages       .append(row.qryNumberOfValidTextMessages)\n",
+    "            dataNumberOfEditedMessages          .append(row.qryNumberOfEditedMessages)\n",
+    "            dataNumberOfForwardedMessages       .append(row.qryNumberOfForwardedMessages)\n",
+    "            dataNumberOfPhotos                  .append(row.qryNumberOfPhotos)\n",
+    "            dataNumberOfFiles                   .append(row.qryNumberOfFiles)\n",
+    "            dataNumberOfMessagesWUrl            .append(row.qryNumberOfMessagesWithUrl)\n",
+    "            dataNumberOfMessagesWHashtag        .append(row.qryNumberOfMessagesWithHashtag)\n",
+    "            dataNumberOfMessagesWBold           .append(row.qryNumberOfMessagesWithBold)\n",
+    "            dataNumberOfMessagesWItalic         .append(row.qryNumberOfMessagesWithItalic)\n",
+    "            dataNumberOfMessagesWUnderline      .append(row.qryNumberOfMessagesWithUnderline)\n",
+    "            dataNumberOfMessagesWEmail          .append(row.qryNumberOfMessagesWithEmail)\n",
+    "            dataNumberOfMessagesWEmoji          .append(row.qryNumberOfMessagesWithEmoji)\n",
+    "\n",
+    "    # Convert list to array\n",
+    "    dataLabels                          = np.array(dataLabels)\n",
+    "    dataNumberOfMesssages               = np.array(dataNumberOfMesssages)\n",
+    "    dataNumberOfFormattedTextMessages   = np.array(dataNumberOfFormattedTextMessages)\n",
+    "    dataNumberOfValidTextMessages       = np.array(dataNumberOfValidTextMessages)\n",
+    "    dataNumberOfEditedMessages          = np.array(dataNumberOfEditedMessages)\n",
+    "    dataNumberOfForwardedMessages       = np.array(dataNumberOfForwardedMessages)\n",
+    "    dataNumberOfPhotos                  = np.array(dataNumberOfPhotos)\n",
+    "    dataNumberOfFiles                   = np.array(dataNumberOfFiles)\n",
+    "    dataNumberOfMessagesWUrl            = np.array(dataNumberOfMessagesWUrl)\n",
+    "    dataNumberOfMessagesWHashtag        = np.array(dataNumberOfMessagesWHashtag)\n",
+    "    dataNumberOfMessagesWBold           = np.array(dataNumberOfMessagesWBold)\n",
+    "    dataNumberOfMessagesWItalic         = np.array(dataNumberOfMessagesWItalic)\n",
+    "    dataNumberOfMessagesWUnderline      = np.array(dataNumberOfMessagesWUnderline)\n",
+    "    dataNumberOfMessagesWEmail          = np.array(dataNumberOfMessagesWEmail)\n",
+    "    dataNumberOfMessagesWEmoji          = np.array(dataNumberOfMessagesWEmoji)\n",
+    "\n",
+    "    # Draw\n",
+    "    with sns.color_palette(\"tab10\", 11):\n",
+    "        fig, ax = plt.subplots()\n",
+    "    x = np.arange(len(dataLabels))\n",
+    "\n",
+    "    barWidth = configBarWidth\n",
+    "\n",
+    "    fig.set_figwidth(configPlotWidth)\n",
+    "    fig.set_figheight(configPlotHeight)\n",
+    "\n",
+    "    r1 = x\n",
+    "    r2 = [x + barWidth for x in r1]\n",
+    "    r3 = [x + barWidth for x in r2]\n",
+    "    r4 = [x + barWidth for x in r3]\n",
+    "    r5 = [x + barWidth for x in r4]\n",
+    "    r6 = [x + barWidth for x in r5]\n",
+    "    r7 = [x + barWidth for x in r6]\n",
+    "    r8 = [x + barWidth for x in r7]\n",
+    "    r9 = [x + barWidth for x in r8]\n",
+    "    r10 = [x + barWidth for x in r9]\n",
+    "    r11 = [x + barWidth for x in r10]\n",
+    "    r12 = [x + barWidth for x in r11]\n",
+    "    r13 = [x + barWidth for x in r12]\n",
+    "    r14 = [x + barWidth for x in r13]\n",
+    "\n",
+    "    rects1 = ax.bar(r1, dataNumberOfMesssages, barWidth, label='Messages')\n",
+    "    rects2 = ax.bar(r2, dataNumberOfFormattedTextMessages, barWidth, label='Formatted Messsages')\n",
+    "    rects3 = ax.bar(r3, dataNumberOfValidTextMessages, barWidth, label='Valid Text Messages')\n",
+    "    rects4 = ax.bar(r4, dataNumberOfEditedMessages, barWidth, label='Edited Messages')\n",
+    "    rects5 = ax.bar(r5, dataNumberOfForwardedMessages, barWidth, label='Forwarded Messages')\n",
+    "    rects6 = ax.bar(r6, dataNumberOfPhotos, barWidth, label='Messages with Photos')\n",
+    "    rects7 = ax.bar(r7, dataNumberOfFiles, barWidth, label='Messages with Files')\n",
+    "    rects8 = ax.bar(r8, dataNumberOfMessagesWUrl, barWidth, label='Messages with Urls')\n",
+    "    rects9 = ax.bar(r9, dataNumberOfMessagesWHashtag, barWidth, label='Messages with Hashtags')\n",
+    "    rects10 = ax.bar(r10, dataNumberOfMessagesWBold, barWidth, label='Messages with Bold Items')\n",
+    "    rects11 = ax.bar(r11, dataNumberOfMessagesWItalic, barWidth, label='Messages with Italic Items')\n",
+    "    rects12 = ax.bar(r12, dataNumberOfMessagesWUnderline, barWidth, label='Messages with Underlined Items')\n",
+    "    rects13 = ax.bar(r13, dataNumberOfMessagesWEmail, barWidth, label='Messages with E-Mails')\n",
+    "    rects14 = ax.bar(r14, dataNumberOfMessagesWEmoji, barWidth, label='Messages with Emojis')\n",
+    "\n",
+    "    chartTitle = \"\"\n",
+    "    if(inputDescFilter != \"\"):\n",
+    "        chartTitle = \" (\" + inputDescFilter + \")\"\n",
+    "\n",
+    "    ax.set_ylabel(\"Number of\")\n",
+    "    ax.set_title(\"Meta Overview\" + chartTitle)\n",
+    "    ax.set_xticks(x)\n",
+    "    ax.set_xticklabels(dataLabels)\n",
+    "    plt.xticks(rotation=0)\n",
+    "    ax.legend()\n",
+    "\n",
+    "    rects = [rects1, rects2, rects3, rects4, rects5, rects6, rects7, rects8, rects9, rects10, rects11, rects12, rects13, rects14]\n",
+    "\n",
+    "    for rect in rects:\n",
+    "        autolabelAx(rect, ax)\n",
+    "\n",
+    "    fig.tight_layout()\n",
+    "\n",
+    "    #plt.xticks(rotation=30)\n",
+    "    \n",
+    "    if(outputFilename != \"\"):\n",
+    "        plt.savefig(dir_var_output + outputFilename)\n",
+    "    \n",
+    "    plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "- Plot DataSet0"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "queryMetaPlotter(\n",
+    "    inputDescFilter = \"dataSet0\",\n",
+    "    configPlotWidth = 16,\n",
+    "    configPlotHeight = 9,\n",
+    "    configBarWidth = 0.065,\n",
+    "    outputFilename = \"meta-overview-dataSet0.svg\"\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "- Plot DataSet1"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "if(\"dataSet1\" in C_LOAD_DATASETS):\n",
+    "    queryMetaPlotter(\n",
+    "        inputDescFilter = \"dataSet1\",\n",
+    "        configPlotWidth = 100,\n",
+    "        configPlotHeight = 9,\n",
+    "        configBarWidth = 0.065,\n",
+    "        outputFilename = \"meta-overview-dataSet1.svg\"\n",
+    "    )"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "- Plot DataSet1a"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "if(\"dataSet1a\" in C_LOAD_DATASETS):\n",
+    "    queryMetaPlotter(\n",
+    "        inputDescFilter = \"dataSet1a\",\n",
+    "        configPlotWidth = 16,\n",
+    "        configPlotHeight = 9,\n",
+    "        configBarWidth = 0.065,\n",
+    "        outputFilename = \"meta-overview-dataSet1a.svg\"\n",
+    "    )"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "- Plot DataSet2"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "if(\"dataSet2\" in C_LOAD_DATASETS):\n",
+    "    queryMetaPlotter(\n",
+    "        inputDescFilter = \"dataSet2\",\n",
+    "        configPlotWidth = 32,\n",
+    "        configPlotHeight = 9,\n",
+    "        configBarWidth = 0.065,\n",
+    "        outputFilename = \"meta-overview-dataSet2.svg\"\n",
+    "    )"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Social Graphs - Abbildung von Chats auf Features"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Abweichungen von Chat und Nutzernamen"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Siehe Beschreibung in ``Thesis.pdf``"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def compareIdsAndLabels(df):\n",
+    "\n",
+    "    gloStartStopwatch(\"Compare ids and labels\")\n",
+    "\n",
+    "    dictFromTranslator  = {}\n",
+    "    dictActorTranslator = {}\n",
+    "\n",
+    "    df = df.copy()\n",
+    "    df[\"date\"] = pd.to_datetime(df[\"date\"])\n",
+    "    \n",
+    "    df = df.set_index(\"date\")\n",
+    "    df = df.sort_index()\n",
+    "    \n",
+    "    addFromCounter      = 0\n",
+    "    changedFromCounter  = 0\n",
+    "    \n",
+    "    addActorCounter     = 0\n",
+    "    changedActorCounter = 0\n",
+    "\n",
+    "    for index, row in df.iterrows():\n",
+    "        \n",
+    "        n_from      = row[\"from\"]\n",
+    "        n_from_id   = row[\"from_id\"]\n",
+    "\n",
+    "        n_from = str(n_from)\n",
+    "        n_from_id = str(n_from_id)\n",
+    "\n",
+    "        n_actor      = row[\"actor\"]\n",
+    "        n_actor_id   = row[\"actor_id\"]\n",
+    "\n",
+    "        n_actor = str(n_actor)\n",
+    "        n_actor_id = str(n_actor_id)\n",
+    "\n",
+    "        if(str(n_from) != \"nan\"):\n",
+    "            if(n_from_id not in dictFromTranslator):\n",
+    "                # Add new key\n",
+    "                dictFromTranslator[n_from_id] = [n_from]\n",
+    "                addFromCounter = addFromCounter + 1\n",
+    "            else:\n",
+    "                # Has changed?\n",
+    "                oValueL = dictFromTranslator[n_from_id]\n",
+    "                if(n_from not in oValueL):\n",
+    "                    newList = oValueL.copy()\n",
+    "                    newList.append(n_from)\n",
+    "                    print(\"- Add changed attribute in from (prev=\" + str(oValueL) + \"/new=\" + str(newList) + \")\")\n",
+    "                    changedFromCounter = changedFromCounter + 1\n",
+    "                    dictFromTranslator[n_from_id] = newList\n",
+    "\n",
+    "        if(str(n_actor) != \"nan\"):\n",
+    "            if(n_actor_id not in dictActorTranslator):\n",
+    "                # Add new key\n",
+    "                dictActorTranslator[n_actor_id] = [n_actor]\n",
+    "                addActorCounter = addActorCounter + 1\n",
+    "            else:\n",
+    "                # Has changed?\n",
+    "                oValueL = dictActorTranslator[n_actor_id]\n",
+    "                if(n_actor not in oValueL):\n",
+    "                    newList = oValueL.copy()\n",
+    "                    newList.append(n_actor)\n",
+    "                    print(\"- Add changed attribute in actor (prev=\" + str(oValueL) + \"/new=\" + str(newList) + \")\")\n",
+    "                    changedActorCounter = changedActorCounter + 1\n",
+    "                    dictActorTranslator[n_actor_id] = newList\n",
+    "\n",
+    "    gloStopStopwatch(\"Compare ids and labels\")\n",
+    "    \n",
+    "    print()\n",
+    "    print(\"addFromCounter:\\t\\t\" + str(addFromCounter))\n",
+    "    print(\"changedFromCounter:\\t\" + str(changedFromCounter))\n",
+    "    \n",
+    "    print()\n",
+    "    print(\"addActorCounter:\\t\" + str(addActorCounter))\n",
+    "    print(\"changedActorCounter:\\t\" + str(changedFromCounter))\n",
+    "    \n",
+    "    print()\n",
+    "    if(addFromCounter != 0):\n",
+    "        print(\"fromFails Percent:\\t\" + str((changedFromCounter/addFromCounter)* 100) + \"%\")\n",
+    "            \n",
+    "    if(addActorCounter != 0):\n",
+    "        print(\"actorFails Percent:\\t\" + str((changedActorCounter/addActorCounter)* 100) + \"%\")\n",
+    "\n",
+    "    return dictFromTranslator"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "if(C_SHORT_RUN == False):\n",
+    "    compareIdsAndLabels(dfAllDataMessages)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Extrahieren von Features und dynamisches Auflösen"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### Formatierungs-spezifische statische Features"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def extractImportantHashtags(df):\n",
+    "    dfMessages = df.copy()\n",
+    "    dfMessages = dfMessages[dfMessages.ftQrCoHashtags == True]\n",
+    "\n",
+    "    hashTagList = list()\n",
+    "    for index, row in dfMessages.iterrows():\n",
+    "        for hashtagItem in row[\"ftTdHashtags\"]:\n",
+    "            hashTagList.append(hashtagItem)\n",
+    "\n",
+    "    return hashTagList"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# return combinations\n",
+    "def extractImportantEmojis(df):\n",
+    "\n",
+    "    dfMessages = df.copy()\n",
+    "    dfMessages = dfMessages[dfMessages.ftQrCoEmojis == True]\n",
+    "\n",
+    "    li = dfMessages.ftTdEmojisDesc.values.tolist()\n",
+    "\n",
+    "    retLi = list()\n",
+    "\n",
+    "    for l in li:\n",
+    "        aString = \"\"\n",
+    "        for e in l:\n",
+    "            aString = aString + \":\" + e \n",
+    "        retLi.append(aString)\n",
+    "\n",
+    "    return retLi"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### Autor-spezifische statische Features\n",
+    "\n",
+    "(hier nicht beschrieben, siehe unten)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### Dynamische Features"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# param flagResolveNewUrls  Flag (see config above)\n",
+    "\n",
+    "def resolveUrl(completeUrl, flagResolveNewUrls):\n",
+    "    \n",
+    "    if \"bit.ly\" in completeUrl:\n",
+    "\n",
+    "        if(gloCheckIsAlreadyCached(\"resolved-urls.csv\", completeUrl)):\n",
+    "            return gloGetCached(\"resolved-urls.csv\", completeUrl)\n",
+    "        else:\n",
+    "\n",
+    "            if(flagResolveNewUrls == False):\n",
+    "                return completeUrl\n",
+    "\n",
+    "            print(\"(Resolve now >>\" + completeUrl + \"<<)\")\n",
+    "            try:\n",
+    "                r = requests.get(completeUrl, timeout = 5)\n",
+    "                u = r.url\n",
+    "                gloAddToCache(\"resolved-urls.csv\", completeUrl, u)\n",
+    "                return u\n",
+    "            except:\n",
+    "                print(\"(- Warn: Can not resolve (return completeUrl))\")\n",
+    "                return completeUrl\n",
+    "\n",
+    "    else:\n",
+    "        return completeUrl"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Return\n",
+    "# a = urlList,\n",
+    "# b = refList\n",
+    "# c = hostList\n",
+    "def extractImportantUrls(df):\n",
+    "    dfMessages = df.copy()\n",
+    "    dfMessages = dfMessages[dfMessages.ftQrCoUrls == True]\n",
+    "\n",
+    "    hostList        = list()\n",
+    "    urList          = list()\n",
+    "    refList         = list()\n",
+    "\n",
+    "    counterSucHostname = 0\n",
+    "    counterErrHostname = 0\n",
+    "\n",
+    "    for index, row in dfMessages.iterrows():\n",
+    "        for urlItem in row[\"ftTdUrls\"]:\n",
+    "            \n",
+    "            urlData = urlparse(str(urlItem))\n",
+    "\n",
+    "            completeUrl      = urlData.geturl()\n",
+    "\n",
+    "            rUrl     = resolveUrl(completeUrl, flagResolveNewUrls=C_RESOLVE_NEW_URLS)\n",
+    "            rUrlData = urlparse(rUrl)\n",
+    "            rCompleteUrl = rUrlData.geturl()\n",
+    "            rCompleteHostname = rUrlData.hostname\n",
+    "\n",
+    "            if(str(rCompleteHostname) != \"None\"):\n",
+    "                counterSucHostname = counterSucHostname + 1\n",
+    "\n",
+    "                hostList.append(str(rCompleteHostname))\n",
+    "\n",
+    "                urList.append(str(rCompleteUrl))\n",
+    "\n",
+    "                if \"t.me\" in str(rCompleteHostname):\n",
+    "                    refList.append(str(rCompleteUrl))\n",
+    "            else:\n",
+    "                counterErrHostname = counterErrHostname + 1\n",
+    "\n",
+    "    #print(\"Got Hostnames (suc=\" + str(counterSucHostname) + \"/err=\" + str(counterErrHostname) + \")\")\n",
+    "\n",
+    "    return (urList, refList, hostList)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# param flagResolveNewUrls  Flag (see config above)\n",
+    "def resolveImportantYoutubeVideos(urlList, flagResolveNewUrls):\n",
+    "\n",
+    "    # Thanks https://gist.github.com/rodrigoborgesdeoliveira/987683cfbfcc8d800192da1e73adc486\n",
+    "\n",
+    "    ytList = list()\n",
+    "\n",
+    "    for url in urlList:\n",
+    "\n",
+    "        url = str(url)\n",
+    "\n",
+    "        if(\"youtube.com\" in url or \"youtu.be\" in url or \"youtube-nocookie.com\" in url):\n",
+    "            if(gloCheckIsAlreadyCached(\"resolved-youtube.csv\", url)):\n",
+    "                ytList.append(gloGetCached(\"resolved-youtube.csv\", url)) \n",
+    "            else:\n",
+    "\n",
+    "                if(flagResolveNewUrls == False):\n",
+    "                    #print(\"(Disable resolve new youtube urls (return completeUrl) >>\" + url + \"<<)\")\n",
+    "                    ytList.append(url)\n",
+    "                else:\n",
+    "                    print(\"Resolve now youtube >>\" + url + \"<<\")\n",
+    "                    try:\n",
+    "                        r = requests.get(url, timeout = 5)\n",
+    "                        t = fromstring(r.content)\n",
+    "                        a = str(t.findtext('.//title'))\n",
+    "                        ytList.append(a)\n",
+    "                        gloAddToCache(\"resolved-youtube.csv\", url, a)\n",
+    "                    except:\n",
+    "                        print(\"(- Warn: Can not resolve youtube url (return completeUrl))\")\n",
+    "                        ytList.append(url)\n",
+    "\n",
+    "    return ytList"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### Implementierung"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# TODO: Bug: No Hostname detected if string startsWith ! \"http\" in urlparse\n",
+    "# TODO: Check: Refs ins both directions\n",
+    "\n",
+    "# Returns\n",
+    "# a = Counter forwardedFromList\n",
+    "# b = Counter refList\n",
+    "# c = Counter hashtagList\n",
+    "# d = Counter hostList\n",
+    "# e = Counter emojiList\n",
+    "# f = Counter fromList\n",
+    "def extractSocialGraph(filePath, debugPrint, debugPrintCount):\n",
+    "\n",
+    "    dfMessages = dictMessages[filePath].copy()\n",
+    "\n",
+    "    # Formatierungs spezifischen statischen Features\n",
+    "    \n",
+    "    hashtagList = extractImportantHashtags(dfMessages)\n",
+    "    emojiList = extractImportantEmojis(dfMessages)\n",
+    "    \n",
+    "    # Autor spezifischen statischen Features\n",
+    "    \n",
+    "    forwardedFromList = list()\n",
+    "    if(\"forwarded_from\" in dfMessages.columns):\n",
+    "        df = dfMessages.copy()\n",
+    "        df = df[df.ftQrIsForwarded == True]\n",
+    "    \n",
+    "        for index, row in df.iterrows():        \n",
+    "            forwardedFromList.append(str(row[\"forwarded_from\"]))\n",
+    "            \n",
+    "    actorList = list()\n",
+    "    if(\"actor\" in dfMessages.columns):\n",
+    "        for index, row in dfMessages.iterrows():\n",
+    "            actorList.append(str(row[\"actor\"]))\n",
+    "    \n",
+    "    memberList = list()\n",
+    "    if(\"members\" in dfMessages.columns):\n",
+    "        for index, row in dfMessages.iterrows():\n",
+    "            if(str(row[\"members\"]) != \"nan\"):\n",
+    "                for memberItem in row[\"members\"]:\n",
+    "                    memberList.append(str(memberItem))\n",
+    "                    \n",
+    "    fromList = list()\n",
+    "    if(\"from\" in dfMessages.columns):\n",
+    "        for index, row in dfMessages.iterrows():\n",
+    "            s = str(row[\"from\"])\n",
+    "            s = gloConvertToSafeString(s)\n",
+    "            if(s != \"None\"):\n",
+    "                fromList.append(s)\n",
+    "            \n",
+    "    savedFromList = list()\n",
+    "    if(\"saved_from\" in dfMessages.columns):\n",
+    "        for index, row in dfMessages.iterrows():\n",
+    "            savedFromList.append(str(row[\"saved_from\"]))\n",
+    "\n",
+    "    # Dynamische Features\n",
+    "    urlList, refList, hostList = extractImportantUrls(dfMessages)\n",
+    "\n",
+    "    ytList = resolveImportantYoutubeVideos(urlList, flagResolveNewUrls = C_RESOLVE_NEW_URLS)\n",
+    "    \n",
+    "    # Debug print\n",
+    "            \n",
+    "    configTopN = debugPrintCount\n",
+    "\n",
+    "    if(debugPrint):\n",
+    "\n",
+    "        print()\n",
+    "        print(\"Set top n to \" + str(debugPrintCount))\n",
+    "        print()\n",
+    "\n",
+    "        print(\"- Top Hosts (resovled) -\")\n",
+    "        print (\"\\n\".join(map(str, Counter(hostList).most_common(configTopN))))\n",
+    "        print()\n",
+    "        print(\"- Top URLs (resolved) -\")\n",
+    "        print (\"\\n\".join(map(str, Counter(urlList).most_common(configTopN))))\n",
+    "        print()\n",
+    "        print(\"- Top Refs from text (resolved) -\")\n",
+    "        print (\"\\n\".join(map(str, Counter(refList).most_common(configTopN))))\n",
+    "        print()\n",
+    "        print(\"- Top Refs (forwarded_from) -\")\n",
+    "        print (\"\\n\".join(map(str, Counter(forwardedFromList).most_common(configTopN))))\n",
+    "        print()\n",
+    "        print(\"- Top Refs (actor) -\")\n",
+    "        print (\"\\n\".join(map(str, Counter(actorList).most_common(configTopN))))\n",
+    "        print()\n",
+    "        print(\"- Top Refs (members) -\")\n",
+    "        print (\"\\n\".join(map(str, Counter(memberList).most_common(configTopN))))\n",
+    "        print()\n",
+    "        print(\"- Top Refs (from) -\")\n",
+    "        print (\"\\n\".join(map(str, Counter(fromList).most_common(configTopN))))\n",
+    "        print()\n",
+    "        print(\"- Top Refs (saved_from) -\")\n",
+    "        print (\"\\n\".join(map(str, Counter(savedFromList).most_common(configTopN))))\n",
+    "        print()\n",
+    "        print(\"- Top hashtags -\")\n",
+    "        print (\"\\n\".join(map(str, Counter(hashtagList).most_common(configTopN))))\n",
+    "        print()\n",
+    "        print(\"- Top emojis -\")\n",
+    "        print (\"\\n\".join(map(str, Counter(emojiList).most_common(configTopN))))\n",
+    "        print()\n",
+    "        print(\"- Top yt (resolved) -\")\n",
+    "        print (\"\\n\".join(map(str, Counter(ytList).most_common(configTopN))))\n",
+    "        print()\n",
+    "    \n",
+    "    return (Counter(forwardedFromList), Counter(refList), Counter(hashtagList),  Counter(hostList), Counter(emojiList), Counter(fromList))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "dictSGD_ForwardedFrom = {}\n",
+    "dictSGD_Ref           = {}\n",
+    "dictSGD_Hashtag       = {}\n",
+    "dictSGD_Host          = {}\n",
+    "dictSGD_Emoji         = {}\n",
+    "dictSGD_From          = {}\n",
+    "\n",
+    "gloStartStopwatch(\"Extract Social Graph Data\")\n",
+    "\n",
+    "for fP in dfInputFiles.inputPath:\n",
+    "\n",
+    "    #gloStartStopwatch(\"Extract Social Graph Data >>\" + fP + \"<<\")\n",
+    "\n",
+    "    a, b, c, d, e, f = extractSocialGraph(fP, debugPrint=False, debugPrintCount = 0)\n",
+    "\n",
+    "    dictSGD_ForwardedFrom[fP]   = a\n",
+    "    dictSGD_Ref[fP]             = b\n",
+    "    dictSGD_Hashtag[fP]         = c\n",
+    "    dictSGD_Host[fP]            = d\n",
+    "    dictSGD_Emoji[fP]           = e\n",
+    "    dictSGD_From[fP]            = f\n",
+    "\n",
+    "    #gloStopStopwatch(\"Extract Social Graph Data >>\" + fP + \"<<\")\n",
+    "\n",
+    "gloStopStopwatch(\"Extract Social Graph Data\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Top-n Darstellung"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def printSocialGraphDebug(filePathList):\n",
+    "    for fP in filePathList:\n",
+    "        print(\"Analyse now >>\" + fP + \"<<\")\n",
+    "        _ = extractSocialGraph(fP, debugPrint=True, debugPrintCount=10)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "if(C_SHORT_RUN == False):\n",
+    "    printSocialGraphDebug(dfInputFiles[dfInputFiles.inputLabel == \"dataSet0\"].inputPath)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Suchmuster für Chats"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def getTopInfluencer(fPList, configTopN):\n",
+    "\n",
+    "    for fP in fPList:\n",
+    "\n",
+    "        chatName = queryChatName(fP)\n",
+    "\n",
+    "        print()\n",
+    "        print(\"Analyse Chat (Forwarded From) >>\" + chatName + \"<<\")\n",
+    "        \n",
+    "        socialGraphData = dictSGD_ForwardedFrom[fP]\n",
+    "        socialGraphData = socialGraphData.most_common(configTopN)\n",
+    "\n",
+    "        counter = 1\n",
+    "\n",
+    "        # Iterate over data\n",
+    "        for oChatName, oChatRefs in socialGraphData:\n",
+    "            \n",
+    "            # Query other params\n",
+    "            oChatName    = gloConvertToSafeChatName(str(oChatName))\n",
+    "            oChatRefs    = oChatRefs\n",
+    "\n",
+    "            # Already downloaded?\n",
+    "            flagDownloaded = False\n",
+    "            if oChatName in dfQueryMeta.qryChatName.values:\n",
+    "                flagDownloaded = True\n",
+    "\n",
+    "            if(oChatName != \"nan\"):\n",
+    "\n",
+    "                print(str(counter) + \": (downloaded=\" + str(flagDownloaded) + \") (refs=\" + str(oChatRefs) + \")\\t\\t>>\" + str(oChatName) + \"<<\")\n",
+    "                counter = counter + 1\n",
+    "\n",
+    "\n",
+    "        print()\n",
+    "        print(\"Analyse Chat (Refs) >>\" + chatName + \"<<\")\n",
+    "        \n",
+    "        socialGraphData = dictSGD_Ref[fP]\n",
+    "        socialGraphData = socialGraphData.most_common(configTopN)\n",
+    "\n",
+    "        counter = 1\n",
+    "\n",
+    "        # Iterate over data\n",
+    "        for oChatName, oChatRefs in socialGraphData:\n",
+    "            \n",
+    "            # Query other params\n",
+    "            oChatName    = str(oChatName)\n",
+    "            oChatRefs    = oChatRefs\n",
+    "\n",
+    "            if(oChatName != \"nan\"):\n",
+    "\n",
+    "                print(str(counter) + \" (refs=\" + str(oChatRefs) + \")\\t\\t>>\" + str(oChatName) + \"<<\")\n",
+    "                counter = counter + 1"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "# TODO: Cannot get all items in dataSet1\n",
+    "\n",
+    "\"\"\"\n",
+    "# Attila Hildmann #\n",
+    "- Anonymous Germany - not found\n",
+    "- https://t.me/DEMOKRATENCHAT - no entries\n",
+    "- https://t.me/ChatDerFreiheit - no entries\n",
+    "- https://t.me/FREIHEITSCHAT2020 - not found\n",
+    "\n",
+    "# Oliver Janich #\n",
+    "- Oliver Janich Premium - not found\n",
+    "\n",
+    "# Xavier Naidoo #\n",
+    "- Xavier(Der VereiNiger)Naidoo😎 - not found\n",
+    "- https://t.me/PostAppender_bot - bot chat\n",
+    "\"\"\"\n",
+    "getTopInfluencer(list(dfInputFiles[dfInputFiles.inputLabel == \"dataSet0\"].inputPath), 10)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Social Graphs - Darstellung von Graphen"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Visualisierungs-Möglichkeiten von Graphen"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### Layouts und Zeichen Funktionen definieren"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Layout auswählen\n",
+    "\n",
+    "- 1 = Kamda Kawai Layout\n",
+    "- 2 = Spring Layout\n",
+    "- 3 = Graphviz Layout"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def getSocialGraphLayout(layoutSelector, G):\n",
+    "    if(layoutSelector == 1):\n",
+    "        return nx.kamada_kawai_layout(G.to_undirected())\n",
+    "    elif(layoutSelector == 2):\n",
+    "        return nx.spring_layout(G.to_undirected(), k = 0.15, iterations=200)\n",
+    "    elif(layoutSelector == 3):\n",
+    "        return nx.nx_pydot.graphviz_layout(G)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Plot Funktion definieren\n",
+    "\n",
+    "- ``G``: graph\n",
+    "- ``layoutSelector``: siehe oben (Layout auswählen)\n",
+    "- ``configFactorEdge``: e.g. 100 => weight / 100\n",
+    "- ``configFactorNode``: e.g. 10  => weight / 10\n",
+    "- ``configArrowSize``: e.g. 5\n",
+    "- ``configPlotWidth``: e.g. 16\n",
+    "- ``configPlotHeight``: e.g. 9\n",
+    "- ``outputFilename``: e.g. test.png (set \"\" == no output file)\n",
+    "- ``outputTitle``: e.g. Graph (required)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def drawSocialGraph(G, layoutSelector, configFactorEdge, configFactorNode, configArrowSize, configPlotWidth, configPlotHeight, outputFilename, outputTitle):\n",
+    "    \n",
+    "    gloStartStopwatch(\"Social Graph Plot\")\n",
+    "    \n",
+    "    plt.figure(figsize=(configPlotWidth,configPlotHeight))\n",
+    "        \n",
+    "    pos = getSocialGraphLayout(layoutSelector = layoutSelector, G = G)\n",
+    "    \n",
+    "    # Clean edges\n",
+    "    edges       = nx.get_edge_attributes(G, \"weight\")\n",
+    "    edgesTLabel = nx.get_edge_attributes(G, \"tLabel\")\n",
+    "\n",
+    "    clean_edges         = dict()\n",
+    "    clean_edges_labels  = dict()\n",
+    "    \n",
+    "    for key in edges:\n",
+    "        \n",
+    "        #Set edge weight\n",
+    "        clean_edges[key]        = (100 - edges[key]) / configFactorEdge\n",
+    "\n",
+    "        #set edge layout\n",
+    "        clean_edges_labels[key] = edgesTLabel[key]\n",
+    "    \n",
+    "    # Clean nodes\n",
+    "    nodes       = nx.get_node_attributes(G,'weight')\n",
+    "    nodesTLabel = nx.get_node_attributes(G,'tLabel')\n",
+    "    nodesTColor = nx.get_node_attributes(G,'tColor')\n",
+    "\n",
+    "    clean_nodes         = dict()\n",
+    "    clean_nodes_labels  = dict()\n",
+    "    clean_nodes_color   = dict()\n",
+    "    \n",
+    "    for key in nodes:\n",
+    "        \n",
+    "        #Set node weight        \n",
+    "        clean_nodes[key]        = nodes[key] / configFactorNode\n",
+    "\n",
+    "        #Set node layout\n",
+    "        clean_nodes_labels[key] = nodesTLabel[key]\n",
+    "        clean_nodes_color[key]  = nodesTColor[key]\n",
+    "    \n",
+    "    # Revert DiGraph (arrows direction)\n",
+    "    #G_rev = nx.DiGraph.reverse(G) \n",
+    "    \n",
+    "    G_rev = G\n",
+    "\n",
+    "    # Draw\n",
+    "    nx.draw(G_rev,\n",
+    "        pos,\n",
+    "        with_labels=True,\n",
+    "        width=list(clean_edges.values()),\n",
+    "        node_size=list(clean_nodes.values()),\n",
+    "        labels=clean_nodes_labels,\n",
+    "        node_color=list(clean_nodes_color.values()),\n",
+    "        arrowsize=configArrowSize,\n",
+    "        #arrowstyle=\"wedge\"\n",
+    "        #connectionstyle=\"arc3, rad = 0.1\"\n",
+    "    )\n",
+    "    \n",
+    "    # Set labels\n",
+    "    _ = nx.draw_networkx_edge_labels(G_rev, pos, edge_labels=clean_edges_labels, font_size = 13)\n",
+    "\n",
+    "    if(outputTitle != \"\"):\n",
+    "        plt.title(outputTitle)\n",
+    "\n",
+    "    # Save and show fig\n",
+    "    if(outputFilename != \"\"):\n",
+    "        plt.savefig(dir_var_output + outputFilename)\n",
+    "    \n",
+    "    plt.show()\n",
+    "    \n",
+    "    gloStopStopwatch(\"Social Graph Plot\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### Testen von Plotten"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Generates Test Graph\n",
+    "def generateTestGraph():\n",
+    "\n",
+    "    G_weighted = nx.DiGraph()\n",
+    "\n",
+    "    # Formel (1-(Anzahl gesendete Nachrichten/Anzahl gültige Nachrichten von Zielchat)) * 100\n",
+    "    \n",
+    "    G_weighted.add_edge(\"Autor 1\", \"Chat 1\", weight=44,  tLabel = \"(1 - (7.000/12.500)) * 100 = 44\")\n",
+    "    G_weighted.add_edge(\"Autor 2\", \"Chat 1\", weight=92,  tLabel = \"(1 - (1.000/12.500)) * 100 = 92\")\n",
+    "    G_weighted.add_edge(\"Autor 3\", \"Chat 1\", weight=88,  tLabel = \"(1 - (1.500/12.500)) * 100 = 88\")\n",
+    "    G_weighted.add_edge(\"Chat 2\",  \"Chat 1\", weight=76,  tLabel = \"(1 - (3.000/12.500)) * 100 = 76\")\n",
+    "        \n",
+    "    G_weighted.add_edge(\"Autor 1\", \"Chat 2\", weight=81.25,  tLabel = \"(1 - (3.000/16.000)) * 100 = 81,25\")\n",
+    "    G_weighted.add_edge(\"Autor 2\", \"Chat 2\", weight=25,     tLabel = \"(1 - (12.000/16.000)) * 100 = 25\")\n",
+    "    G_weighted.add_edge(\"Autor 3\", \"Chat 2\", weight=93.75,  tLabel = \"(1 - (1.000/16.000)) * 100 = 93,75\")\n",
+    "    \n",
+    "    # Knoten Gewicht (Anzahl gültiger Nachrichten)\n",
+    "    \n",
+    "    # - Exakt Anzahl gültige Nachrichten (empfangen)\n",
+    "    G_weighted.add_node(\"Chat 1\", weight=12500, tLabel = \"Chat 1\\n[12.500]\", tColor=\"#0080ff\")\n",
+    "    G_weighted.add_node(\"Chat 2\", weight=16000, tLabel = \"Chat 2\\n[16.000]\", tColor=\"#0080ff\")\n",
+    "\n",
+    "    # - Geschätzt Anzahl gültige Nachrichten (gesendet) MAX-Wert\n",
+    "    G_weighted.add_node(\"Autor 1\", weight=7000, tLabel = \"Autor 1\\n[7.000]\", tColor=\"#ff8000\")\n",
+    "    G_weighted.add_node(\"Autor 2\", weight=12000, tLabel = \"Autor 2\\n[12.000]\", tColor=\"#ff8000\")\n",
+    "    G_weighted.add_node(\"Autor 3\", weight=1500, tLabel = \"Autor 3\\n[1.500]\", tColor=\"#ff8000\")\n",
+    "    \n",
+    "    return G_weighted\n",
+    "\n",
+    "generatedTestGraph = generateTestGraph()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "drawSocialGraph(\n",
+    "    G = generatedTestGraph,\n",
+    "    layoutSelector=1,\n",
+    "    configFactorEdge = 10,\n",
+    "    configFactorNode = 2,\n",
+    "    configArrowSize = 15,\n",
+    "    configPlotWidth = 16,\n",
+    "    configPlotHeight = 9,\n",
+    "    outputFilename = \"social-graph-s-sample.svg\",\n",
+    "    outputTitle = \"Test Graph Kamda Kawai Layout\"\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "drawSocialGraph(\n",
+    "    G = generatedTestGraph,\n",
+    "    layoutSelector=2,\n",
+    "    configFactorEdge = 10,\n",
+    "    configFactorNode = 2,\n",
+    "    configArrowSize = 15,\n",
+    "    configPlotWidth = 16,\n",
+    "    configPlotHeight = 9,\n",
+    "    outputFilename = \"\",\n",
+    "    outputTitle = \"Test Graph Spring Layout\"\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "drawSocialGraph(\n",
+    "    G = generatedTestGraph,\n",
+    "    layoutSelector=3,\n",
+    "    configFactorEdge = 10,\n",
+    "    configFactorNode = 2,\n",
+    "    configArrowSize = 15,\n",
+    "    configPlotWidth = 16,\n",
+    "    configPlotHeight = 9,\n",
+    "    outputFilename = \"\",\n",
+    "    outputTitle = \"Test Graph Graphviz Layout\"\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Visualisierungs-Möglichkeiten von heruntergeladenen Chats"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### Implementierung"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Hilfsfunktion für Gewichte"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Add node weight to dict\n",
+    "# Only adds new weight if newWeight > oldWeight\n",
+    "def addSocialGraphNodeWeight(chatName, chatWeight, targetDict):\n",
+    "    \n",
+    "    if(chatName in targetDict):\n",
+    "        oldWeight = targetDict[chatName]\n",
+    "        if(chatWeight > oldWeight):\n",
+    "            targetDict[chatName] = chatWeight\n",
+    "    else:\n",
+    "        targetDict[chatName] = chatWeight"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Graph berechnen\n",
+    "\n",
+    "- ``configTopNInfluencer``: e.g. For top 10 = 10\n",
+    "- ``configMinRefs``: e.g. 1 must have > 1 % forwarded messages\n",
+    "- ``listFilePaths``: List process filePaths\n",
+    "- ``socialGraphTargetDict``: e.g. forwarded from dict or hashtag dict\n",
+    "- ``socialGraphTargetAttribute``: e.g. ftQrIsForwarded (for calc percent)\n",
+    "- ``configFlagDebugLabel``: e.g. show debug info on label"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def generateSocialGraph(configTopNInfluencer, configMinRefs, listFilePaths, socialGraphTargetDict, socialGraphTargetAttribute, configFlagDebugLabel):\n",
+    "    \n",
+    "    # Save node weights to dict\n",
+    "    dictSocialNodeWeights   = dict()\n",
+    "\n",
+    "    # Flag downloaded nodes (exact node weight)\n",
+    "    dictExactNodesLabels    = {}\n",
+    "    \n",
+    "    gloStartStopwatch(\"Social Graph\")\n",
+    "    \n",
+    "    # Generate directed graph\n",
+    "    G_weighted = nx.DiGraph()\n",
+    "    \n",
+    "    print(\"- Add edges\")\n",
+    "    for fP in listFilePaths:\n",
+    "        \n",
+    "        # Query own params\n",
+    "        chatName                        = queryChatName(fP)\n",
+    "        chatNumberOfMessages            = queryNumberOfMessages(fP)\n",
+    "        chatNumberOfTargetMessages      = queryNumberOfMessagesByAttEqTrue(fP, socialGraphTargetAttribute)\n",
+    "\n",
+    "        gloStartStopwatch(\"SG-Extract \" + chatName + \"(\" + str(chatNumberOfTargetMessages) + \"/\" + str(chatNumberOfMessages) + \" messages)\")\n",
+    "        \n",
+    "        # Add exact node size (chat downloaded) and flag node\n",
+    "        addSocialGraphNodeWeight(chatName, chatNumberOfMessages, dictSocialNodeWeights)\n",
+    "        dictExactNodesLabels[chatName] = str(chatName) + \"\\n=[\" + str(chatNumberOfTargetMessages) + \"/\" + str(chatNumberOfMessages) + \"]\"\n",
+    "\n",
+    "        # Extract social graph data and get top influencer\n",
+    "        socialGraphData = socialGraphTargetDict[fP]\n",
+    "        socialGraphData = socialGraphData.most_common(configTopNInfluencer)\n",
+    "        \n",
+    "        # Iterate over forwarder\n",
+    "        for oChatName, oChatRefs in socialGraphData:\n",
+    "            \n",
+    "            # Query other params\n",
+    "            oChatName    = gloConvertToSafeChatName(str(oChatName))\n",
+    "            oChatRefs    = oChatRefs\n",
+    "\n",
+    "            # If has forwarder\n",
+    "            if(oChatName != \"nan\"):\n",
+    "        \n",
+    "                # Calc percent (forwarded_messages)\n",
+    "                per = (oChatRefs/chatNumberOfTargetMessages) * 100\n",
+    "\n",
+    "                # Filter unimportant forwarders\n",
+    "                if(per > configMinRefs):\n",
+    "                \n",
+    "                    # Add estimanted node size (chat not downloaded)\n",
+    "                    addSocialGraphNodeWeight(oChatName, oChatRefs, dictSocialNodeWeights)\n",
+    "\n",
+    "                    # Invert percent (distance)\n",
+    "                    wei = 100 - per\n",
+    "\n",
+    "                    # Label\n",
+    "                    if(configFlagDebugLabel):\n",
+    "                        lab = str(round(per, 3)) + \"% (\" + str(oChatRefs) + \"/\" + str(chatNumberOfTargetMessages) + \"≙\" + str(round(wei, 3)) + \")\"\n",
+    "                    else:\n",
+    "                        lab = \"\"\n",
+    "\n",
+    "                    # Add edge\n",
+    "                    G_weighted.add_edge(\n",
+    "                        chatName,\n",
+    "                        oChatName,\n",
+    "                        weight=wei,\n",
+    "                        tLabel = lab\n",
+    "                    )\n",
+    "\n",
+    "        gloStopStopwatch(\"SG-Extract \" + chatName + \"(\" + str(chatNumberOfTargetMessages) + \"/\" + str(chatNumberOfMessages) + \" messages)\")\n",
+    "        \n",
+    "    print(\"- Add different nodes\")\n",
+    "    for aNode in dictSocialNodeWeights:\n",
+    "        \n",
+    "        # Query node params\n",
+    "        nodeName   = str(aNode)\n",
+    "        nodeWeight = dictSocialNodeWeights[aNode]\n",
+    "\n",
+    "        # Set defaults\n",
+    "        tValueColor = \"#ff8000\"\n",
+    "        tLabel = str(nodeName) + \"\\n≈[\" + str(nodeWeight) + \"]\"\n",
+    "\n",
+    "        # Overwrite (if chat downloaded = exact weight)\n",
+    "        if(nodeName in dictExactNodesLabels):\n",
+    "            tValueColor = \"#0080ff\"\n",
+    "            tLabel = dictExactNodesLabels[nodeName]\n",
+    "        \n",
+    "        G_weighted.add_node(\n",
+    "            nodeName,\n",
+    "            weight=nodeWeight,\n",
+    "            tLabel = tLabel,\n",
+    "            tColor=tValueColor\n",
+    "        )\n",
+    "        \n",
+    "    gloStopStopwatch(\"Social Graph\")\n",
+    "        \n",
+    "    return G_weighted"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### Top 25 Forwarded From (DataSet0)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "drawSocialGraph(\n",
+    "    generateSocialGraph(\n",
+    "        configTopNInfluencer = 25,  \n",
+    "        configMinRefs = 0,       \n",
+    "        listFilePaths = list(dfInputFiles[dfInputFiles.inputLabel == \"dataSet0\"].inputPath),\n",
+    "        socialGraphTargetDict = dictSGD_ForwardedFrom,\n",
+    "        socialGraphTargetAttribute = \"ftQrIsForwarded\",\n",
+    "        configFlagDebugLabel = False\n",
+    "    ),\n",
+    "    layoutSelector = 1,\n",
+    "    configFactorEdge = 10,\n",
+    "    configFactorNode = 4,\n",
+    "    configArrowSize = 20,\n",
+    "    configPlotWidth = 16,\n",
+    "    configPlotHeight = 9,\n",
+    "    outputFilename = \"social-graph-dataSet0-forwarded-from.svg\",\n",
+    "    outputTitle = \"Top 25 Forwarded From (DataSet0)\"\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### Top 25 Hashtags (DataSet0)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "drawSocialGraph(\n",
+    "    generateSocialGraph(\n",
+    "        configTopNInfluencer = 25,  \n",
+    "        configMinRefs = 0,        \n",
+    "        listFilePaths = list(dfInputFiles[dfInputFiles.inputLabel == \"dataSet0\"].inputPath),\n",
+    "        socialGraphTargetDict = dictSGD_Hashtag,\n",
+    "        socialGraphTargetAttribute = \"ftQrCoHashtags\",\n",
+    "        configFlagDebugLabel = False\n",
+    "    ),\n",
+    "    layoutSelector = 1,\n",
+    "    configFactorEdge = 10,\n",
+    "    configFactorNode = 5,\n",
+    "    configArrowSize = 15,\n",
+    "    configPlotWidth = 16,\n",
+    "    configPlotHeight = 9,\n",
+    "    outputFilename = \"\",\n",
+    "    outputTitle = \"Top 25 Hashtags (DataSet0)\"\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### Top 25 Hosts (DataSet0)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "drawSocialGraph(\n",
+    "    generateSocialGraph(\n",
+    "        configTopNInfluencer = 25,  \n",
+    "        configMinRefs = 0,        \n",
+    "        listFilePaths = list(dfInputFiles[dfInputFiles.inputLabel == \"dataSet0\"].inputPath),\n",
+    "        socialGraphTargetDict = dictSGD_Host,\n",
+    "        socialGraphTargetAttribute = \"ftQrCoUrls\",\n",
+    "        configFlagDebugLabel = False\n",
+    "    ),\n",
+    "    layoutSelector = 1,\n",
+    "    configFactorEdge = 10,\n",
+    "    configFactorNode = 8,\n",
+    "    configArrowSize = 20,\n",
+    "    configPlotWidth = 16,\n",
+    "    configPlotHeight = 9,\n",
+    "    outputFilename = \"\",\n",
+    "    outputTitle = \"Top 25 Hosts (DataSet0)\"\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### Top 25 Emojis (dDataSet0)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "drawSocialGraph(\n",
+    "    generateSocialGraph(\n",
+    "        configTopNInfluencer = 25,  \n",
+    "        configMinRefs = 0,        \n",
+    "        listFilePaths = list(dfInputFiles[dfInputFiles.inputLabel == \"dataSet0\"].inputPath),\n",
+    "        socialGraphTargetDict = dictSGD_Emoji,\n",
+    "        socialGraphTargetAttribute = \"ftQrCoEmojis\",\n",
+    "        configFlagDebugLabel = False\n",
+    "    ),\n",
+    "    layoutSelector = 1,\n",
+    "    configFactorEdge = 10,\n",
+    "    configFactorNode = 10,\n",
+    "    configArrowSize = 20,\n",
+    "    configPlotWidth = 16,\n",
+    "    configPlotHeight = 9,\n",
+    "    outputFilename = \"\",\n",
+    "    outputTitle = \"Top 25 Emojis (dDataSet0)\"\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### Top 25 From (DataSet1a)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "if(\"dataSet1a\" in C_LOAD_DATASETS):\n",
+    "    drawSocialGraph(\n",
+    "        generateSocialGraph(\n",
+    "            configTopNInfluencer = 25,  \n",
+    "            configMinRefs = 0,        \n",
+    "            listFilePaths = list(dfInputFiles[dfInputFiles.inputLabel == \"dataSet1a\"].inputPath),\n",
+    "            socialGraphTargetDict = dictSGD_From,\n",
+    "            socialGraphTargetAttribute = \"ftQrIsValidText\",\n",
+    "            configFlagDebugLabel = False\n",
+    "        ),\n",
+    "        layoutSelector = 1,\n",
+    "        configFactorEdge = 10,\n",
+    "        configFactorNode = 10,\n",
+    "        configArrowSize = 20,\n",
+    "        configPlotWidth = 16,\n",
+    "        configPlotHeight = 9,\n",
+    "        outputFilename = \"social-graph-dataSet1a-from.svg\",\n",
+    "        outputTitle = \"Top 25 From (DataSet1a)\"\n",
+    "    )"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Dimension Zeit"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Wie aufbereiten?"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### Anzahl Nachrichten bis zu Stichtag (mit Term-Filter)\n",
+    "\n",
+    "- ``targetDate``: e.g. 1970-01-01\n",
+    "- ``fP``: filePath\n",
+    "- ``highlightWord``: set \"\" = no filter"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def queryNumberOfMessagesByDate(targetDate, fP, highlightWord):\n",
+    "\n",
+    "    df = dictMessages[fP].copy()\n",
+    "\n",
+    "    df = df[df.ftQrIsValidText == True]\n",
+    "\n",
+    "    df[\"date\"] = pd.to_datetime(df[\"date\"])\n",
+    "    \n",
+    "    df = df[df.date <= targetDate]\n",
+    "\n",
+    "    if(highlightWord != \"\"):\n",
+    "        df = df[df.ftTdSafeLowerText.str.contains(highlightWord)]\n",
+    "\n",
+    "    l = len(df.index)\n",
+    "\n",
+    "    if(l > 0):\n",
+    "        return l\n",
+    "    else:\n",
+    "        return np.nan"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### MatPlot-Umsetzung\n",
+    "\n",
+    "- ``filePathList``: filePathList\n",
+    "- ``outputFilename``: set \"\" = no output file\n",
+    "- ``highlightWords``: list of highlight words (leave empty if not used)\n",
+    "- ``configFrequency``: e.g. 1D or 1M"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# TODO: Add percent to label\n",
+    "\n",
+    "def drawTimePlot(filePathList, outputFilename, highlightWords, configFrequency):\n",
+    "\n",
+    "    gloStartStopwatch(\"Time Plot\")\n",
+    "\n",
+    "    plt.figure(figsize=(16, 9))\n",
+    "\n",
+    "    df = pd.DataFrame(\n",
+    "        index=pd.date_range( #m/d/y\n",
+    "            start='9/1/2018',\n",
+    "            end='2/1/2021',\n",
+    "            freq=configFrequency\n",
+    "            )\n",
+    "        )\n",
+    "\n",
+    "    # Add date to process\n",
+    "    df[\"date\"] = df.index\n",
+    "\n",
+    "    vLineHeight = -1\n",
+    "\n",
+    "    for fP in filePathList:\n",
+    "        #gloStartStopwatch(\"Time Plot >>\" + fP + \"<<\")\n",
+    "\n",
+    "        # Plot Graph Var 1\n",
+    "        if not highlightWords:\n",
+    "            # Plot\n",
+    "            plt.plot(\n",
+    "                df.index, #x\n",
+    "                df.apply(lambda x: queryNumberOfMessagesByDate(x.date, fP, highlightWord = \"\"), axis=1), #y\n",
+    "                label = queryChatName(fP) #label\n",
+    "            )\n",
+    "            # Set vline height\n",
+    "            currentHeight = queryNumberOfMessagesByAttEqTrue(fP, \"ftQrIsValidText\")\n",
+    "            if(currentHeight > vLineHeight):\n",
+    "                vLineHeight = currentHeight\n",
+    "\n",
+    "        # Plot High Light Word Graph / Var 2\n",
+    "        for hWord in highlightWords:\n",
+    "            y = df.apply(lambda x: queryNumberOfMessagesByDate(x.date, fP, highlightWord = hWord), axis=1)\n",
+    "            # Plot\n",
+    "            plt.plot(\n",
+    "                df.index, #x\n",
+    "                y, #y\n",
+    "                label = queryChatName(fP) + \" usages of '\" + hWord + \"'\" #label\n",
+    "            )\n",
+    "            # Set vline height\n",
+    "            currentHeight = y.max()\n",
+    "            if(currentHeight > vLineHeight):\n",
+    "                vLineHeight = currentHeight\n",
+    "\n",
+    "        #gloStopStopwatch(\"Time Plot >>\" + fP + \"<<\")\n",
+    "\n",
+    "    # yy - mm - dd\n",
+    "    # TODO: Double check https://www.bundesgesundheitsministerium.de/coronavirus/chronik-coronavirus.html?stand=20210104\n",
+    "    plt.vlines(x = [\"2018-12-10\"], ymin=0, ymax=vLineHeight, color=\"orange\", ls='--', label=\"Global Compact for Migration (2018-12-10)\")\n",
+    "    plt.vlines(x = [\"2020-01-27\"], ymin=0, ymax=vLineHeight, color=\"grey\", ls='--', label=\"Corona Patient Zero Germany\")\n",
+    "    plt.vlines(x = [\"2020-03-23\"], ymin=0, ymax=vLineHeight, color=\"purple\", ls='--', label=\"1. Lockdown Germany (2020-03-23)\")\n",
+    "    plt.vlines(x = [\"2020-11-02\"], ymin=0, ymax=vLineHeight, color=\"purple\", ls='--', label=\"2. Lockdown light Germany (2020-11-02)\")\n",
+    "    plt.vlines(x = [\"2020-12-16\"], ymin=0, ymax=vLineHeight, color=\"purple\", ls='--', label=\"3. Lockdown Germany (2020-12-16)\")\n",
+    "\n",
+    "    plt.gcf().autofmt_xdate()\n",
+    "    _ = plt.legend()\n",
+    "\n",
+    "    if(outputFilename != \"\"):\n",
+    "        plt.savefig(dir_var_output + outputFilename)\n",
+    "\n",
+    "    gloStopStopwatch(\"Time Plot\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Normaler Time Plot"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "if(C_SHORT_RUN == False):\n",
+    "    drawTimePlot(\n",
+    "        filePathList = list(dfInputFiles[dfInputFiles.inputLabel == \"dataSet0\"].inputPath),\n",
+    "        outputFilename = \"time-plot-dataSet0.svg\",\n",
+    "        highlightWords = [],\n",
+    "        configFrequency=C_TIME_PLOT_FREQ\n",
+    "    )"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "if(C_SHORT_RUN == False):\n",
+    "    if(\"dataSet1\" in C_LOAD_DATASETS):\n",
+    "        drawTimePlot(\n",
+    "            filePathList = list(dfInputFiles[dfInputFiles.inputLabel == \"dataSet1\"].inputPath),\n",
+    "            outputFilename = \"time-plot-dataSet1.svg\",\n",
+    "            highlightWords = [],\n",
+    "            configFrequency=C_TIME_PLOT_FREQ\n",
+    "        )"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "if(C_SHORT_RUN == False):\n",
+    "    if(\"dataSet1a\" in C_LOAD_DATASETS):\n",
+    "        drawTimePlot(\n",
+    "            filePathList = list(dfInputFiles[dfInputFiles.inputLabel == \"dataSet1a\"].inputPath),\n",
+    "            outputFilename = \"time-plot-dataSet1a.svg\",\n",
+    "            highlightWords = [],\n",
+    "            configFrequency=C_TIME_PLOT_FREQ\n",
+    "        )"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "if(C_SHORT_RUN == False):\n",
+    "    if(\"dataSet2\" in C_LOAD_DATASETS):\n",
+    "        drawTimePlot(\n",
+    "            filePathList = list(dfInputFiles[dfInputFiles.inputLabel == \"dataSet2\"].inputPath),\n",
+    "            outputFilename = \"time-plot-dataSet2.svg\",\n",
+    "            highlightWords = [],\n",
+    "            configFrequency=C_TIME_PLOT_FREQ\n",
+    "        )"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Word Tracer"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# https://www.bundestag.de/parlament/plenum/sitzverteilung_19wp\n",
+    "highlightwords = [\"cdu\", \"spd\", \"afd\", \"fdp\", \"linke\", \"gruenen\", \"merkel\"]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "if(C_SHORT_RUN == False):\n",
+    "    drawTimePlot(\n",
+    "        filePathList = list([\"DS-05-01-2021/ChatExport_2021-01-05-janich\"]),\n",
+    "        outputFilename = \"word-tracer-oliver-janich.svg\",\n",
+    "        highlightWords = highlightwords,\n",
+    "        configFrequency=C_TIME_PLOT_FREQ\n",
+    "    )"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "if(C_SHORT_RUN == False):\n",
+    "    drawTimePlot(\n",
+    "        filePathList = list([\"DS-05-01-2021/ChatExport_2021-01-05-hildmann\"]),\n",
+    "        outputFilename = \"word-tracer-attila-hildmann.svg\",\n",
+    "        highlightWords = highlightwords,\n",
+    "        configFrequency=C_TIME_PLOT_FREQ\n",
+    "    )"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "if(C_SHORT_RUN == False):\n",
+    "    drawTimePlot(\n",
+    "        filePathList = list([\"DS-05-01-2021/ChatExport_2021-01-05-evaherman\"]),\n",
+    "        outputFilename = \"word-tracer-eva-herman.svg\",\n",
+    "        highlightWords = highlightwords,\n",
+    "        configFrequency=C_TIME_PLOT_FREQ\n",
+    "    )"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "if(C_SHORT_RUN == False):\n",
+    "    drawTimePlot(\n",
+    "        filePathList = list([\"DS-05-01-2021/ChatExport_2021-01-05-xavier\"]),\n",
+    "        outputFilename = \"word-tracer-xavier-naidoo.svg\",\n",
+    "        highlightWords = highlightwords,\n",
+    "        configFrequency=C_TIME_PLOT_FREQ\n",
+    "    )"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Text Mining"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Verwertbarkeit von Textnachrichten"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def removeTextLengthOutliersFromDataFrame(df, interval, maxTextLength):\n",
+    "    df = df.copy()\n",
+    "    df = df[df.ftTdTextLength < maxTextLength]\n",
+    "    return df[np.abs(df.ftTdTextLength-df.ftTdTextLength.mean()) <= (interval*df.ftTdTextLength.std())]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# param outputFilename set \"\" == no output file\n",
+    "def textLengthHistPlotter(outputFilename):\n",
+    "    dfMessages = dfAllDataMessages.copy()\n",
+    "    print(\"Number of all messages:\\t\\t\\t\\t\\t\\t\" + str(len(dfMessages.index)))\n",
+    "\n",
+    "    dfMessages = dfMessages[dfMessages.ftQrIsValidText == True]\n",
+    "    print(\"Number of valid text messages:\\t\\t\\t\\t\\t\" + str(len(dfMessages.index)))\n",
+    "\n",
+    "    dfMessagesOT = removeTextLengthOutliersFromDataFrame(\n",
+    "        dfMessages,\n",
+    "        interval = 3,               #Default is 3\n",
+    "        maxTextLength = 999999999   #TODO: Maybe enable max text length\n",
+    "        )\n",
+    "    print(\"Number of valid text messages (after outliers filtering):\\t\" + str(len(dfMessagesOT.index)))\n",
+    "\n",
+    "    print()\n",
+    "    print(\"Text Length Hist (after normalization)\")\n",
+    "    plt.figure(figsize=(16,9))\n",
+    "    _ = dfMessagesOT.ftTdTextLength.hist(bins=20)\n",
+    "    plt.title('Histogram Text Length (after normalization - global) (20 bins)')\n",
+    "\n",
+    "    if(outputFilename != \"\"):\n",
+    "        plt.savefig(dir_var_output + outputFilename)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "textLengthHistPlotter(outputFilename = \"meta-text-length-hist.svg\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Word Clouds\n",
+    "\n",
+    "- ``targetDataFrame``: DataFrame\n",
+    "- ``outputFilename``: filename in outputdir (set \"\" == no output file)\n",
+    "- ``filterList``: Exclude list\n",
+    "- ``flagShow``: Set true == show wordcloud\n",
+    "- ``configPlotWidth``: e.g. 1920\n",
+    "- ``configPlotHeight``: e.g. 1080"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# param rowID e.g. ftTdSafeText\n",
+    "def gloGenerateTextFromChat(df, rowID):\n",
+    "    df = df.copy()\n",
+    "    df = df[df.ftQrIsValidText == True]\n",
+    "    \n",
+    "    # Iterate over text (global text from group)\n",
+    "    textList = []\n",
+    "    for index, row in df.iterrows():\n",
+    "        textList.append(\" \" + row[rowID])\n",
+    "        \n",
+    "    textString = ''.join(textList)\n",
+    "\n",
+    "    return textString"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def generateWordCloud(targetDataFrame, outputFilename, filterList, flagShow, configPlotWidth, configPlotHeight):\n",
+    "    \n",
+    "    dfMessages = targetDataFrame.copy()\n",
+    "    \n",
+    "    textString = gloGenerateTextFromChat(dfMessages, rowID=\"ftTdSafeText\")\n",
+    "    \n",
+    "    stopWordsList = gloGetStopWordsList(filterList)\n",
+    "    \n",
+    "    # Generate word cloud and save it to file\n",
+    "    wordcloud = WordCloud(\n",
+    "                background_color=\"white\",\n",
+    "                width=configPlotWidth,\n",
+    "                height=configPlotHeight,\n",
+    "                stopwords=stopWordsList\n",
+    "            ).generate(textString)\n",
+    "\n",
+    "    if(outputFilename != \"\"):\n",
+    "        wordcloud.to_file(dir_var_output + outputFilename)\n",
+    "    \n",
+    "    if(flagShow):\n",
+    "        # Show top 20\n",
+    "        print()\n",
+    "        print(\"Top 20 occ:\\n\" + str(pd.Series(wordcloud.words_).head(20)))\n",
+    "        print()\n",
+    "        \n",
+    "        # Show word cloud\n",
+    "        print(\"- Start generate figure\")\n",
+    "        plt.figure(figsize=(14, 14))\n",
+    "        plt.imshow(wordcloud, interpolation=\"bilinear\")\n",
+    "        plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Über gesamten Chat (DataSet0)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Oliver Janich öffentlich (public_channel - dataSet0)\n",
+    "generateWordCloud(\n",
+    "    dictMessages[\"DS-05-01-2021/ChatExport_2021-01-05-janich\"],\n",
+    "    \"wordcloud-oliver-janich.png\",\n",
+    "    [\"bitte\", \"danke\", \"dabei\", \"natuerlich\", \"gut\", \"gerade\", \"gehen\", \"möglich\", \"bereit\", \"ja\", \"wer\", \"wegen\", \"heute\", \"macht\", \"muessen\", \"viele\", \"geht\", \"sagte\", \"gibt\", \"neue\", \"sollen\", \"laut\", \"ab\", \"sagt\", \"bereits\", \"seien\", \"waere\", \"U\"],\n",
+    "    flagShow = True,\n",
+    "    configPlotWidth = 1920,\n",
+    "    configPlotHeight = 1080\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# ATTILA HILDMANN OFFICIAL (public_channel - dataSet0)\n",
+    "if(C_SHORT_RUN == False):\n",
+    "    generateWordCloud(\n",
+    "        dictMessages[\"DS-05-01-2021/ChatExport_2021-01-05-hildmann\"],\n",
+    "        \"wordcloud-attila-hildmann.png\",\n",
+    "        [\"bitte\", \"danke\", \"Wolf\", \"folgen\", \"folg\", \"ATTILAHILDMANN\", \"heute\", \"dabei\", \"natuerlich\", \"gut\", \"gerade\", \"gehen\", \"möglich\", \"bereit\", \"ja\", \"wer\", \"wegen\", \"heute\", \"macht\", \"muessen\", \"viele\", \"geht\", \"sagte\", \"gibt\", \"neue\", \"sollen\", \"laut\", \"ab\", \"sagt\", \"bereits\", \"seien\", \"waere\", \"U\"],\n",
+    "        flagShow = True,\n",
+    "        configPlotWidth = 1920,\n",
+    "        configPlotHeight = 1080\n",
+    "    )"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Eva Herman Offiziell (public_channel - dataSet0)\n",
+    "if(C_SHORT_RUN == False):\n",
+    "    generateWordCloud(\n",
+    "        dictMessages[\"DS-05-01-2021/ChatExport_2021-01-05-evaherman\"],\n",
+    "        \"wordcloud-eva-herman.png\",\n",
+    "        [\"bitte\", \"danke\", \"heute\", \"dabei\", \"natuerlich\", \"gut\", \"gerade\", \"gehen\", \"möglich\", \"bereit\", \"ja\", \"wer\", \"wegen\", \"heute\", \"macht\", \"muessen\", \"viele\", \"geht\", \"sagte\", \"gibt\", \"neue\", \"sollen\", \"laut\", \"ab\", \"sagt\", \"bereits\", \"seien\", \"waere\", \"U\"],\n",
+    "        flagShow = True,\n",
+    "        configPlotWidth = 1920,\n",
+    "        configPlotHeight = 1080\n",
+    "    )"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Xavier Naidoo (public_channel - dataSet0)\n",
+    "if(C_SHORT_RUN == False):\n",
+    "    generateWordCloud(\n",
+    "        dictMessages[\"DS-05-01-2021/ChatExport_2021-01-05-xavier\"],\n",
+    "        \"wordcloud-xavier-naidoo.png\",\n",
+    "        [\"bitte\", \"danke\", \"xavier\", \"naidoo\", \"heute\", \"dabei\", \"natuerlich\", \"gut\", \"gerade\", \"gehen\", \"möglich\", \"bereit\", \"ja\", \"wer\", \"wegen\", \"heute\", \"macht\", \"muessen\", \"viele\", \"geht\", \"sagte\", \"gibt\", \"neue\", \"sollen\", \"laut\", \"ab\", \"sagt\", \"bereits\", \"seien\", \"waere\", \"U\"],\n",
+    "        flagShow = True,\n",
+    "        configPlotWidth = 1920,\n",
+    "        configPlotHeight = 1080\n",
+    "    )"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "if(C_SHORT_RUN == False):\n",
+    "    if(\"dataSet2\" in C_LOAD_DATASETS):\n",
+    "        generateWordCloud(\n",
+    "            dictMessages[\"DS-13-01-2021/ChatExport_2021-01-13-querdenken591Info\"],\n",
+    "            \"wordcloud-querdenken-591-info.png\",\n",
+    "            [\"bitte\", \"danke\", \"heute\", \"dabei\", \"natuerlich\", \"gut\", \"gerade\", \"gehen\", \"möglich\", \"bereit\", \"ja\", \"wer\", \"wegen\", \"heute\", \"macht\", \"muessen\", \"viele\", \"geht\", \"sagte\", \"gibt\", \"neue\", \"sollen\", \"laut\", \"ab\", \"sagt\", \"bereits\", \"seien\", \"waere\", \"U\"],\n",
+    "            flagShow = True,\n",
+    "            configPlotWidth = 1920,\n",
+    "            configPlotHeight = 1080\n",
+    "        )"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Zeitlicher Verlauf"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### Bestimmter Zeitraum aus DataFrame und Perioden berechnen"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def extractTimePeriodDataFrame(df, timeStart, timeStop):\n",
+    "\n",
+    "    #print(\"- Got Start \" + str(timeStart) + \" and Stop \" + str(timeStop))\n",
+    "\n",
+    "    df = df.copy()\n",
+    "    df[\"date\"] = pd.to_datetime(df[\"date\"])\n",
+    "    \n",
+    "    dfNew = df[df.date <= timeStop]\n",
+    "    dfNew = dfNew[dfNew.date >= timeStart]\n",
+    "\n",
+    "    dfNew = dfNew.set_index(\"date\")\n",
+    "    dfNew = dfNew.sort_index()\n",
+    "\n",
+    "    return dfNew"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### Perioden berechnen"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def generateWCPeriod():\n",
+    "    return list(pd.date_range( #m/d/y\n",
+    "            start='1/1/2018',\n",
+    "            end='2/1/2021',\n",
+    "            #freq=\"W-MON\",\n",
+    "            freq=\"1M\"\n",
+    "            ))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### Wrapper\n",
+    "\n",
+    "- ``fP``: filePath\n",
+    "- ``label``: e.g. chatName\n",
+    "- ``filterList``: additional stopWords"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def generateWordCloudAuto(fP, label, filterList):\n",
+    "\n",
+    "    gloStartStopwatch(\"Generate World Cloud Auto >>\" + fP + \"<<\")\n",
+    "\n",
+    "    periods = generateWCPeriod()\n",
+    "\n",
+    "    dictSaved = {}\n",
+    "\n",
+    "    prevStart = periods[0]\n",
+    "\n",
+    "    for period in periods:\n",
+    "\n",
+    "        stop = period\n",
+    "\n",
+    "        e = extractTimePeriodDataFrame(dictMessages[fP], timeStart = prevStart, timeStop = stop)\n",
+    "\n",
+    "        if(prevStart != stop and len(e.index) > 0):\n",
+    "            fileName = \"autoWordCloud/\" + queryChatName(fP) + \"-\" + str(prevStart) + \"-\" + str(stop) + \".png\"\n",
+    "            generateWordCloud(\n",
+    "                e,\n",
+    "                fileName,\n",
+    "                filterList,\n",
+    "                flagShow = False,\n",
+    "                configPlotWidth = 1280,\n",
+    "                configPlotHeight = 720\n",
+    "            )\n",
+    "            #print(\"- Save file \" + fileName)\n",
+    "            dictSaved[fileName] = str(prevStart) + \" - \" + str(stop)\n",
+    "\n",
+    "        \"\"\"\n",
+    "        else:\n",
+    "            print(\"- Start and Stop equal or no message found\")\n",
+    "        \"\"\"\n",
+    "\n",
+    "        prevStart = stop\n",
+    "\n",
+    "    gloWriteDictToFile(\"auto-wordcloud-\" + label + \".csv\", dictSaved)\n",
+    "\n",
+    "    gloStopStopwatch(\"Generate World Cloud Auto >>\" + fP + \"<<\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### Anwenden auf DataSet0"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "if(C_SHORT_RUN == False):\n",
+    "    generateWordCloudAuto(\n",
+    "        fP = \"DS-05-01-2021/ChatExport_2021-01-05-janich\",\n",
+    "        label = \"oliver-janich\",\n",
+    "        filterList = []\n",
+    "    )"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "if(C_SHORT_RUN == False):\n",
+    "    generateWordCloudAuto(\n",
+    "        fP = \"DS-05-01-2021/ChatExport_2021-01-05-hildmann\",\n",
+    "        label = \"attila-hildmann\",\n",
+    "        filterList = []\n",
+    "    )"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "if(C_SHORT_RUN == False):\n",
+    "    generateWordCloudAuto(\n",
+    "        fP = \"DS-05-01-2021/ChatExport_2021-01-05-evaherman\",\n",
+    "        label = \"eva-herman\",\n",
+    "        filterList = []\n",
+    "    )"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "if(C_SHORT_RUN == False):\n",
+    "    generateWordCloudAuto(\n",
+    "        fP = \"DS-05-01-2021/ChatExport_2021-01-05-xavier\",\n",
+    "        label = \"xavier-naidoo\",\n",
+    "        filterList = []\n",
+    "    )"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### N grams"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Text zu N grams"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def generateNGram(text, n):\n",
+    "    # https://albertauyeung.github.io/2018/06/03/generating-ngrams.html\n",
+    "    text = text.lower()\n",
+    "    text = re.sub(r'[^a-zA-Z0-9\\s]', ' ', text)\n",
+    "    tokens = [token for token in text.split(\" \") if token != \"\"]\n",
+    "    \n",
+    "    return list(ngrams(tokens, n))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### Beispiele (1-3)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "sampleText = \"Mir geht es heute gut!\"\n",
+    "sampleText"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "generateNGram(sampleText, 1)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "generateNGram(sampleText, 2)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "generateNGram(sampleText, 3)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Top N grams pro Chat"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### Implementierung"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def generateNGramChat(fP, n, mostCommon):\n",
+    "    return Counter(\n",
+    "        generateNGram(\n",
+    "            gloGenerateTextFromChat(dictMessages[fP], rowID=\"ftTdSafeText\"),\n",
+    "            n = n\n",
+    "        )\n",
+    "    ).most_common(mostCommon)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def generateNGramAuto(filePathList, n, mostCommon):\n",
+    "    for fP in filePathList:\n",
+    "\n",
+    "        print()\n",
+    "        print(\"Analyse now >>\" + fP + \"<<\")\n",
+    "\n",
+    "        c = generateNGramChat(\n",
+    "            fP,\n",
+    "            n = n,\n",
+    "            mostCommon = mostCommon\n",
+    "        )\n",
+    "\n",
+    "        print (\"\\n\".join(map(str, c)))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### Angwendet auf DataSet 0 (später: Identifizierung von Autoren)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "generateNGramAuto(\n",
+    "    dfInputFiles[dfInputFiles.inputLabel == \"dataSet0\"].inputPath,\n",
+    "    n = 1,\n",
+    "    mostCommon = 10\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "generateNGramAuto(\n",
+    "    dfInputFiles[dfInputFiles.inputLabel == \"dataSet0\"].inputPath,\n",
+    "    n = 2,\n",
+    "    mostCommon = 10\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "generateNGramAuto(\n",
+    "    dfInputFiles[dfInputFiles.inputLabel == \"dataSet0\"].inputPath,\n",
+    "    n = 3,\n",
+    "    mostCommon = 10\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### Angwendet auf DataSet 0 (Muster Erkennung)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "generateNGramAuto(\n",
+    "    dfInputFiles[dfInputFiles.inputLabel == \"dataSet0\"].inputPath,\n",
+    "    n = 8,\n",
+    "    mostCommon = 10\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### POS-Tagging - Eigennamen"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Implementierung"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# param outputFilename, if \"\" - no output\n",
+    "def plotFreqNouns(inputText, outputFilename, mostCommon, flagRemoveStopwords):\n",
+    "    # https://textmining.wp.hs-hannover.de/Preprocessing.html\n",
+    "    nouns = []\n",
+    "    sentences_tok = [nltk.tokenize.word_tokenize(sent) for sent in getTokenFromText(inputText)]\n",
+    "\n",
+    "    for sent in sentences_tok:\n",
+    "        tags = hanoverTagger.tag_sent(sent) \n",
+    "        nouns_from_sent = [lemma for (word,lemma,pos) in tags if pos == \"NE\"] # pos == \"NN\" or \n",
+    "        nouns.extend(nouns_from_sent)\n",
+    "\n",
+    "    pNouns = list()\n",
+    "\n",
+    "    if(flagRemoveStopwords):\n",
+    "\n",
+    "        print(\"- Warn: remove stopWords\")\n",
+    "        stopWords = gloGetStopWordsList(filterList = list())\n",
+    "        for n in nouns:\n",
+    "            if n.lower() not in stopWords:\n",
+    "                pNouns.append(n)\n",
+    "\n",
+    "    else:\n",
+    "        pNouns = nouns\n",
+    "\n",
+    "    # Thank you https://stackoverflow.com/questions/52908305/how-to-save-a-nltk-freqdist-plot\n",
+    "    fig = plt.figure(figsize = (16,9))\n",
+    "    plt.gcf().subplots_adjust(bottom=0.15)\n",
+    "\n",
+    "    fdist = nltk.FreqDist(pNouns)    \n",
+    "\n",
+    "    fdist.plot(mostCommon,cumulative=False)\n",
+    "\n",
+    "    _ = plt.show()\n",
+    "\n",
+    "    if(outputFilename != \"\"):\n",
+    "        fig.savefig(dir_var_output + outputFilename, bbox_inches=\"tight\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Über einen gesamten Chat"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def generateFreqNounsPlot(fP, mostCommon, outputFilename):\n",
+    "\n",
+    "    gloStartStopwatch(\"Generate text\")\n",
+    "    df = dictMessages[fP].copy()\n",
+    "    inputText = gloGenerateTextFromChat(df, \"ftTdCleanText\")\n",
+    "    gloStopStopwatch(\"Generate text\")\n",
+    "\n",
+    "    gloStartStopwatch(\"Process data\")\n",
+    "    plotFreqNouns(inputText, outputFilename=outputFilename, mostCommon=mostCommon, flagRemoveStopwords=True)\n",
+    "    gloStopStopwatch(\"Process data\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### Angewendet auf DataSet0"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "if(C_SHORT_RUN == False):\n",
+    "    generateFreqNounsPlot(\"DS-05-01-2021/ChatExport_2021-01-05-janich\", mostCommon=25, outputFilename = \"freq-nouns-oliver-janich.svg\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "if(C_SHORT_RUN == False):\n",
+    "    generateFreqNounsPlot(\"DS-05-01-2021/ChatExport_2021-01-05-hildmann\", mostCommon=25, outputFilename = \"freq-nouns-attila-hildmann.svg\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "if(C_SHORT_RUN == False):\n",
+    "    generateFreqNounsPlot(\"DS-05-01-2021/ChatExport_2021-01-05-evaherman\", mostCommon=25, outputFilename = \"freq-nouns-eva-herman.svg\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "if(C_SHORT_RUN == False):\n",
+    "    generateFreqNounsPlot(\"DS-05-01-2021/ChatExport_2021-01-05-xavier\", mostCommon=25, outputFilename = \"freq-nouns-xavier-naidoo.svg\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Named-entity recognition (NER)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Beispiele"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "sampleText = \"Hallo, mein Name ist Maximilian Mustermann und ich lebe in Deutschland in Europa.\"\n",
+    "sampleText"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "processNerPipeline(sampleText, \"ner-bert\", 0)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "processNerPipeline(sampleText, \"ner-xlm-roberta\", 0)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Angwendet auf DataSet0"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def evalNerPipeline(pipelineKey, inputSelector, configTopN):\n",
+    "\n",
+    "    if(inputSelector in C_TRANSFORMERS_DATASETS):\n",
+    "        \n",
+    "        filePaths = dfInputFiles[dfInputFiles.inputLabel == inputSelector].inputPath\n",
+    "\n",
+    "        for fP in filePaths:\n",
+    "            \n",
+    "            gloStartStopwatch(\"Process now >>\" + str(fP) + \"<<\")\n",
+    "\n",
+    "            if(pipelineKey == \"ftTrNerRoberta\" or pipelineKey == \"ftTrNerBert\"):\n",
+    "                \n",
+    "                df = dictMessages[fP].copy()\n",
+    "                df = df[df.ftQrIsValidText == True]\n",
+    "                \n",
+    "                listPer     = list()\n",
+    "                listMisc    = list()\n",
+    "                listOrg     = list()\n",
+    "                listLoc     = list()\n",
+    "\n",
+    "                for index, row in df.iterrows():\n",
+    "\n",
+    "                    d = row[pipelineKey]\n",
+    "                    \n",
+    "                    listPer.extend(d[\"per\"])\n",
+    "                    listMisc.extend(d[\"misc\"])\n",
+    "                    listOrg.extend(d[\"org\"])\n",
+    "                    listLoc.extend(d[\"loc\"])\n",
+    "\n",
+    "                print(\"- Top per -\")\n",
+    "                print (\"\\n\".join(map(str, Counter(listPer).most_common(configTopN))))\n",
+    "                print()\n",
+    "\n",
+    "                print(\"- Top misc -\")\n",
+    "                print (\"\\n\".join(map(str, Counter(listMisc).most_common(configTopN))))\n",
+    "                print()\n",
+    "\n",
+    "                print(\"- Top org -\")\n",
+    "                print (\"\\n\".join(map(str, Counter(listOrg).most_common(configTopN))))\n",
+    "                print()\n",
+    "\n",
+    "                print(\"- Top loc -\")\n",
+    "                print (\"\\n\".join(map(str, Counter(listLoc).most_common(configTopN))))\n",
+    "                print()\n",
+    "\n",
+    "            else:\n",
+    "                print(\"Error pipeline not found >>\" + str(pipelineKey) + \"<<\")\n",
+    "\n",
+    "            gloStopStopwatch(\"Process now >>\" + str(fP) + \"<<\")\n",
+    "\n",
+    "    else:\n",
+    "        print(\"Error data not found >>\" + inputSelector + \"<<\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "evalNerPipeline(\"ftTrNerRoberta\", \"dataSet0\", configTopN = 20)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "evalNerPipeline(\"ftTrNerBert\", \"dataSet0\", configTopN = 20)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Sentiment analysis"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def evalSenPipeline(pipelineKey, inputSelector, outputFilename, configRolling, configShowScatter):\n",
+    "\n",
+    "    if(inputSelector in C_TRANSFORMERS_DATASETS):\n",
+    "        \n",
+    "        filePaths = dfInputFiles[dfInputFiles.inputLabel == inputSelector].inputPath\n",
+    "\n",
+    "        plt.figure(figsize=(16, 9))\n",
+    "\n",
+    "        for fP in filePaths:\n",
+    "            \n",
+    "            gloStartStopwatch(\"Process now >>\" + str(fP) + \"<<\")\n",
+    "\n",
+    "            if(pipelineKey == \"sen-bert\"):\n",
+    "                \n",
+    "                df = dictMessages[fP].copy()\n",
+    "                df = df[df.ftQrIsValidText == True]\n",
+    "\n",
+    "                df[\"date\"] = pd.to_datetime(df[\"date\"])\n",
+    "                df = df.set_index(\"date\")\n",
+    "                df = df.sort_index()\n",
+    "\n",
+    "                # key = x = time / value = y = score\n",
+    "                dictData = {}\n",
+    "\n",
+    "                for index, row in df.iterrows():\n",
+    "                    \n",
+    "                    date = index\n",
+    "                    score = row[\"ftTrSenBert\"]\n",
+    "\n",
+    "                    if(score != -1):\n",
+    "                        dictData[date] = score\n",
+    "\n",
+    "                # Plot\n",
+    "                x,y = zip(*sorted(dictData.items()))\n",
+    "                \n",
+    "                df = pd.DataFrame(list(zip(x, y)), columns =['x', 'y'])\n",
+    "\n",
+    "                df['rolling'] = df.y.rolling(configRolling).mean()\n",
+    "\n",
+    "                sns.lineplot(data=df, x=\"x\", y=\"rolling\", label = queryChatName(fP))\n",
+    "\n",
+    "                if(configShowScatter):\n",
+    "                    sns.scatterplot(data=df, x=\"x\", y=\"y\", label = queryChatName(fP), marker=\"+\")\n",
+    "\n",
+    "                plt.gcf().autofmt_xdate()\n",
+    "\n",
+    "                # Add vlines\n",
+    "                vLineMin = 2\n",
+    "                vLineMax = 4\n",
+    "\n",
+    "            elif(pipelineKey==\"sentiment\"):\n",
+    "\n",
+    "                df = dictMessages[fP].copy()\n",
+    "                df = df[df.ftQrIsValidText == True]\n",
+    "\n",
+    "                df[\"date\"] = pd.to_datetime(df[\"date\"])\n",
+    "                df = df.set_index(\"date\")\n",
+    "                df = df.sort_index()\n",
+    "\n",
+    "                # key = x = time / value = y = score\n",
+    "                dictData = {}\n",
+    "\n",
+    "                for index, row in df.iterrows():\n",
+    "                    \n",
+    "                    date = index\n",
+    "                    retDict = row[\"ftSenTb\"]\n",
+    "\n",
+    "                    if(retDict != None):\n",
+    "                        polarity = retDict[\"polarity\"]\n",
+    "                        dictData[date] = polarity\n",
+    "\n",
+    "                # Plot\n",
+    "                x,y = zip(*sorted(dictData.items()))\n",
+    "\n",
+    "                df = pd.DataFrame(list(zip(x, y)), columns =['x', 'y'])\n",
+    "\n",
+    "                df['rolling'] = df.y.rolling(configRolling).mean()\n",
+    "\n",
+    "                sns.lineplot(data=df, x=\"x\", y=\"rolling\", label = queryChatName(fP))\n",
+    "\n",
+    "                if(configShowScatter):\n",
+    "                    sns.scatterplot(data=df, x=\"x\", y=\"y\", label = queryChatName(fP), marker=\"+\")\n",
+    "\n",
+    "                plt.gcf().autofmt_xdate()\n",
+    "\n",
+    "                # Add vlines\n",
+    "                vLineMin = -0.05\n",
+    "                vLineMax = 0.175\n",
+    "\n",
+    "            elif(pipelineKey==\"subjectivity\"):\n",
+    "\n",
+    "                df = dictMessages[fP].copy()\n",
+    "                df = df[df.ftQrIsValidText == True]\n",
+    "\n",
+    "                df[\"date\"] = pd.to_datetime(df[\"date\"])\n",
+    "                df = df.set_index(\"date\")\n",
+    "                df = df.sort_index()\n",
+    "\n",
+    "                # key = x = time / value = y = score\n",
+    "                dictData = {}\n",
+    "\n",
+    "                for index, row in df.iterrows():\n",
+    "                    \n",
+    "                    date = index\n",
+    "                    retDict = row[\"ftSenTb\"]\n",
+    "\n",
+    "                    if(retDict != None):\n",
+    "\n",
+    "                        subjectivity = retDict[\"subjectivity\"]\n",
+    "                        dictData[date] = subjectivity\n",
+    "\n",
+    "                # Plot\n",
+    "                x,y = zip(*sorted(dictData.items()))\n",
+    "\n",
+    "                df = pd.DataFrame(list(zip(x, y)), columns =['x', 'y'])\n",
+    "\n",
+    "                df['rolling'] = df.y.rolling(configRolling).mean()\n",
+    "\n",
+    "                sns.lineplot(data=df, x=\"x\", y=\"rolling\", label = queryChatName(fP))\n",
+    "\n",
+    "                if(configShowScatter):\n",
+    "                    sns.scatterplot(data=df, x=\"x\", y=\"y\", label = queryChatName(fP), marker=\"+\")\n",
+    "\n",
+    "                plt.gcf().autofmt_xdate()\n",
+    "\n",
+    "                # Add vlines\n",
+    "                vLineMin = 0\n",
+    "                vLineMax = 0.10\n",
+    "                \n",
+    "            else:\n",
+    "                print(\"Error pipeline not found >>\" + str(pipelineKey) + \"<<\")\n",
+    "\n",
+    "            gloStopStopwatch(\"Process now >>\" + str(fP) + \"<<\")\n",
+    "\n",
+    "        # yy - mm - dd\n",
+    "        # TODO: Double check https://www.bundesgesundheitsministerium.de/coronavirus/chronik-coronavirus.html?stand=20210104\n",
+    "        plt.vlines(x = [\"2018-12-10\"], ymin=vLineMin, ymax=vLineMax, color=\"orange\", ls='--', label=\"Global Compact for Migration (2018-12-10)\")\n",
+    "        plt.vlines(x = [\"2020-01-27\"], ymin=vLineMin, ymax=vLineMax, color=\"grey\", ls='--', label=\"Corona Patient Zero Germany\")\n",
+    "        plt.vlines(x = [\"2020-03-23\"], ymin=vLineMin, ymax=vLineMax, color=\"purple\", ls='--', label=\"1. Lockdown Germany (2020-03-23)\")\n",
+    "        plt.vlines(x = [\"2020-11-02\"], ymin=vLineMin, ymax=vLineMax, color=\"purple\", ls='--', label=\"2. Lockdown light Germany (2020-11-02)\")\n",
+    "        plt.vlines(x = [\"2020-12-16\"], ymin=vLineMin, ymax=vLineMax, color=\"purple\", ls='--', label=\"3. Lockdown Germany (2020-12-16)\")\n",
+    "\n",
+    "        _ = plt.legend()\n",
+    "\n",
+    "        if(outputFilename != \"\"):\n",
+    "            plt.savefig(dir_var_output + outputFilename)\n",
+    "\n",
+    "    else:\n",
+    "        print(\"Error data not found >>\" + inputSelector + \"<<\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### TextBlob"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### Beispiele"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "print(str(processSentimentAnalysisPython(\"Heute ist ein toller Tag. Ich freue mich hier zu sein!\")))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "print(str(processSentimentAnalysisPython(\"Heute war ein furchtbarer Tag. Ich hasse alles.\")))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### DataSet0"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Implementierung für beide Komponenten"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Polarity"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "evalSenPipeline(\"sentiment\", \"dataSet0\", outputFilename = \"\", configRolling = 600, configShowScatter = True)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "evalSenPipeline(\"sentiment\", \"dataSet0\", outputFilename = \"eval-pipeline-sen-textblob-dataSet0.svg\", configRolling = 600, configShowScatter = False)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Subjectivity"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "evalSenPipeline(\"subjectivity\", \"dataSet0\", outputFilename = \"\", configRolling = 600, configShowScatter = True)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "evalSenPipeline(\"subjectivity\", \"dataSet0\", outputFilename = \"eval-pipeline-subjectivity-dataSet0.svg\", configRolling = 600, configShowScatter = False)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Transformers"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### Beispiele"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "processSenPipeline(\"Das ist toll. Ich würde es mir wieder kaufen!\", \"sen-bert\", 0)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "processSenPipeline(\"Das ist toll. Ich würde es aber nicht mehr kaufen!\", \"sen-bert\", 0)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "processSenPipeline(\"Das funktioniert nicht.\", \"sen-bert\", 0)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### DataSet0"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "evalSenPipeline(\"sen-bert\", \"dataSet0\", outputFilename = \"\", configRolling = 600, configShowScatter = True)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "evalSenPipeline(\"sen-bert\", \"dataSet0\", outputFilename = \"eval-pipeline-sen-dataSet0.svg\", configRolling = 600, configShowScatter = False)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Latent Dirichlet Allocation (LDA)\n",
+    "\n",
+    "Inspiriert von: https://towardsdatascience.com/end-to-end-topic-modeling-in-python-latent-dirichlet-allocation-lda-35ce4ed6b3e0\n",
+    "\n",
+    "Beispiel Topic Models Implementierungen in Python: https://nlpforhackers.io/topic-modeling/\n",
+    "\n",
+    "- LDA (Probabilistic Graphical Models)\n",
+    "- LSA or LSI (Linear Algebra Singular Value Decomposition)\n",
+    "- NMF (Linear Algebra Non-Negative Matrix Factorization)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Beispiele"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### LDA Aufbereitung - Text"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "sampleList = [\"Studenten sind faul\", \"und Studenten essen gerne Eis\"]\n",
+    "sampleList"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def gensimPreprocess(sentences):\n",
+    "    for sentence in sentences:\n",
+    "        # deacc= removes punctuations\n",
+    "        yield(gensim.utils.simple_preprocess(str(sentence), deacc=True))\n",
+    "        \n",
+    "sampleList = list(gensimPreprocess(sampleList))\n",
+    "sampleList"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def gensimRemoveStopwords(inputList, stop_words):\n",
+    "    return [[word for word in simple_preprocess(str(doc)) if word not in stop_words] for doc in inputList]\n",
+    "\n",
+    "sampleList = gensimRemoveStopwords(inputList = sampleList, stop_words=gloGetStopWordsList(filterList = []))\n",
+    "sampleList"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### LDA Aufbereitung - Dictionary"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def ldaGetDictionary(inputList):\n",
+    "    return corpora.Dictionary(inputList)\n",
+    "\n",
+    "sampleDictonary = ldaGetDictionary(sampleList)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "sampleDictonary.num_docs"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "sampleDictonary.num_pos"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "sampleDictonary.token2id"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### LDA Aufbereitung - Bag-Of-Words (BOW)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def ldaGetBOW(dictonary, inputList):\n",
+    "    return [dictonary.doc2bow(text) for text in inputList]\n",
+    "\n",
+    "ldaGetBOW(sampleDictonary, sampleList)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Implementierung\n",
+    "\n",
+    "Return\n",
+    "\n",
+    "- ``lda_model``\n",
+    "- ``corpus``\n",
+    "- ``id2word``"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def processLda(df, num_topics, debugPrint, stopWords):\n",
+    "\n",
+    "    df = df.copy()\n",
+    "\n",
+    "    df = df[df.ftQrIsValidText == True]\n",
+    "\n",
+    "    df = df[[\"date\", \"ftTdSafeLowerText\"]]\n",
+    "\n",
+    "    df = df.set_index(\"date\")\n",
+    "    df = df.sort_index()\n",
+    "\n",
+    "    inputList = df.ftTdSafeLowerText.values.tolist()\n",
+    "\n",
+    "    inputList = list(gensimPreprocess(inputList))\n",
+    "    inputList  = gensimRemoveStopwords(inputList, stopWords)\n",
+    "\n",
+    "    dictionary = ldaGetDictionary(inputList)\n",
+    "\n",
+    "    # Term Document Frequency (dict to bag of words)\n",
+    "    corpus = ldaGetBOW(dictionary, inputList)\n",
+    "\n",
+    "    # Build LDA model\n",
+    "    lda_model = gensim.models.LdaMulticore(corpus=corpus,\n",
+    "                                       id2word=dictionary,\n",
+    "                                       num_topics=num_topics)\n",
+    "\n",
+    "    if(debugPrint):\n",
+    "        pprint(lda_model.print_topics())\n",
+    "        #doc_lda = lda_model[corpus] # TODO: ?\n",
+    "\n",
+    "    return (lda_model, corpus, dictionary)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Lda zu Html"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def ldaToHtml(lda_model, corpus, id2word, outputLabel):\n",
+    "\n",
+    "    LDAvis_prepared = pyLDAvis.gensim_models.prepare(lda_model, corpus, id2word)\n",
+    "\n",
+    "    pyLDAvis.save_html(LDAvis_prepared, dir_var_output + 'pyLDAvis/' + outputLabel + '-report.html')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Wrapper"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# param outputLabel required\n",
+    "def autoLda(df, debugPrint, outputLabel, filterList, listNumberTopics):\n",
+    "\n",
+    "    for iTopics in listNumberTopics:\n",
+    "\n",
+    "        iLabel = outputLabel + \"-t-\" + str(iTopics)\n",
+    "\n",
+    "        gloStartStopwatch(\"Process LDA (\" + str(iTopics) + \" topics) >> \"+ iLabel + \"<<\")\n",
+    "               \n",
+    "        try:\n",
+    "            \n",
+    "            lda_model, corpus, id2word = processLda(\n",
+    "                    df = df,\n",
+    "                    num_topics = iTopics,\n",
+    "                    debugPrint = debugPrint,\n",
+    "                    stopWords = gloGetStopWordsList(filterList)\n",
+    "                )\n",
+    "\n",
+    "            ldaToHtml(\n",
+    "                    lda_model = lda_model,\n",
+    "                    corpus = corpus,\n",
+    "                    id2word = id2word,\n",
+    "                    outputLabel = iLabel\n",
+    "                )\n",
+    "\n",
+    "        except:\n",
+    "            print(\"Error in process lda\")\n",
+    "\n",
+    "        gloStopStopwatch(\"Process LDA (\" + str(iTopics) + \" topics) >> \"+ iLabel + \"<<\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### LDA auf DataSet0"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "if(C_SHORT_RUN == False):\n",
+    "    autoLda(\n",
+    "        df = dictMessages[\"DS-05-01-2021/ChatExport_2021-01-05-janich\"],\n",
+    "        debugPrint = False,\n",
+    "        outputLabel = \"oliver-janich\",\n",
+    "        filterList = [],\n",
+    "        listNumberTopics = [2,4,8,16]\n",
+    "    )"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "if(C_SHORT_RUN == False):\n",
+    "    autoLda(\n",
+    "        df = dictMessages[\"DS-05-01-2021/ChatExport_2021-01-05-hildmann\"],\n",
+    "        debugPrint = False,\n",
+    "        outputLabel = \"attila-hildmann\",\n",
+    "        filterList = [],\n",
+    "        listNumberTopics = [2,4,8,16]\n",
+    "    )"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "if(C_SHORT_RUN == False):\n",
+    "    autoLda(\n",
+    "        df = dictMessages[\"DS-05-01-2021/ChatExport_2021-01-05-evaherman\"],\n",
+    "        debugPrint = False,\n",
+    "        outputLabel = \"eva-herman\",\n",
+    "        filterList = [],\n",
+    "        listNumberTopics = [2,4,8,16]\n",
+    "    )"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "if(C_SHORT_RUN == False):\n",
+    "    autoLda(\n",
+    "        df = dictMessages[\"DS-05-01-2021/ChatExport_2021-01-05-xavier\"],\n",
+    "        debugPrint = False,\n",
+    "        outputLabel = \"xavier-naidoo\",\n",
+    "        filterList = [],\n",
+    "        listNumberTopics = [2,4,8,16]\n",
+    "    )"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### LDA auf DataSet1a"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "if(C_SHORT_RUN == False):\n",
+    "    if(\"dataSet1a\" in C_LOAD_DATASETS):\n",
+    "        autoLda(\n",
+    "            df = dictMessages[\"DS-05-01-2021a/ChatExport_2021-01-05-freiheitsChat\"],\n",
+    "            debugPrint = False,\n",
+    "            outputLabel = \"group-freiheitsChat\",\n",
+    "            filterList = [],\n",
+    "            listNumberTopics = [2,4,8,16,32]\n",
+    "        )"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "if(C_SHORT_RUN == False):\n",
+    "    if(\"dataSet1a\" in C_LOAD_DATASETS):\n",
+    "        autoLda(\n",
+    "            df = dictMessages[\"DS-05-01-2021a/ChatExport_2021-01-05-freiheitsChatBlitz\"],\n",
+    "            debugPrint = False,\n",
+    "            outputLabel = \"group-freiheitsChatBlitz\",\n",
+    "            filterList = [],\n",
+    "            listNumberTopics = [2,4,8,16,32]\n",
+    "        )"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "if(C_SHORT_RUN == False):\n",
+    "    if(\"dataSet1a\" in C_LOAD_DATASETS):\n",
+    "        autoLda(\n",
+    "            df = dictMessages[\"DS-05-01-2021a/ChatExport_2021-01-05-liveFuerDeOsSc\"],\n",
+    "            debugPrint = False,\n",
+    "            outputLabel = \"group-liveFuerDeOsSc\",\n",
+    "            filterList = [],\n",
+    "            listNumberTopics = [2,4,8,16,32]\n",
+    "        )"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Ausblick Textgenerierung"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Globale Stoppuhr beenden"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "gloStopStopwatch(\"Global notebook\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Bsp Text"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "sampleText = \"Hallo, mein Name ist Max und ich esse gerne Eis. Ich schreibe gerade an meiner Masterarbeit und teste neue Verfahren. Ich komme aus dem Großraum München und bin Informatiker.\"\n",
+    "sampleText"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def processTextGenPipeline(inputText, pipelineKey, cMaxLength):\n",
+    "    if(pipelineKey in pipelineKeys):\n",
+    "        return dictPipelines[pipelineKey](inputText, max_length=cMaxLength)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### gpt2"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "processTextGenPipeline(sampleText, \"text-gen-gpt2\", cMaxLength = 100)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### gpt2-faust"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "processTextGenPipeline(sampleText, \"text-gen-gpt2-faust\", cMaxLength = 100)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Mehr lesen / Inspirationen\n",
+    "\n",
+    "- https://towardsai.net/p/data-mining/text-mining-in-python-steps-and-examples-78b3f8fd913b\n",
+    "- https://towardsdatascience.com/text-mining-for-dummies-text-classification-with-python-98e47c3a9deb\n",
+    "- https://www.analyticsvidhya.com/blog/2018/02/the-different-methods-deal-text-data-predictive-python/\n",
+    "- https://realpython.com/python-keras-text-classification/\n",
+    "- https://www.tidytextmining.com/ngrams.html\n",
+    "- http://seaborn.pydata.org/tutorial/categorical.html?highlight=bar%20plot\n",
+    "- https://towardsdatascience.com/visualizing-data-with-pair-plots-in-python-f228cf529166\n",
+    "- https://www.kirenz.com/post/2019-08-13-network_analysis/\n",
+    "- https://tgstat.com\n",
+    "- https://huggingface.co/bert-base-german-cased\n",
+    "- https://github.com/sekhansen/text-mining-tutorial/tree/master\n",
+    "- https://www.machinelearningplus.com/nlp/topic-modeling-gensim-python/\n",
+    "- https://towardsdatascience.com/end-to-end-topic-modeling-in-python-latent-dirichlet-allocation-lda-35ce4ed6b3e0\n",
+    "- https://github.com/sekhansen/text-mining-tutorial/blob/master/tutorial_notebook.ipynb\n",
+    "- https://textmining.wp.hs-hannover.de/Preprocessing.html\n",
+    "- https://likegeeks.com/nlp-tutorial-using-python-nltk/\n",
+    "- https://www.datacamp.com/community/tutorials/text-analytics-beginners-nltk\n",
+    "- https://data-flair.training/blogs/nltk-python-tutorial/\n",
+    "- https://github.com/expectocode/telegram-analysis\n",
+    "- https://stackoverflow.com/questions/23199796/detect-and-exclude-outliers-in-pandas-data-frame\n",
+    "- https://stackoverflow.com/questions/6718633/python-regular-expression-again-match-url"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.8.8"
+  },
+  "toc-showtags": false
+ },
+ "nbformat": 4,
+ "nbformat_minor": 4
+}
