@@ -227,19 +227,19 @@ $.ajax({
 
 ## Term Tracer
 
-### Channel Oliver Janich (DataSet0)
+### Channel Oliver Janich
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/word-tracer-oliver-janich.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/word-tracer-oliver-janich.svg)
 
-### Channel Attila Hildmann (DataSet0)
+### Channel Attila Hildmann
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/word-tracer-attila-hildmann.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/word-tracer-attila-hildmann.svg)
 
-### Channel Eva Herman (DataSet0)
+### Channel Eva Herman
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/word-tracer-eva-herman.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/word-tracer-eva-herman.svg)
 
-### Channel Xavier Naidoo (DataSet0)
+### Channel Xavier Naidoo
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/word-tracer-xavier-naidoo.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/word-tracer-xavier-naidoo.svg)
 
@@ -281,7 +281,7 @@ $.ajax({
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/eval-pipeline-sen-dataSet0.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/eval-pipeline-sen-dataSet0.svg)
 
-## Public channels classifiers (Confusion matrix)
+## Confusion matrix (Public channels classifiers)
 
 ### Linear SVC Classifier
 
