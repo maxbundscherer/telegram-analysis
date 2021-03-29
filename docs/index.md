@@ -17,6 +17,7 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 
 * TOC
 {:toc}
+
 ## Meta
 
 ### Chat Overview
@@ -53,7 +54,8 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/meta-text-length-hist.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/meta-text-length-hist.svg)
 
-## Auto Word Clouds (Time)
+## Time Plot Auto Word Clouds
+
 <!-- Slider -->
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
@@ -87,7 +89,7 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
     
     </script>
 
-### WordCloud Oliver Janich (Channel - DataSet0)
+### WordCloud Oliver Janich
 <!-- Sliders -->
 <div id="slider-oliver-janich"></div>
 <script>
@@ -103,7 +105,7 @@ $.ajax({
         });
 </script>
 
-### WordCloud Attila Hildmann (Channel - DataSet0)
+### WordCloud Attila Hildmann
 <!-- Sliders -->
 <div id="slider-attila-hildmann"></div>
 <script>
@@ -119,7 +121,7 @@ $.ajax({
         });
 </script>
 
-### WordCloud Eva Herman (Channel - DataSet0)
+### WordCloud Eva Herman
 <!-- Sliders -->
 <div id="slider-eva-herman"></div>
 <script>
@@ -135,7 +137,7 @@ $.ajax({
         });
 </script>
 
-### WordCloud Xavier Naidoo (Channel - DataSet0)
+### WordCloud Xavier Naidoo
 <!-- Sliders -->
 <div id="slider-xavier-naidoo"></div>
 <script>
@@ -152,6 +154,8 @@ $.ajax({
 </script>
 
 ## Latent Dirichlet Allocation (LDA)
+
+### Channels
 
 **Oliver Janich**
 
@@ -181,6 +185,8 @@ $.ajax({
 - [Channel Xavier Naidoo (8 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/xavier-naidoo-t-8-report.html)
 - [Channel Xavier Naidoo (16 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/xavier-naidoo-t-16-report.html)
 
+### Groups
+
 **FREIHEITS-CHAT**
 
 - [Group FREIHEITS-CHAT (2 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/group-freiheitsChat-t-2-report.html)
@@ -204,6 +210,7 @@ $.ajax({
 - [Group Livestreaming für Deutschland, Österreich ... (8 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/group-liveFuerDeOsSc-t-8-report.html)
 - [Group Livestreaming für Deutschland, Österreich ... (16 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/group-liveFuerDeOsSc-t-16-report.html)
 - [Group Livestreaming für Deutschland, Österreich ... (32 Topics)](https://maxbundscherer.github.io/telegram-analysis/topics/group-liveFuerDeOsSc-t-32-report.html)
+
 ## Social Graphs
 
 ### Forwarded From
@@ -238,25 +245,25 @@ $.ajax({
 
 ## Frequent Nouns
 
-### Channel Oliver Janich (DataSet0)
+### Channel Oliver Janich
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/freq-nouns-oliver-janich.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/freq-nouns-oliver-janich.svg)
 
-### Channel Attila Hildmann (DataSet0)
+### Channel Attila Hildmann
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/freq-nouns-attila-hildmann.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/freq-nouns-attila-hildmann.svg)
 
-### Channel Eva Herman (DataSet0)
+### Channel Eva Herman
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/freq-nouns-eva-herman.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/freq-nouns-eva-herman.svg)
 
-### Channel Xavier Naidoo (DataSet0)
+### Channel Xavier Naidoo
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/freq-nouns-xavier-naidoo.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/freq-nouns-xavier-naidoo.svg)
 
 ## Time Plot Sentiment Analysis
 
-### TextBlob ()
+### TextBlob (Polarity)
 
 **DataSet0**
 
@@ -274,17 +281,17 @@ $.ajax({
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/eval-pipeline-sen-dataSet0.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/eval-pipeline-sen-dataSet0.svg)
 
-## Public channels classifiers
+## Public channels classifiers (Confusion matrix)
 
-**Linear SVC**
+### Linear SVC Classifier
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-linearsvc.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-linearsvc.svg)
 
-**MLP**
+### MLP Classifier
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-mlp.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-mlp.svg)
 
-**Dummy**
+### Dummy Classifier
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-dummy.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-dummy.svg)
 
