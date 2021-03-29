@@ -1,4 +1,4 @@
-# Telegram Analysis
+# Telegram Mining
 
 Just another telegram data science (mining) project.
 
