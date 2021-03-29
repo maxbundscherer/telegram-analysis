@@ -53,6 +53,104 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/meta-text-length-hist.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/meta-text-length-hist.svg)
 
+## Auto Word Clouds
+<!-- Slider -->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+
+<!-- CSV -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/0.71/jquery.csv-0.71.min.js"></script>
+
+<!-- Slider Gen -->
+<script>
+        
+    function generateSlider (data, selectorLabel) {
+        retContent = ""
+        for (var i = 0; i < data.length; i++) {
+            filePath =  data[i][0];
+            fileLabel = data[i][1];
+            
+            prefixPath = "https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/"
+            filePath = prefixPath + encodeURI(filePath)
+    
+            retContent = retContent + " <div><br /><label>" + fileLabel + "</label><img src='" + filePath + "'><br /></div>"
+    
+        }
+        $("#" + selectorLabel).html(retContent)
+        $('#' + selectorLabel).slick({
+          autoplay: true,
+          autoplaySpeed: 3000,
+        });
+    }
+    
+    </script>
+
+### WordCloud Oliver Janich (Channel - DataSet0)
+<!-- Sliders -->
+<div id="slider-oliver-janich"></div>
+<script>
+$.ajax({
+          type: "GET",  
+          url: "https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/cache/auto-wordcloud-oliver-janich.csv",
+          dataType: "text",       
+          success: function(response)  
+          {
+            data = $.csv.toArrays(response);
+            generateSlider(data, "slider-oliver-janich");
+          }   
+        });
+</script>
+
+### WordCloud Attila Hildmann (Channel - DataSet0)
+<!-- Sliders -->
+<div id="slider-attila-hildmann"></div>
+<script>
+$.ajax({
+          type: "GET",  
+          url: "https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/cache/auto-wordcloud-attila-hildmann.csv",
+          dataType: "text",       
+          success: function(response)  
+          {
+            data = $.csv.toArrays(response);
+            generateSlider(data, "slider-attila-hildmann");
+          }   
+        });
+</script>
+
+### WordCloud Eva Herman (Channel - DataSet0)
+<!-- Sliders -->
+<div id="slider-eva-herman"></div>
+<script>
+$.ajax({
+          type: "GET",  
+          url: "https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/cache/auto-wordcloud-eva-herman.csv",
+          dataType: "text",       
+          success: function(response)  
+          {
+            data = $.csv.toArrays(response);
+            generateSlider(data, "slider-eva-herman");
+          }   
+        });
+</script>
+
+### WordCloud Xavier Naidoo (Channel - DataSet0)
+<!-- Sliders -->
+<div id="slider-xavier-naidoo"></div>
+<script>
+$.ajax({
+          type: "GET",  
+          url: "https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/cache/auto-wordcloud-xavier-naidoo.csv",
+          dataType: "text",       
+          success: function(response)  
+          {
+            data = $.csv.toArrays(response);
+            generateSlider(data, "slider-xavier-naidoo");
+          }   
+        });
+</script>
+
 ## Graphs
 
 ### Forwarded From
@@ -238,104 +336,6 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 **Dummy**
 
 [<img src="https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-dummy.svg">](https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/class-dummy.svg)
-
-## Auto Word Clouds
-<!-- Slider -->
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
-<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
-<script type="text/javascript" src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
-
-<!-- CSV -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/0.71/jquery.csv-0.71.min.js"></script>
-
-<!-- Slider Gen -->
-<script>
-        
-    function generateSlider (data, selectorLabel) {
-        retContent = ""
-        for (var i = 0; i < data.length; i++) {
-            filePath =  data[i][0];
-            fileLabel = data[i][1];
-            
-            prefixPath = "https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/output/"
-            filePath = prefixPath + encodeURI(filePath)
-    
-            retContent = retContent + " <div><br /><label>" + fileLabel + "</label><img src='" + filePath + "'><br /></div>"
-    
-        }
-        $("#" + selectorLabel).html(retContent)
-        $('#' + selectorLabel).slick({
-          autoplay: true,
-          autoplaySpeed: 3000,
-        });
-    }
-    
-    </script>
-
-### WordCloud Oliver Janich (Channel - DataSet0)
-<!-- Sliders -->
-<div id="slider-oliver-janich"></div>
-<script>
-$.ajax({
-          type: "GET",  
-          url: "https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/cache/auto-wordcloud-oliver-janich.csv",
-          dataType: "text",       
-          success: function(response)  
-          {
-            data = $.csv.toArrays(response);
-            generateSlider(data, "slider-oliver-janich");
-          }   
-        });
-</script>
-
-### WordCloud Attila Hildmann (Channel - DataSet0)
-<!-- Sliders -->
-<div id="slider-attila-hildmann"></div>
-<script>
-$.ajax({
-          type: "GET",  
-          url: "https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/cache/auto-wordcloud-attila-hildmann.csv",
-          dataType: "text",       
-          success: function(response)  
-          {
-            data = $.csv.toArrays(response);
-            generateSlider(data, "slider-attila-hildmann");
-          }   
-        });
-</script>
-
-### WordCloud Eva Herman (Channel - DataSet0)
-<!-- Sliders -->
-<div id="slider-eva-herman"></div>
-<script>
-$.ajax({
-          type: "GET",  
-          url: "https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/cache/auto-wordcloud-eva-herman.csv",
-          dataType: "text",       
-          success: function(response)  
-          {
-            data = $.csv.toArrays(response);
-            generateSlider(data, "slider-eva-herman");
-          }   
-        });
-</script>
-
-### WordCloud Xavier Naidoo (Channel - DataSet0)
-<!-- Sliders -->
-<div id="slider-xavier-naidoo"></div>
-<script>
-$.ajax({
-          type: "GET",  
-          url: "https://raw.githubusercontent.com/maxbundscherer/telegram-analysis/master/notebooks/cache/auto-wordcloud-xavier-naidoo.csv",
-          dataType: "text",       
-          success: function(response)  
-          {
-            data = $.csv.toArrays(response);
-            generateSlider(data, "slider-xavier-naidoo");
-          }   
-        });
-</script>
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-0GSYRQY91V"></script>
