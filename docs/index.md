@@ -13,7 +13,7 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 - Go to [Processed Telegram Mining Notebook](https://github.com/maxbundscherer/telegram-analysis/blob/master/notebooks/Telegram.ipynb)
 - Go to [Processed Classifier Notebook](https://github.com/maxbundscherer/telegram-analysis/blob/master/notebooks/Classifier.ipynb)
 
-## Table of contents
+## Table of contents (GitHub Pages)
 
 * TOC
 {:toc}
