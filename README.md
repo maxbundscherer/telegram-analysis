@@ -12,8 +12,8 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 
 - Go to [Project website](https://maxbundscherer.github.io/telegram-analysis/)
 - Read [Thesis.pdf](./thesis.pdf)
-- Processed Telegram Mining Notebook [included](./notebooks/Telegram.ipynb)telegram-analysis/blob/master/notebooks/Telegram.ipynb)
-- Processed Classifier Notebook [included](./notebooks/Classifier.ipynb)telegram-analysis/blob/master/notebooks/Classifier.ipynb)
+- Processed Telegram Mining Notebook [included](./notebooks/Telegram.ipynb)
+- Processed Classifier Notebook [included](./notebooks/Classifier.ipynb)
 - Processed Graphs [included](./notebooks/output/)
 - Run scripts [included](./notebooks/)
 
@@ -23,7 +23,7 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 2. Wire downloaded telegram-data in ``./notebooks/inputFiles.csv`` ([go to file](./notebooks/inputFiles.csv))
 3. Run in [custom-docker](./docker/)
 
-### Excpert
+### Excerpt
 
 ![Meta Overview](/notebooks/output/meta-overview-dataSet0.svg)
 

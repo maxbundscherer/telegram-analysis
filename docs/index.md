@@ -1,14 +1,16 @@
-# Excerpt Telegram Analysis
+# Telegram Analysis
 
-``data science - telegram - jupyter - text-mining - text-classification``
+Just another telegram data science (mining) project.
+
+``telegram mining - social media mining - text mining - social graphs - text classification``
 
 [![shields.io](https://img.shields.io/badge/license-Apache2-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.txt)
 
 Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 
 - Go to [GitHub-Repository and Let's get started](https://github.com/maxbundscherer/telegram-analysis)
-- Go to [processed jupyter-notebook (browser preview)](https://nbviewer.jupyter.org/github/maxbundscherer/telegram-analysis/blob/master/notebooks/Telegram.ipynb)
-- Go to [processed classifier-notebook (browser preview)](https://nbviewer.jupyter.org/github/maxbundscherer/telegram-analysis/blob/master/notebooks/Classifier.ipynb)
+- Go to [Processed Telegram Mining Notebook](https://github.com/maxbundscherer/telegram-analysis/blob/master/notebooks/Telegram.ipynb)
+- Go to [Processed Classifier Notebook](https://github.com/maxbundscherer/telegram-analysis/blob/master/notebooks/Classifier.ipynb)
 
 ## Table of contents
 
