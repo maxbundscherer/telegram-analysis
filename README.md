@@ -11,7 +11,7 @@ Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 ## Overview
 
 - Go to [Project website](https://maxbundscherer.github.io/telegram-analysis/)
-- Read [Thesis.pdf](./Thesis.pdf)
+- Read [Thesis.pdf](https://github.com/maxbundscherer/telegram-analysis/raw/master/Thesis.pdf)
 - Processed Telegram Mining Notebook [included](./notebooks/Telegram.ipynb)
 - Processed Classifier Notebook [included](./notebooks/Classifier.ipynb)
 - Processed Graphs [included](./notebooks/output/)

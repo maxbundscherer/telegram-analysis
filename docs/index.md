@@ -8,7 +8,7 @@ Just another telegram data science (mining) project.
 
 Author: [Maximilian Bundscherer](https://bundscherer-online.de)
 
-- Read [Thesis.pdf](https://github.com/maxbundscherer/telegram-analysis/blob/master/Thesis.pdf)
+- Read [Thesis.pdf](https://github.com/maxbundscherer/telegram-analysis/raw/master/Thesis.pdf)
 - Go to [GitHub-Repository and Let's get started](https://github.com/maxbundscherer/telegram-analysis)
 - Go to [Processed Telegram Mining Notebook](https://github.com/maxbundscherer/telegram-analysis/blob/master/notebooks/Telegram.ipynb)
 - Go to [Processed Classifier Notebook](https://github.com/maxbundscherer/telegram-analysis/blob/master/notebooks/Classifier.ipynb)
